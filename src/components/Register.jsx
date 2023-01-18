@@ -68,7 +68,9 @@ const Register = () => {
                         directMember:[],
                         indirectMember:[],
                         boughtLong:0,
-                        showShort:0
+                        showShort:0,
+                        boughtShort:0,
+                        lastWithdrawal:new Date()
                     }).then(() => {
                         const usersRef = collection(db, "users");
                         const q = getDocs(query(usersRef, where('user_invite', '==', invt)));
@@ -102,7 +104,7 @@ const Register = () => {
                         const userData = getDoc(doc(db, 'users', auth.currentUser.uid));
                         return userData;
                     }).then((userData)=>{
-                        console.log(userData.data());
+                        //console.log(userData.data());
                         updateDoc(doc(db, 'users', userData.data().parent_id), {
                             directMember: arrayUnion(auth.currentUser.uid)
                         });

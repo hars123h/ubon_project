@@ -71,7 +71,9 @@ const Register = () => {
                         directMember:[],
                         indirectMember:[],
                         boughtLong:0,
-                        showShort:0
+                        showShort:0,
+                        boughtShort:0,
+                        lastWithdrawal:new Date()
                     }).then(() => {
                         const usersRef = collection(db, "users");
                         const q = getDocs(query(usersRef, where('user_invite', '==', invt)));

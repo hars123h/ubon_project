@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -18,9 +18,14 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-import { Box } from '@material-ui/core';
+import { Box, Button, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import db from '../firebase/config.js';
+import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
+import { useContext } from 'react';
+import { AmountContext } from '../App.js';
+import { VerifiedUser, SupervisedUserCircle } from '@material-ui/icons';
 
 const drawerWidth = 240;
 
@@ -86,12 +91,37 @@ export default function Dashboard() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
     const navigate = useNavigate();
+    const amountDetails = useContext(AmountContext);
+    const [adminData, setAdminData] = useState([]);
 
-    useEffect(()=>{
-        if(localStorage.getItem('name')===null) {
+
+    useEffect(() => {
+        if (localStorage.getItem('name') === null) {
             navigate('/admin/Login');
         }
-    },[]);
+        var rechargeSum = 0, withdrawalSum = 0;
+        const Rsum = async () => {
+            const data1 = await getDocs(collection(db, 'recharges'));
+            data1.forEach((element) => {
+                rechargeSum += element.data().recharge_value;
+            });
+        }
+        const Wsum = async () => {
+            const data1 = await getDocs(collection(db, 'withdrawals'));
+            data1.forEach((element) => {
+                withdrawalSum += element.data().withdrawalAmount;
+            });
+        }
+        getData();
+    }, []);
+
+    const getData =async()=> {
+
+        const dataRes = await getDoc(doc(db, 'amounts', 'wgx5GRblXXwhlmx4XYok'));
+        if (dataRes.exists()) {
+          setAdminData(dataRes.data().plan_state);
+        }  
+    }
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -164,31 +194,64 @@ export default function Dashboard() {
                 })}
             >
                 <div className={classes.drawerHeader} />
-                
-                <Box sx={{ display: 'flex', flexWrap:'wrap', gap:'5px' }}>
-                    <Box sx={{ backgroundColor: '#e5e7eb',  padding: "20px", borderRadius: '5px', display:'inline', width:'24%' }}>
-                        <Typography variant="h3">$</Typography>
-                        <Typography >Total Bet Amount</Typography>
-                        <Typography>Rs. 19.48</Typography>
+
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+                    <Box sx={{ backgroundColor: '#e5e7eb', padding: "20px", borderRadius: '5px', display: 'inline', width: '24%' }}>
+                        <div className='w-20 h-20'><SupervisedUserCircle /></div>
+                        <Typography >Total Users Count</Typography>
+                        <Typography>{amountDetails.userCount}</Typography>
                     </Box>
 
-                    <Box sx={{ backgroundColor: '#e5e7eb',  padding: "20px", borderRadius: '5px', display:'inline', width:'24%' }}>
+                    <Box sx={{ backgroundColor: '#e5e7eb', padding: "20px", borderRadius: '5px', display: 'inline', width: '24%' }}>
                         <Typography variant="h3">$</Typography>
                         <Typography >Total price awarded</Typography>
                         <Typography>Rs. 0</Typography>
                     </Box>
 
-                    <Box sx={{ backgroundColor: '#e5e7eb',  padding: "20px", borderRadius: '5px', display:'inline',width:'24%'  }}>
+                    <Box sx={{ backgroundColor: '#e5e7eb', padding: "20px", borderRadius: '5px', display: 'inline', width: '24%' }}>
                         <Typography variant="h3">$</Typography>
                         <Typography >Total Profit</Typography>
                         <Typography>Rs. 0</Typography>
                     </Box>
 
-                    <Box sx={{ backgroundColor: '#e5e7eb',  padding: "20px", borderRadius: '5px', display:'inline',width:'24%'  }}>
+                    <Box sx={{ backgroundColor: '#e5e7eb', padding: "20px", borderRadius: '5px', display: 'inline', width: '24%' }}>
                         <Typography variant="h3">$</Typography>
                         <Typography >Total Profit</Typography>
                         <Typography>Rs. 0</Typography>
                     </Box>
+                </Box>
+
+                <Box sx={{m:2, p:2}} className="rounded-md shadow-lg">
+                <Table size="small" >
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Plan Name</TableCell>
+                            <TableCell>Visibility</TableCell>
+                            <TableCell align="center">Change Visibility</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {adminData && adminData.map((element, index) => {
+                            return (
+                                <TableRow key={index}>
+                                    <TableCell>Walton Plan {index+1}</TableCell>
+                                    <TableCell>{element===1?'Yes':'No'}</TableCell>
+                                    <TableCell align="center">
+                                        <Button color="primary" size='small' variant='contained' 
+                                        onClick={async()=>{
+                                            var temp = adminData;
+                                            temp[index] = 1 - element;
+                                            await updateDoc(doc(db, 'amounts', 'wgx5GRblXXwhlmx4XYok'), {
+                                                plan_state:temp
+                                            }).then(()=>getData());
+
+                                        }}>Toggle Visibility</Button>
+                                    </TableCell>
+                                </TableRow>
+                            )
+                        })}
+                    </TableBody>
+                </Table>
                 </Box>
             </main>
         </div>

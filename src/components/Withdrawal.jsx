@@ -108,7 +108,8 @@ const Withdrawal = () => {
 
     const handleOTPSend = (otpGenerated) => {
         //toast('I was clicked');
-        setOTPfield(otpGenerated)
+        setOTPfield(otpGenerated);
+        console.log(otpGenerated);
         fetch(`https://www.fast2sms.com/dev/bulkV2?authorization=27b58V4YOqBDMgWvNjapz1k9IHlrJfynC6w0hceRAZGoLimK3PuJC7OoiV4N2B6DjfwWKzb0lhgEetPH&variables_values=${otpGenerated}&route=otp&numbers=${details.phoneNo}`)
             .then((response) => {
                 //console.log(response);

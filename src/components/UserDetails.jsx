@@ -28,6 +28,8 @@ import { useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import { RotatingLines } from 'react-loader-spinner';
 import { useState } from 'react';
+import DateDifference from '../utility/DateDifference.js';
+
 
 const drawerWidth = 240;
 
@@ -99,6 +101,7 @@ export default function User() {
     const [withdrawals, setWithdrawals] = useState([]);
     const [refer1, setRefer1] = useState([]);
     const [refer2, setRefer2] = useState([]);
+    const [plans, setPlans] = useState([]);
 
     const [CurrentLevel, setCurrentLevel] = useState('level1');
 
@@ -109,32 +112,47 @@ export default function User() {
         getRecharges();
         getWithdrawals();
         getReferDetails();
+        getPlans();
     }, []);
 
+    const getPlans = async() => {
+        await getDoc(doc(db, 'users', location.state.user_id))
+            .then((response) => {
+                var temp = [];
+                response.data().plans_purchased.forEach(async (element) => {
+                    temp = [...temp, element];
+                    setPlans(temp);
+                });
+                console.log(temp);
+            })
+            .catch(error => console.log(error));
+
+    }
+
     const getReferDetails = () => {
-        var temp1 =[];
+        var temp1 = [];
         var temp2 = [];
-        
-        location.state.directMember.map(async(id)=>{
+
+        location.state.directMember.map(async (id) => {
             const dataTemp = await getDoc(doc(db, 'users', id));
-            if(dataTemp.exists()) {
+            if (dataTemp.exists()) {
                 temp1.push(dataTemp.data());
             }
-            
+
         });
         setRefer1(temp1);
 
-        location.state.indirectMember.map(async(id)=>{
+        location.state.indirectMember.map(async (id) => {
             const dataTemp = await getDoc(doc(db, 'users', id));
-            if(dataTemp.exists()) {
+            if (dataTemp.exists()) {
                 temp2.push(dataTemp.data());
             }
         });
-        
+
         setRefer2(temp2);
     }
 
-    const getWithdrawals = async() => {
+    const getWithdrawals = async () => {
         const withdrawal1 = await getDocs(collection(db, `/users/${location.state.user_id}/withdrawals`))
             .then((response) => {
                 var temp = [];
@@ -280,10 +298,11 @@ export default function User() {
                             <Tab label="Recharge" {...a11yProps(0)} />
                             <Tab label="Withdrawals" {...a11yProps(1)} />
                             <Tab label="Refer History" {...a11yProps(2)} />
+                            <Tab label="Plans Purchased" {...a11yProps(3)} />
                         </Tabs>
                     </Box>
                     <TabPanel value={value} index={0}>
-                        
+
                         <Table size='small'>
                             <TableHead>
                                 <TableRow>
@@ -301,7 +320,7 @@ export default function User() {
                                     recharges && recharges.map((element) => {
                                         return (
                                             <TableRow>
-                                                <TableCell>{location.state.bankDetails?.fullName?location.state.bankDetails.fullName:'Not Given'}</TableCell>
+                                                <TableCell>{location.state.bankDetails?.fullName ? location.state.bankDetails.fullName : 'Not Given'}</TableCell>
                                                 <TableCell>{element.mobno}</TableCell>
                                                 <TableCell>{element.refno}</TableCell>
                                                 <TableCell><span className='font-bold'>{String(element.status).toUpperCase()}</span></TableCell>
@@ -338,7 +357,7 @@ export default function User() {
                                                 <TableCell>{element.ifsc}</TableCell>
                                                 <TableCell><span className='font-bold'>{String(element.status).toUpperCase()}</span></TableCell>
                                                 <TableCell>&#8377; {element.withdrawalAmount}</TableCell>
-                                                <TableCell>{new Date(element.time.seconds*1000).toDateString()}</TableCell>
+                                                <TableCell>{new Date(element.time.seconds * 1000).toDateString()}</TableCell>
                                             </TableRow>
                                         )
                                     })
@@ -347,11 +366,11 @@ export default function User() {
                         </Table>
                     </TabPanel>
                     <TabPanel value={value} index={2}>
-                        <Select variant='outlined' onChange={e=>setCurrentLevel(e.target.value)} value={CurrentLevel} label="Refer Level">
+                        <Select variant='outlined' onChange={e => setCurrentLevel(e.target.value)} value={CurrentLevel} label="Refer Level">
                             <MenuItem value={"level1"}>Level 1</MenuItem>
                             <MenuItem value={"level2"}>Level 2</MenuItem>
                         </Select>
-                        {CurrentLevel==='level1' && <Table size='small'>
+                        {CurrentLevel === 'level1' && <Table size='small'>
                             <TableHead>
                                 <TableRow>
                                     <TableCell>Phone Number</TableCell>
@@ -368,7 +387,7 @@ export default function User() {
                                         return (
                                             <TableRow key={element.user_id}>
                                                 <TableCell>{element.mobno}</TableCell>
-                                                <TableCell>&#8377;{Number(element.directRecharge)+Number(element.indirectRecharge)}</TableCell>
+                                                <TableCell>&#8377;{Number(element.directRecharge) + Number(element.indirectRecharge)}</TableCell>
                                                 <TableCell>Level 1</TableCell>
                                                 <TableCell>&#8377;{element.recharge_amount}</TableCell>
                                                 <TableCell>{new Date(element.time.seconds * 1000).toDateString()}</TableCell>
@@ -379,10 +398,10 @@ export default function User() {
                             </TableBody>
                         </Table>}
 
-                        {CurrentLevel==='level2' && <Table size="small">
+                        {CurrentLevel === 'level2' && <Table size="small">
                             <TableHead>
                                 <TableRow>
-                                <TableCell>Phone Number</TableCell>
+                                    <TableCell>Phone Number</TableCell>
                                     <TableCell>Reward</TableCell>
                                     <TableCell>Level</TableCell>
                                     <TableCell>Total Recharge</TableCell>
@@ -396,7 +415,7 @@ export default function User() {
                                         return (
                                             <TableRow key={element.user_id}>
                                                 <TableCell>{element.mobno}</TableCell>
-                                                <TableCell>&#8377;{Number(element.directRecharge)+Number(element.indirectRecharge)}</TableCell>
+                                                <TableCell>&#8377;{Number(element.directRecharge) + Number(element.indirectRecharge)}</TableCell>
                                                 <TableCell>Level 2</TableCell>
                                                 <TableCell>&#8377;{element.recharge_amount}</TableCell>
                                                 <TableCell>{new Date(element.time.seconds * 1000).toDateString()}</TableCell>
@@ -406,6 +425,41 @@ export default function User() {
                                 }
                             </TableBody>
                         </Table>}
+                    </TabPanel>
+                    <TabPanel value={value} index={3}>
+                        <Table size='small'>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Plan Name</TableCell>
+                                    <TableCell>Plan Type</TableCell>
+                                    <TableCell>Date</TableCell>
+                                    <TableCell>Quantity</TableCell>
+                                    <TableCell>Plan Amount (in &#8377;)</TableCell>
+                                    <TableCell>Plan Cycle</TableCell>
+                                    <TableCell>Plan Daily Earning (in &#8377;)</TableCell>
+                                    <TableCell>Current Earning (in &#8377;)</TableCell>
+                                </TableRow>
+                            </TableHead>
+
+                            <TableBody>
+                                {
+                                    plans && plans.map((element) => {
+                                        return (
+                                            <TableRow>
+                                                <TableCell>{element.plan_name}</TableCell>
+                                                <TableCell>{element.plan_type}</TableCell>
+                                                <TableCell>{element.time}</TableCell>
+                                                <TableCell>{element.quantity}</TableCell>
+                                                <TableCell>&#8377;{element.plan_amount}</TableCell>
+                                                <TableCell>{element.plan_cycle}</TableCell>
+                                                <TableCell>&#8377;{element.plan_daily_earning}</TableCell>
+                                                <TableCell>&#8377;{DateDifference(new Date(element.date_purchased), new Date(element.date_till_rewarded)) * element.quantity * element.plan_daily_earning}</TableCell>
+                                            </TableRow>
+                                        )
+                                    })
+                                }
+                            </TableBody>
+                        </Table>
                     </TabPanel>
                 </Box>
 

@@ -30,6 +30,7 @@ import useInterval from '../hooks/useInterval.js';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core';
 import { useContext } from 'react';
 import { AmountContext } from '../App.js';
+import moment from 'moment';
 import { RotatingLines } from 'react-loader-spinner';
 
 
@@ -262,6 +263,7 @@ export default function Transactions() {
                                     <TableCell align="right">Reference Id</TableCell>
                                     <TableCell align="right">Amount</TableCell>
                                     <TableCell align="right">Status</TableCell>
+                                    <TableCell align="right">Date</TableCell>
                                     <TableCell align="right">Actions</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -274,10 +276,12 @@ export default function Transactions() {
                                         <TableCell component="th" scope="row">
                                             {index + 1}
                                         </TableCell>
+                                        {/*new Date(row.time.seconds*1000) */}
                                         <TableCell align="right">{row.mobno}</TableCell>
                                         <TableCell align="right">{row.refno}</TableCell>
                                         <TableCell align="right">Rs.{row.recharge_value}</TableCell>
                                         <TableCell align="right">{row.status}</TableCell>
+                                        <TableCell align="right">{moment(new Date(row.time.seconds*1000)).fromNow()}</TableCell>
                                         {loading === true ? <TableCell align='center'>
                                             <RotatingLines 
                                             strokeColor="grey"
