@@ -189,7 +189,7 @@ export default function Access() {
                 }}
             >
                 <div className={classes.drawerHeader}>
-                    <Typography>Thar Dashboard</Typography>
+                    <Typography>Ubon Dashboard</Typography>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                     </IconButton>

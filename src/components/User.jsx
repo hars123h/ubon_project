@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
 export default function User() {
     const classes = useStyles();
     const theme = useTheme();
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
     const [rows, setRows] = useState([]);
     const navigate = useNavigate();
     const [modalIsOpen, setIsOpen] = useState(false);
@@ -256,7 +256,7 @@ export default function User() {
                 }}
             >
                 <div className={classes.drawerHeader}>
-                    <Typography>Thar Dashboard</Typography>
+                    <Typography>Ubon Dashboard</Typography>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                     </IconButton>
@@ -315,7 +315,7 @@ export default function User() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {rows.map((row, row_index) => (
+                                {rows.reverse().map((row, row_index) => (
                                     <TableRow
                                         key={row.name}
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

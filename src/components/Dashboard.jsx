@@ -170,7 +170,7 @@ export default function Dashboard() {
                 }}
             >
                 <div className={classes.drawerHeader}>
-                    <Typography>Thar Dashboard</Typography>
+                    <Typography>Ubon Dashboard</Typography>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                     </IconButton>
@@ -226,6 +226,7 @@ export default function Dashboard() {
                     <TableHead>
                         <TableRow>
                             <TableCell>Plan Name</TableCell>
+                            <TableCell>Plan Type</TableCell>
                             <TableCell>Visibility</TableCell>
                             <TableCell align="center">Change Visibility</TableCell>
                         </TableRow>
@@ -235,6 +236,7 @@ export default function Dashboard() {
                             return (
                                 <TableRow key={index}>
                                     <TableCell>Walton Plan {index+1}</TableCell>
+                                    <TableCell>{(index+1)<=8?'Big':'Short'}</TableCell>
                                     <TableCell>{element===1?'Yes':'No'}</TableCell>
                                     <TableCell align="center">
                                         <Button color="primary" size='small' variant='contained' 
