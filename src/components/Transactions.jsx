@@ -32,7 +32,7 @@ import { useContext } from 'react';
 import { AmountContext } from '../App.js';
 import moment from 'moment';
 import { RotatingLines } from 'react-loader-spinner';
-
+import Status from './Status';
 
 
 
@@ -101,6 +101,7 @@ export default function Transactions() {
     const [open, setOpen] = React.useState(true);
     const amountDetails = useContext(AmountContext);
     const [loading, setLoading] = useState(false);
+    const [value, setValue] = useState('pending');
 
     const [recharge_list, setRecharge_list] = useState(null);
     const navigate = useNavigate();
@@ -113,9 +114,9 @@ export default function Transactions() {
         var idx = 0;
         docSnap.forEach((doc) => {
             //console.log(doc.data(), 'this is the doc data');
-            // if (doc.data().status === 'pending') {
+            if (doc.data().status === value) {
             temp_Data = [...temp_Data, { ...doc.data(), 'recharge_id': docSnap._snapshot.docChanges[idx].doc.key.path.segments[6] }];
-            // }
+            }
             //console.log(temp_Data);
             idx += 1;
         });
@@ -132,6 +133,10 @@ export default function Transactions() {
         }
         getRecharges_list();
     }, []);
+
+    useEffect(()=>{
+        getRecharges_list();
+    },[value]);
 
     const updateStatus = async (recharge_id, new_status, recharge_value, user_id, element) => {
         const docRef = doc(db, 'recharges', recharge_id);
@@ -180,6 +185,7 @@ export default function Transactions() {
         });
 
     }
+
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -254,6 +260,7 @@ export default function Transactions() {
                 <div className={classes.drawerHeader} />
 
                 <div className="table_details">
+                    <Status value={value} setValue={setValue}/>
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
                             <TableHead>
