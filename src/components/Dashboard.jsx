@@ -18,14 +18,13 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-import { Box, Button, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import db from '../firebase/config.js';
 import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
 import { useContext } from 'react';
 import { AmountContext } from '../App.js';
-import { VerifiedUser, SupervisedUserCircle } from '@material-ui/icons';
 
 const drawerWidth = 240;
 
@@ -93,34 +92,55 @@ export default function Dashboard() {
     const navigate = useNavigate();
     const amountDetails = useContext(AmountContext);
     const [adminData, setAdminData] = useState([]);
+    const [recSum, setRecSum] = useState(0);
+    const [witSum, setWitSum] = useState(0);
+    const [balSum, setBalSum] = useState(0);
 
 
     useEffect(() => {
         if (localStorage.getItem('name') === null) {
             navigate('/admin/Login');
         }
-        var rechargeSum = 0, withdrawalSum = 0;
+        var rechargeSum = 0, withdrawalSum = 0, balanceSum=0;
         const Rsum = async () => {
             const data1 = await getDocs(collection(db, 'recharges'));
             data1.forEach((element) => {
-                rechargeSum += element.data().recharge_value;
+                if(element.data().status="confirmed") {
+                    rechargeSum += Number(element.data().recharge_value);
+                }
             });
+            setRecSum(rechargeSum);
         }
         const Wsum = async () => {
             const data1 = await getDocs(collection(db, 'withdrawals'));
             data1.forEach((element) => {
-                withdrawalSum += element.data().withdrawalAmount;
+                if(element.data().status==='confirmed') {
+                    withdrawalSum += element.data().withdrawalAmount;
+                }
             });
+            setWitSum(withdrawalSum);
         }
+
+        const BSum = async () => {
+            const data1 = await getDocs(collection(db, 'users'));
+            data1.forEach((element) => {
+                balanceSum+=element.data().balance;
+            });
+            setBalSum(balanceSum);
+        }
+
         getData();
+        Rsum();
+        Wsum();
+        BSum();
     }, []);
 
-    const getData =async()=> {
+    const getData = async () => {
 
         const dataRes = await getDoc(doc(db, 'amounts', 'wgx5GRblXXwhlmx4XYok'));
         if (dataRes.exists()) {
-          setAdminData(dataRes.data().plan_state);
-        }  
+            setAdminData(dataRes.data().plan_state);
+        }
     }
 
     const handleDrawerOpen = () => {
@@ -195,65 +215,72 @@ export default function Dashboard() {
             >
                 <div className={classes.drawerHeader} />
 
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
-                    <Box sx={{ backgroundColor: '#e5e7eb', padding: "20px", borderRadius: '5px', display: 'inline', width: '24%' }}>
-                        <div className='w-20 h-20'><SupervisedUserCircle /></div>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    <Box sx={{ backgroundColor: '#e5e7eb', padding: "20px", borderRadius: '5px', display: 'inline', width: '24%' }} className="shadow-lg">
+                        <Box >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-14">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                            </svg>
+                        </Box>
                         <Typography >Total Users Count</Typography>
                         <Typography>{amountDetails.userCount}</Typography>
                     </Box>
 
-                    <Box sx={{ backgroundColor: '#e5e7eb', padding: "20px", borderRadius: '5px', display: 'inline', width: '24%' }}>
-                        <Typography variant="h3">$</Typography>
-                        <Typography >Total price awarded</Typography>
-                        <Typography>Rs. 0</Typography>
+                    <Box sx={{ backgroundColor: '#e5e7eb', padding: "20px", borderRadius: '5px', display: 'inline', width: '24%' }} className="shadow-lg">
+                        <Typography variant="h3">&#8377;</Typography>
+                        <Typography >Total Recharge Amount</Typography>
+                        <Typography>&#8377; {recSum}</Typography>
                     </Box>
 
-                    <Box sx={{ backgroundColor: '#e5e7eb', padding: "20px", borderRadius: '5px', display: 'inline', width: '24%' }}>
-                        <Typography variant="h3">$</Typography>
-                        <Typography >Total Profit</Typography>
-                        <Typography>Rs. 0</Typography>
+                    <Box sx={{ backgroundColor: '#e5e7eb', padding: "20px", borderRadius: '5px', display: 'inline', width: '24%' }} className="shadow-lg">
+                        <Typography variant="h3">&#8377;</Typography>
+                        <Typography >Total Withdrawal Amount</Typography>
+                        <Typography>&#8377; {witSum}</Typography>
                     </Box>
 
-                    <Box sx={{ backgroundColor: '#e5e7eb', padding: "20px", borderRadius: '5px', display: 'inline', width: '24%' }}>
-                        <Typography variant="h3">$</Typography>
-                        <Typography >Total Profit</Typography>
-                        <Typography>Rs. 0</Typography>
+                    <Box sx={{backgroundColor: '#e5e7eb', padding: "20px", borderRadius: '5px', display: 'inline', width: '24%' }} className="shadow-lg">
+                        <Typography variant="h3">&#8377;</Typography>
+                        <Typography >Total Balance Sum</Typography>
+                        <Typography  >&#8377; {balSum}</Typography>
                     </Box>
                 </Box>
 
-                <Box sx={{m:2, p:2}} className="rounded-md shadow-lg">
-                <Table size="small" >
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Plan Name</TableCell>
-                            <TableCell>Plan Type</TableCell>
-                            <TableCell>Visibility</TableCell>
-                            <TableCell align="center">Change Visibility</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {adminData && adminData.map((element, index) => {
-                            return (
-                                <TableRow key={index}>
-                                    <TableCell>Walton Plan {index+1}</TableCell>
-                                    <TableCell>{(index+1)<=8?'Big':'Short'}</TableCell>
-                                    <TableCell>{element===1?'Yes':'No'}</TableCell>
-                                    <TableCell align="center">
-                                        <Button color="primary" size='small' variant='contained' 
-                                        onClick={async()=>{
-                                            var temp = adminData;
-                                            temp[index] = 1 - element;
-                                            await updateDoc(doc(db, 'amounts', 'wgx5GRblXXwhlmx4XYok'), {
-                                                plan_state:temp
-                                            }).then(()=>getData());
-
-                                        }}>Toggle Visibility</Button>
-                                    </TableCell>
+                <Box sx={{ m: 2, p: 2 }} className="rounded-md shadow-xl border border-gray-200">
+                    <TableContainer>
+                        <Table size="small" >
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Plan Name</TableCell>
+                                    <TableCell>Plan Type</TableCell>
+                                    <TableCell>Visibility</TableCell>
+                                    <TableCell align="center">Change Visibility</TableCell>
                                 </TableRow>
-                            )
-                        })}
-                    </TableBody>
-                </Table>
+                            </TableHead>
+                            <TableBody>
+                                {adminData && adminData.map((element, index) => {
+                                    return (
+                                        <TableRow key={index}>
+                                            <TableCell>Walton Plan {index + 1}</TableCell>
+                                            <TableCell>{(index + 1) <= 8 ? 'Big' : 'Short'}</TableCell>
+                                            <TableCell>{element === 1 ? 'Yes' : 'No'}</TableCell>
+                                            <TableCell align="center">
+                                                <Button color="primary" size='small' variant='contained'
+                                                    onClick={async () => {
+                                                        var temp = adminData;
+                                                        temp[index] = 1 - element;
+                                                        await updateDoc(doc(db, 'amounts', 'wgx5GRblXXwhlmx4XYok'), {
+                                                            plan_state: temp
+                                                        }).then(() => getData());
+
+                                                    }}>Toggle Visibility</Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    )
+                                })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+
                 </Box>
             </main>
         </div>
