@@ -72,7 +72,7 @@ const Home = () => {
     const navigate = useNavigate();
     const auth = getAuth();
     const [modalIsOpen, setIsOpen] = React.useState(false);
-    const [quantity, setQuantity] = React.useState(0);
+    const [quantity, setQuantity] = React.useState(1);
     const [currPlan, setCurrPlan] = React.useState(null);
     const [currentVisible, setCurrentVisible] = React.useState('big');
     const [userDetails, setUserDetails] = React.useState(null);
@@ -146,8 +146,9 @@ const Home = () => {
     }
 
     const handleClick = (product_type, plan_name, plan_type, plan_amount, plan_daily_earning, plan_cycle) => {
-        openModal();
+        //openModal();
         setCurrPlan({ product_type, plan_name, plan_type, plan_amount, plan_daily_earning, plan_cycle });
+        closeModal('ok');
     }
 
     return (
