@@ -9,6 +9,11 @@ import db from '../firebase/config.js';
 import { getAuth } from 'firebase/auth';
 import headset1 from '../images/headset1.png';
 
+import ubon_home from '../images/ubon_home.png';
+import ubon_user from '../images/ubon_user.png';
+import ubon_group from '../images/ubon_group.png';
+
+
 import ubon_1 from '../images/ubon_1.jpg';
 import ubon_2 from '../images/ubon_2.jpg';
 import ubon_3 from '../images/ubon_3.jpg';
@@ -365,12 +370,12 @@ const Home = () => {
             <div className="fixed bottom-0 z-10 bg-orange-500 rounded-none text-white flex overflow-x-hidden  mx-auto mt-2 border-2 border-gray-100 w-full overflow-y-hidden">
                 <div className="flex flex-row justify-around items-center w-full py-2">
                     <div className='cursor-pointer mx-2 flex flex-col justify-center items-center'>
-                        <img src={homeNew} alt="online" className='w-8' />
+                        <img src={ubon_home} alt="online" className='w-8' />
                         <div>Home</div>
                     </div>
 
                     <div className='cursor-pointer mx-2 flex flex-col justify-center items-center' onClick={() => navigate('/team')}>
-                        <img src={teamNew} alt="recharge" className='w-8' />
+                        <img src={ubon_group} alt="recharge" className='w-8' />
                         <div>Team</div>
                     </div>
                     <div className='cursor-pointer mx-2 flex flex-col justify-center items-center' onClick={() => navigate('/company')}>
@@ -380,7 +385,7 @@ const Home = () => {
 
 
                     <div className='cursor-pointer mx-2 flex flex-col justify-center items-center' onClick={() => navigate('/mine')}>
-                        <img src={paper_image} alt="invite" className='w-8' />
+                        <img src={ubon_user} alt="invite" className='w-8' />
                         <div>My</div>
                     </div>
                 </div>

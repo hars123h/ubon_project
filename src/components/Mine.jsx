@@ -20,6 +20,9 @@ import homeNew from '../images/homeNew.png';
 import teamNew from '../images/teamNew.png';
 import {toast} from 'react-toastify';
 import waltonbd_company from '../images/waltonbd_company.png';
+import ubon_home from '../images/ubon_home.png';
+import ubon_user from '../images/ubon_user.png';
+import ubon_group from '../images/ubon_group.png';
 
 
 const Mine = () => {
@@ -210,12 +213,12 @@ const Mine = () => {
       <div className="fixed bottom-0 z-10 bg-orange-500 rounded-none text-white flex overflow-x-hidden  mx-auto mt-2 border-2 border-gray-100 w-full overflow-y-hidden">
         <div className="flex flex-row justify-around items-center w-full py-2">
           <div className='cursor-pointer mx-2 flex flex-col justify-center items-center' onClick={() => navigate('/home')}>
-            <img src={homeNew} alt="online" className='w-8' />
+            <img src={ubon_home} alt="online" className='w-8' />
             <div>Home</div>
           </div>
 
           <div className='cursor-pointer mx-2 flex flex-col justify-center items-center' onClick={() => navigate('/team')}>
-            <img src={teamNew} alt="recharge" className='w-8' />
+            <img src={ubon_group} alt="recharge" className='w-8' />
             <div>Team</div>
           </div>
 
@@ -225,7 +228,7 @@ const Mine = () => {
           </div>
 
           <div className='cursor-pointer mx-2 flex flex-col justify-center items-center' onClick={() => navigate('/mine')}>
-            <img src={paper_image} alt="invite" className='w-8' />
+            <img src={ubon_user} alt="invite" className='w-8' />
             <div>My</div>
           </div>
         </div>

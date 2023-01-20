@@ -260,7 +260,7 @@ export default function Dashboard() {
                                 {adminData && adminData.map((element, index) => {
                                     return (
                                         <TableRow key={index}>
-                                            <TableCell>Walton Plan {index + 1}</TableCell>
+                                            <TableCell>RTR {index + 1}</TableCell>
                                             <TableCell>{(index + 1) <= 6 ? 'Normal' : 'VIP'}</TableCell>
                                             <TableCell>{element === 1 ? 'Yes' : 'No'}</TableCell>
                                             <TableCell align="center">
