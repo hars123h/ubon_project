@@ -86,13 +86,13 @@ const Login = () => {
                 </div>
                 {/*[#0096D5] */}
                 <div className='mt-16'>
-                    <button onClick={handleSignIn} className='bg-blue-500 w-full pt-2 pb-2 text-lg text-white rounded-md shadow-md shadow-blue-400
+                    <button onClick={handleSignIn} className='bg-orange-500 w-full pt-2 pb-2 text-lg text-white rounded-md shadow-md shadow-orange-400
                     '>Login</button>
                 </div>
                 {/*[#379EFE] */}
                 <div className="options flex justify-between mt-2">
-                    <div className='text-blue-500 cursor-pointer' onClick={() => navigate('/register')}>Register</div>
-                    <div className='cursor-pointer text-blue-500 ' onClick={() => navigate('/forgot')}>Forget password?</div>
+                    <div className='text-orange-500 cursor-pointer' onClick={() => navigate('/register')}>Register</div>
+                    <div className='cursor-pointer text-orange-500 ' onClick={() => navigate('/forgot')}>Forget password?</div>
                 </div>
 
             </div>

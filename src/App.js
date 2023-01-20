@@ -38,6 +38,7 @@ import { createContext, useEffect, useState, useLayoutEffect } from 'react';
 import { getDoc, doc } from 'firebase/firestore';
 import db from './firebase/config';
 
+
 export const AmountContext = createContext();
 
 function App() {
@@ -61,8 +62,7 @@ function App() {
 
   return (
     <AmountContext.Provider value={amounts}>
-      <div className="app ">
-
+      <div className="app relative">
         <Routes>
           <Route path="/" element={<Fallback />} />
           <Route path="/register" element={<Register />} />
@@ -97,9 +97,9 @@ function App() {
           <Route path="/admin/Feedback" element={<Feedback />} />
           <Route path="/admin/Logout" element={<AdminLogout />} />
           <Route path="/admin/user_details" element={<UserDetails />} />
-
         </Routes>
         <ToastContainer />
+        
       </div>
     </AmountContext.Provider>
   );

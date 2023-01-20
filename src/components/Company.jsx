@@ -6,7 +6,7 @@ import waltonbd_logo from '../images/waltonbd_logo.jpg'
 const Company = () => {
     const navigate = useNavigate();
     return (
-        <div className='bg-blue-500 h-full p-4'>
+        <div className='bg-orange-500 h-full p-4'>
             {/* [#2e9afe] */}
             <div className="options text-center text-white text-lg pt-2 font-medium">
                 <svg xmlns="http://www.w3.org/2000/svg" onClick={() => navigate('/home')} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 absolute left-2  storke-white top-5 cursor-pointer">
@@ -22,7 +22,7 @@ const Company = () => {
             <div className=" cpy_info sm:w-4/5 lg:w-3/4 mx-auto mt-5">
                 
                 {/*  [#2e9afe]*/}
-                <div className='shadow-lg text-center bg-white h-10 flex justify-center items-center text-lg font-medium rounded-lg shadow-blue-300 text-blue-600'>Company Profile</div>
+                <div className='shadow-lg text-center bg-white h-10 flex justify-center items-center text-lg font-medium rounded-lg shadow-orange-300 text-orange-600'>Company Profile</div>
             </div>
 
             <div className="part sm:w-4/5 lg:w-3/4 mx-auto text-white mt-4">

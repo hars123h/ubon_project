@@ -12,6 +12,7 @@ import siteTheme from '../images/siteTheme.png';
 import latest_logo from '../images/latest_logo.jpg';
 import waltonbd_company from '../images/waltonbd_company.png';
 import { RotatingLines } from 'react-loader-spinner';
+import close_eye from '../images/close_eye.png';
 
 
 const Register = () => {
@@ -19,8 +20,8 @@ const Register = () => {
     const navigate = useNavigate();
     const auth = getAuth();
     const {invite_code} = useParams();
-    //const [otp, setOtp] = useState('');
-    //const [otpfield, setOTPfield] = useState('');
+    const [otp, setOtp] = useState('');
+    const [otpfield, setOTPfield] = useState('');
     const [mobno, setMobno] = useState('');
     const [pwd, setpwd] = useState('');
     const [cpwd, setCpwd] = useState('');
@@ -32,16 +33,28 @@ const Register = () => {
 
     const handleRegister = async () => {
 
+        if(mobno.length!=10) {
+            toast('Invalid Mobile Number', {autoClose:3000});
+            return;
+        }
+
+        
+
         if(pwd!==cpwd) {
             toast('Passwords do not match!', {autoClose:3000});
             return;
         }
 
-        // if(otp!==otpfield) {
-        //     toast('Wrong OTP entered!');
-        //     return;
-        // }
-        //console.log({ mobno, pwd, cpwd, wpwd, invt });
+        if(pwd.length<6) {
+            toast('Password must contain at least 6 characters!', {autoClose:3000});
+            return;
+        }
+
+        if(otp!==otpfield) {
+            toast('Wrong OTP entered!');
+            return;
+        }
+        console.log({ mobno, pwd, cpwd, wpwd, invt });
         const new_mobno = mobno + '@gmail.com';
         setLoading(true);
         createUserWithEmailAndPassword(auth, new_mobno, pwd)
@@ -142,16 +155,16 @@ const Register = () => {
 
     }
 
-    // const handleOTPSend = (otpGenerated) => {
-    //     //toast('I was clicked');
-    //     setOTPfield(otpGenerated)
-    //     fetch(`https://www.fast2sms.com/dev/bulkV2?authorization=27b58V4YOqBDMgWvNjapz1k9IHlrJfynC6w0hceRAZGoLimK3PuJC7OoiV4N2B6DjfwWKzb0lhgEetPH&variables_values=${otpGenerated}&route=otp&numbers=${mobno}`)
-    //         .then((response) => {
-    //             //console.log(response);
-    //             toast('OTP sent successfully');
-    //         })
-    //         .catch(error => toast('Something went wrong'));
-    // }
+    const handleOTPSend = (otpGenerated) => {
+        //toast('I was clicked');
+        setOTPfield(otpGenerated)
+        fetch(`https://www.fast2sms.com/dev/bulkV2?authorization=27b58V4YOqBDMgWvNjapz1k9IHlrJfynC6w0hceRAZGoLimK3PuJC7OoiV4N2B6DjfwWKzb0lhgEetPH&variables_values=${otpGenerated}&route=otp&numbers=${mobno}`)
+            .then((response) => {
+                //console.log(response);
+                toast('OTP sent successfully');
+            })
+            .catch(error => toast('Something went wrong'));
+    }
 //[#0096D5]
     return (
         <div className='h-screen relative'>
@@ -161,7 +174,7 @@ const Register = () => {
                 </div> : null}
                 <div className='text-sm'>{text}</div>
             </div> : null}
-            <div className='text-center bg-blue-500 font-sans text-white pt-2 text-lg 
+            <div className='text-center bg-orange-500 font-sans text-white pt-2 text-lg 
         pb-2'> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 absolute left-2 cursor-pointer hover:bg-white hover:stroke-black hover:rounded-full transition rounded-full ease-in-out delay-150 duration-200">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -169,19 +182,40 @@ const Register = () => {
             <div className='text-center'>
                 <img src={waltonbd_company} alt="hp_logo" className='m-auto md:w-1/5 sm:w-1/5 my-5' width={200} />
             </div>
-            <div className="box mb-20 border-2 m-auto border-black rounded-xl border-solid lg:w-2/5 w-4/5 shadow-xl p-4 w-50% flex flex-col">
-                <input value={mobno} onChange={e => setMobno(e.target.value)} type="text" className='p-2 outline-none mb-2 border-2 border-black rounded-full' placeholder='Phone number' name="phoneno" id="phoneno" />
-                {/* <div className='flex border-2 border-black rounded-full mb-2'>
-                    <input type="text" onChange={e=>setOtp(e.target.value)}  className='p-2 w-[90%] outline-none rounded-full' placeholder='OTP' name="otp" id="otp"/>
-                    <button className='bg-blue-500 text-white text-xs mr-1 px-4 my-1  rounded-full' onClick={()=>handleOTPSend(String(Math.floor(100000 + Math.random() * 900000)))}>OTP</button>
-                </div> */}
-                <input value={pwd} onChange={e => setpwd(e.target.value)} type="password" className='p-2 mb-2 outline-none border-2 border-black rounded-full' placeholder='Please enter login password' name="passowrd" id="pass" />
-                <input value={cpwd} onChange={e => setCpwd(e.target.value)} type="password" className='p-2 mb-2 outline-none border-2 border-black rounded-full' placeholder='Please confirm the login password' name="cnfpass" id="cnfpass" />
-                <input value={wpwd} onChange={e => setwpwd(e.target.value)} type="password" className='p-2 mb-2 outline-none border-2 border-black rounded-full' placeholder="Please enter the Withdrawal password" name="withpassword" id="wthpass" />
-                <input value={invt} onChange={e => setInvt(e.target.value)} type="text" className='p-2 mb-2  outline-none border-2 border-black rounded-full' placeholder='Invitation code' name="invite_code" id="inv_code" />
-                {/*[#0096D5] [#00704A]*/}
-                <button onClick={handleRegister} className='bg-blue-500 text-white pt-1 pb-1 rounded-full text-lg'>Register</button>
-                <div onClick={() => navigate('/login')} className='cursor-pointer text-center text-gray-500 mt-2 p-2 mb-2 border-2 border-black rounded-full'>
+            <div className="box mb-20 border-2 m-auto  rounded-xl border-solid lg:w-2/5 w-4/5 shadow-xl p-4 w-50% flex flex-col">
+                <div className='outline-none flex items-center justify-between mb-2 border-2 border-gray-300 rounded-full px-2'>
+                    <div className='text-orange-500 border-r-2 border-gray-400 px-2 w-[15%]'>+91</div>
+                    <div className='w-[85%]'>
+                        <input value={mobno} onChange={e => setMobno(e.target.value)} type="text"
+                        className='p-2 w-full outline-none rounded-full' placeholder='Please enter a valid phone number' name="phoneno" id="phoneno" />
+                    </div>
+                </div>
+                <div className='flex border-2 border-gray-300 rounded-full mb-2'>
+                    <input type="text" onChange={e=>setOtp(e.target.value)}  className='p-2 w-[90%] outline-none rounded-full' placeholder='Please enter the OTP' name="otp" id="otp"/>
+                    <button className='bg-orange-500 text-white text-xs mr-1 px-4 my-1  rounded-full' onClick={()=>handleOTPSend(String(Math.floor(100000 + Math.random() * 900000)))}>OTP</button>
+                </div>
+                <div className='flex justify-between items-center mb-2 outline-none border-2 border-gray-300 rounded-full px-2'>
+                    <input value={pwd} onChange={e => setpwd(e.target.value)} type="password" 
+                    className='p-2 outline-none  rounded-full w-[90%]' placeholder='Please enter login password' name="passowrd" id="pass" />
+                    <img src={close_eye} alt="close_eye" width={40} className="p-2" />    
+                </div>
+
+                <div className='flex justify-between items-center mb-2 outline-none border-2 border-gray-300 rounded-full px-2'>
+                    <input value={cpwd} onChange={e => setCpwd(e.target.value)} type="password" 
+                    className='p-2 outline-none  rounded-full w-[90%]' placeholder='Please confirm the login password' name="cnfpass" id="cnfpass" />
+                    <img src={close_eye} alt="close_eye" width={40} className="p-2" />    
+                </div>
+
+                <div className='flex justify-between items-center mb-2 outline-none border-2 border-gray-300 rounded-full px-2'>
+                    <input value={wpwd} onChange={e => setwpwd(e.target.value)} type="password" 
+                    className='p-2 outline-none  rounded-full w-[90%]' placeholder="Please enter the Withdrawal password" name="withpassword" id="wthpass" />
+                    <img src={close_eye} alt="close_eye" width={40} className="p-2" />    
+                </div>
+                                
+                <input value={invt} onChange={e => setInvt(e.target.value)} type="text" className='p-2 mb-2  outline-none border-2 border-gray-300 rounded-full' placeholder='Invitation code' name="invite_code" id="inv_code" />
+                
+                <button onClick={handleRegister} className='bg-orange-500 text-white pt-1 pb-1 rounded-full text-lg'>Register</button>
+                <div onClick={() => navigate('/login')} className='cursor-pointer text-center text-gray-500 mt-2 p-2 mb-2 border-2  rounded-full'>
                     Already have an account, log in
                 </div>
             </div>

@@ -24,7 +24,7 @@ const Invite = () => {
     });
 
     const getUserDetails = async () => {
-        const details = await getDoc(doc(db, 'users', auth.currentUser.uid));
+        const details = await getDoc(doc(db, 'users', localStorage.getItem('uid')));
         setUserDetails(details.data());
     }
 
@@ -42,7 +42,7 @@ const Invite = () => {
     }
 //[#2e9afe]
     return (
-        <div className=' bg-blue-500 h-[1000px] flex flex-col text-white font-light p-5'>
+        <div className=' bg-orange-500 h-[1000px] flex flex-col text-white font-light p-5'>
             <div className="top p-3 cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" onClick={() => navigate(-1)} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
@@ -50,11 +50,11 @@ const Invite = () => {
             </div>
 
             <p className='p-3 text-xs break-words'>
-            https://www.waltonbd91.com/register/invite_code/${userDetails.user_invite}
+            https://www.rtr365.tech/register/invite_code/${userDetails.user_invite}
             </p>
 
             <div className='p-3 font-bold cursor-pointer'>
-                <CopyToClipboard text={`https://www.waltonbd91.com/register/invite_code/${userDetails.user_invite}`} onCopy={() => toast('Copied to clipboard')}>
+                <CopyToClipboard text={`https://www.rtr365.tech/register/invite_code/${userDetails.user_invite}`} onCopy={() => toast('Copied to clipboard')}>
                     <span>Invite Link: click to copy</span>
                 </CopyToClipboard>
             </div>
@@ -70,7 +70,7 @@ const Invite = () => {
                 <QRCode
                     size={120}
                     style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                    value={`https://www.waltonbd91.com/register/invite_code/${userDetails.user_invite}`}
+                    value={`https://www.rtr365.tech/register/invite_code/${userDetails.user_invite}`}
                     viewBox={`0 0 120 120`}
                 />
             </div>

@@ -35,7 +35,7 @@ const ChangeWithdrawalPassword = () => {
 
     //console.log(loc);
     return (
-        <div className='bg-blue-500 h-screen p-4 sm:h-[700px] md:h-[950px] '>
+        <div className='bg-orange-500 h-screen p-4 sm:h-[700px] md:h-[950px] '>
             <div className="options text-center text-white text-xl pt-2 font-medium">
                 <svg xmlns="http://www.w3.org/2000/svg" onClick={() => navigate('/settings', {state:{withdrawalPassword:loc.state.withdrawalPassword, loginPassword:loc.state.loginPassword}})} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 absolute left-2  storke-white top-5 cursor-pointer">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
@@ -44,7 +44,7 @@ const ChangeWithdrawalPassword = () => {
             </div>
 
 {/* [#61b2ff] */}
-            <div className="box mx-2 bg-blue-400 p-2 rounded-md mt-4">
+            <div className="box mx-2 bg-orange-400 p-2 rounded-md mt-4">
 
                 <div className='flex gap-2 items-center text-white  text-lg p-3 m-1  '>
                     Please enter the New Password
@@ -65,7 +65,7 @@ const ChangeWithdrawalPassword = () => {
 
             <div>
                 {/* [#7899de] */}
-                <button onClick={handleReset} className='bg-blue-400 text-white text-lg mt-5 mb-20 rounded-lg shadow-xl block w-full py-2 shadow-blue-600'>Confirm</button>
+                <button onClick={handleReset} className='bg-orange-400 text-white text-lg mt-5 mb-20 rounded-lg shadow-xl block w-full py-2 shadow-orange-600'>Confirm</button>
             </div>
         </div>
     )

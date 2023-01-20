@@ -124,7 +124,7 @@ const Withdrawal = () => {
     }
     //[#2e9afe]
     return (
-        <div className='bg-blue-500 flex flex-col p-4 sm:h-[1000px] md:h-[950px]'>
+        <div className='bg-orange-500 flex flex-col p-4 sm:h-[1000px] md:h-[950px]'>
             <div className="options text-center text-white text-lg pt-2 font-medium">
                 <svg xmlns="http://www.w3.org/2000/svg" onClick={() => navigate('/home')} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 absolute left-2  storke-white top-5 cursor-pointer">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
@@ -133,14 +133,14 @@ const Withdrawal = () => {
             </div>
 {/*| After Deduction} */}
             <div className="part1 bg-[#d3d6fe] p-3 rounded-lg mx-3 mt-5">
-                <div className='text-blue-600 px-2 my-1  rounded-full border border-blue-600 inline'>Withdrawal Fee {amountDetails.withdrawal_fee}% | Rs.{(Number(wamount) - (Number(amountDetails.withdrawal_fee) * Number(wamount) / 100))}</div>
+                <div className='text-orange-600 px-2 my-1  rounded-full border border-orange-600 inline'>Withdrawal Fee {amountDetails.withdrawal_fee}% | Rs.{(Number(wamount) - (Number(amountDetails.withdrawal_fee) * Number(wamount) / 100))}</div>
                 <div className='flex items-center justify-start gap-2 my-1'>
-                    <div className='text-blue-600 text-3xl'>&#8377;</div>
+                    <div className='text-orange-600 text-3xl'>&#8377;</div>
                     <div className="value"> <input type="number" id="withdrawal_field" onChange={handleWithdrawalAmount} className='w-full text-2xl outline-none bg-[#d3d6fe] py-2' placeholder='Amount' /></div>
                 </div>
                 <div className='flex items-center justify-start gap-2 my-1'>
-                    <div className="balance text-blue-600 text-sm">Balance &#8377; {balance}</div>
-                    <div onClick={handleWithdrawalAll} className="withdraw text-blue-600 text-sm cursor-pointer">Withdraw all</div>
+                    <div className="balance text-orange-600 text-sm">Balance &#8377; {balance}</div>
+                    <div onClick={handleWithdrawalAll} className="withdraw text-orange-600 text-sm cursor-pointer">Withdraw all</div>
                 </div>
             </div>
 
@@ -172,7 +172,7 @@ const Withdrawal = () => {
                 </div>
 
                 <div className="balance flex justify-between text-gray-600 sm:text-md md:text-xl p-3 border-[#87a1c3] border-b-2">
-                    <div className="wpwd w-2/3">OTP: <span className='text-sm bg-blue-500 text-white px-3 py-1 hover:cursor-pointer rounded-full' onClick={() => handleOTPSend(String(Math.floor(100000 + Math.random() * 900000)))}>Send OTP</span></div>
+                    <div className="wpwd w-2/3">OTP: <span className='text-sm bg-orange-500 text-white px-3 py-1 hover:cursor-pointer rounded-full' onClick={() => handleOTPSend(String(Math.floor(100000 + Math.random() * 900000)))}>Send OTP</span></div>
                     <input type="password" onChange={e => setOtp(e.target.value)} placeholder='Enter OTP' className='outline-none bg-[#d3d6fe] w-1/3' />
                 </div>
 
@@ -185,7 +185,7 @@ const Withdrawal = () => {
             </div>
             {/* [#2e9afe] */}
             <div>
-                <button onClick={handleWithdrawal} className='bg-blue-600 text-white text-lg mt-5 mb-20 rounded-lg shadow-md block w-full py-2 shadow-amber-400'>Confirm</button>
+                <button onClick={handleWithdrawal} className='bg-orange-600 text-white text-lg mt-5 mb-20 rounded-lg shadow-md block w-full py-2 shadow-amber-400'>Confirm</button>
             </div>
         </div>
     )

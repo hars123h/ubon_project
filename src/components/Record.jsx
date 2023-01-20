@@ -64,31 +64,31 @@ const Record = () => {
     }, []);
 //[#2e9afe]
     return (
-        <div className=' bg-blue-500 pb-3 sm:h-[1000px] md:h-screen h-screen'>
+        <div className=' bg-orange-500 pb-3 sm:h-[1000px] md:h-screen h-screen'>
 
-            <div className="options text-center text-white flex gap-2 items-center p-2  bg-blue-500 text-lg pt-2 font-medium">
+            <div className="options text-center text-white flex gap-2 items-center p-2  bg-orange-500 text-lg pt-2 font-medium">
                 <svg xmlns="http://www.w3.org/2000/svg" onClick={() => navigate('/mine')} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6  storke-white  cursor-pointer">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
                 </svg>
                 <div className='flex-grow text-center'>Record</div>
             </div>
 {/* [#bfdbf5] */}
-            <div className='flex flex-wrap items-center py-2 px-4 bg-blue-400 border-b border-white'>
+            <div className='flex flex-wrap items-center py-2 px-4 bg-orange-400 border-b border-white'>
                 <div className="relative w-24 ">
-                    <input type="date" className="bg-white border-2 border-gray-300 text-gray-900 sm:text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date" />
+                    <input type="date" className="bg-white border-2 border-gray-300 text-gray-900 sm:text-sm rounded-full focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-500 dark:focus:border-orange-500" placeholder="Select date" />
                 </div>
 {/*[#2ea2fc] */}
                 <div className='text-md text-white ml-3'>to</div>
 
                 <div className="relative w-24 ml-3">
 
-                    <input type="date" className="bg-white border-2 border-gray-300 text-gray-900 sm:text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date" />
+                    <input type="date" className="bg-white border-2 border-gray-300 text-gray-900 sm:text-sm rounded-full focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-500 dark:focus:border-orange-500" placeholder="Select date" />
                 </div>
 {/* [#2e9afe] */}
-                <button className='bg-blue-500 shadow-lg w-20 text-center  ml-3 text-white rounded-full p-2.5'>Search</button>
+                <button className='bg-orange-500 shadow-lg w-20 text-center  ml-3 text-white rounded-full p-2.5'>Search</button>
             </div>
 {/* [#bce4ed] */}
-            <div className='records w-full flex bg-blue-400 items-center'>
+            <div className='records w-full flex bg-orange-400 items-center'>
                 <div className={`h-[40px] cursor-pointer flex items-center justify-center w-1/3 text-center ${currentRecord === 'recharges' ? 'border-b border-white text-white' : ''}`} onClick={() => setCurrentRecord('recharges')}>Recharge</div>
                 <div className={`h-[40px] cursor-pointer flex items-center justify-center w-1/3 text-center ${currentRecord === 'withdrawals' ? 'border-b border-white text-white' : ''}`} onClick={() => setCurrentRecord('withdrawals')}>Withdrawls</div>
                 <div className={`h-[40px] cursor-pointer flex items-center justify-center w-1/3 text-center ${currentRecord === 'all' ? 'border-b border-white text-white' : ''}`} onClick={() => setCurrentRecord('all')}>All Types</div>
@@ -107,9 +107,9 @@ const Record = () => {
 
             <div className=' overflow-y-scroll h-[500px] m-5'>
                 {(currentRecord === 'recharges' || currentRecord === 'all') && recharge_list && recharge_list.map((element, id) => {
-                    // blue-400
+                    // orange-400
                     return (
-                        <div key={id} className="bg-blue-600 rounded-lg shadow-md p-2 text-white mt-2 mx-2">
+                        <div key={id} className="bg-orange-600 rounded-lg shadow-md p-2 text-white mt-2 mx-2">
                             <div className='flex justify-between items-center'>
                                 <div className='flex flex-col gap-1'>
                                     <div className='text-white text-md overflow-clip'><span className='font-bold text-white'>Recharge Value:</span> &#8377;{new Intl.NumberFormat().format(element.recharge_value)}</div>
@@ -131,7 +131,7 @@ const Record = () => {
 
                 {(currentRecord === 'withdrawals' || currentRecord === 'all') && withdrawal_list && withdrawal_list.map((element, id) => {
                     return (
-                        <div key={id} className="bg-blue-600 rounded-lg shadow-md p-2 text-white mt-2 mx-2">
+                        <div key={id} className="bg-orange-600 rounded-lg shadow-md p-2 text-white mt-2 mx-2">
                             <div className='flex justify-between items-center'>
                                 <div className='flex flex-col gap-1'>
                                     <div className='text-white text-md overflow-clip'><span className='font-bold text-white'>Withdrawal Amount:</span> &#8377;{new Intl.NumberFormat().format(element.withdrawalAmount)}</div>

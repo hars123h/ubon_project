@@ -79,7 +79,7 @@ const WithdrawalApproval = () => {
                 </div>)}
                 {withdrawal_list && withdrawal_list.map((element, id) => {
                     return (
-                        <div key={id} className="bg-blue-400 rounded-lg shadow-md p-2 text-white mb-2">
+                        <div key={id} className="bg-orange-400 rounded-lg shadow-md p-2 text-white mb-2">
                             <div className='flex justify-between items-center'>
                                 <div className='flex flex-col gap-1'>
                                     <div className='text-white text-md overflow-clip'><span className='font-bold text-gray-500'>Mobile No:</span>  {element.phoneNo}</div>
