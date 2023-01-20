@@ -190,7 +190,7 @@ export default function Dashboard() {
                 }}
             >
                 <div className={classes.drawerHeader}>
-                    <Typography>Ubon Dashboard</Typography>
+                    <Typography>RTR Dashboard</Typography>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                     </IconButton>
@@ -260,7 +260,7 @@ export default function Dashboard() {
                                 {adminData && adminData.map((element, index) => {
                                     return (
                                         <TableRow key={index}>
-                                            <TableCell>RTR {index + 1}</TableCell>
+                                            <TableCell>RTR Plan {index + 1}</TableCell>
                                             <TableCell>{(index + 1) <= 6 ? 'Normal' : 'VIP'}</TableCell>
                                             <TableCell>{element === 1 ? 'Yes' : 'No'}</TableCell>
                                             <TableCell align="center">

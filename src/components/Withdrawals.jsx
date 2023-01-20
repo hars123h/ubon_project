@@ -193,7 +193,7 @@ export default function Withdrawals() {
                 }}
             >
                 <div className={classes.drawerHeader}>
-                    <Typography>Ubon Dashboard</Typography>
+                    <Typography>RTR Dashboard</Typography>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                     </IconButton>
