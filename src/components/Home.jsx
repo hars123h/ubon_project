@@ -67,7 +67,7 @@ const Home = () => {
             if (arg !== '') {
                 navigate('/project');
             }
-        }, 5000);
+        }, 2000);
     }
 
     const openModal = () => {
@@ -162,7 +162,7 @@ const Home = () => {
 
     const handleClick = (product_type, plan_name, plan_type, plan_amount, plan_daily_earning, plan_cycle) => {
         setCurrPlan({ product_type, plan_name, plan_type, plan_amount, plan_daily_earning, plan_cycle });
-        closeModal('ok');
+        openModal();
         //console.log('clicked');
     }
 
@@ -182,11 +182,9 @@ const Home = () => {
                     ariaHideApp={false}
 
                 >
-                    <h1 className='text-gray-600 mb-3 text-xl'>Choose a quantity</h1>
-                    <input type="number" onChange={e => setQuantity(e.target.value)} name="quantity" id="qnty" placeholder='Enter a Quantity' className='outline-none rounded-lg border-2 border-gray-400 focus:border-orange-500 p-3' />
-                    <h6 className='text-red-500 text-xs mb-3'>*only positive values</h6>
+                    <h1 className='text-gray-600 mb-3 text-xl'>Are you Sure?</h1>
                     <div>
-                        <button onClick={() => closeModal('ok')} className='bg-orange-500 text-white px-2 py-1 rounded-lg shadow-md w-[64px]'>ok</button>
+                        <button onClick={() => closeModal('ok')} className='bg-orange-500 text-white px-2 py-1 rounded-lg shadow-md w-[64px]'>Yes</button>
                         <button onClick={() => closeModal('cancel')} className='bg-red-500 text-white px-2 py-1 rounded-lg shadow-md w-[64px] ml-2'>cancel</button>
                     </div>
                 </ReactModal>
