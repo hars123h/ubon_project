@@ -9,8 +9,6 @@ import { toast } from 'react-toastify';
 const Bank = () => {
     const navigate = useNavigate();
     const loc = useLocation();
-    const [toasterShow, setToasterShow] = useState(false);
-    const [toasterText, setToasterText] = useState('');
     //console.log(loc);
     const auth = getAuth();
     const [details, setDetails] = useState({
@@ -21,6 +19,8 @@ const Bank = () => {
         ifsc: '',
     });
     const [wpwd, setPwd] = useState('');
+    const [toasterShow, setToasterShow] = useState(false);
+    const [toasterText, setToasterText] = useState('');
 
     const toaster = (text) => {
         setToasterText(text);

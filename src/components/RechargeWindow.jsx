@@ -18,6 +18,20 @@ const RechargeWindow = () => {
     const navigate = useNavigate();
     const auth = getAuth();
     const [userDetails, setUserDetails] = useState(null);
+    const [toasterShow, setToasterShow] = useState(false);
+    const [toasterText, setToasterText] = useState('');
+
+    const toaster = (text, arg='') => {
+        setToasterText(text);
+        setToasterShow(true);
+        setTimeout(()=>{
+            setToasterShow(false);
+            //navigate('/mine');
+            if(!arg==='') {
+                navigate('/record');
+            }
+        },5000);
+    }
 
     const getUserDetails = async() => {
         const  user_info = await getDoc(doc(db, 'users', auth.currentUser.uid));
@@ -34,7 +48,7 @@ const RechargeWindow = () => {
         //console.log({ refno, recharge_value, status: 'pending' });
 
         if(refno.length!==12) {
-            toast('Enter a valid Ref No. of 12 digits');
+            toaster('Enter a valid Ref No. of 12 digits');
             return;
         }
 
@@ -53,8 +67,7 @@ const RechargeWindow = () => {
             const docRef2 = await addDoc(collection(db, 'users', auth.currentUser.uid, 'placed_recharges'), {recharge_id:docRef1.id, time:Timestamp.now()});
             
             //console.log("Document written with ID: ", docRef1.id, docRef2.id);
-            toast('Request Placed Successfully!',{autoClose:1000});
-            navigate('/record');
+            toaster('Request Placed Successfully!', '/record');
             setRefno('');
         } catch (e) {
             console.error("Error adding document: ", e);
@@ -62,7 +75,12 @@ const RechargeWindow = () => {
     }
 
     return (
-        <div className='sm:h-[700px] md:h-[950px] flex flex-col gap-4  bg-[#F2F2F2]'>
+        <div className='sm:h-[700px] md:h-[950px] flex flex-col gap-4  bg-[#F2F2F2] relative'>
+            {toasterShow?<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+                <div className='flex gap-2 bg-black opacity-80 text-white px-2 py-1 rounded-md'>
+                    <div>{toasterText}</div>
+                </div>
+            </div>:null}
             <div className="options text-center text-white flex gap-2 items-center p-2  bg-[#0F5AF2] text-lg pt-2 font-medium">
                 <svg xmlns="http://www.w3.org/2000/svg" onClick={() => navigate('/mine')} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6  storke-white  cursor-pointer">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
@@ -82,7 +100,7 @@ const RechargeWindow = () => {
                     <div className='text-md'>1.Copy UPI information</div>
                     <div className='flex rounded-md items-center justify-between gap-2  p-2 border-2 border-[#52A8F2]'>
                         <div className='text-yellow-500 font-bold'>{amountDetails.upi_id}</div>
-                        <CopyToClipboard text={`${amountDetails.upi_id}`} onCopy={() => toast('Copied to clipboard')}>
+                        <CopyToClipboard text={`${amountDetails.upi_id}`} onCopy={() => toaster('Copied to clipboard')}>
                         <div className='text-lg font-bold text-[#52A8F2] cursor-pointer'>Copy</div>
                 </CopyToClipboard>
                         

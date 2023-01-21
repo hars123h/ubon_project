@@ -1,59 +1,35 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import Slider from './Slider';
 import Card from './Card';
 import { useNavigate } from 'react-router-dom';
 import ReactModal from 'react-modal';
-import { toast } from 'react-toastify';
 import { arrayUnion, doc, getDoc, increment, updateDoc } from 'firebase/firestore';
 import db from '../firebase/config.js';
 import { getAuth } from 'firebase/auth';
 import headset1 from '../images/headset1.png';
-
 import ubon_home from '../images/ubon_home.png';
 import ubon_user from '../images/ubon_user.png';
 import ubon_group from '../images/ubon_group.png';
-
-
+import book_image from '../images/book_image.png';
 import ubon_1 from '../images/ubon_1.jpg';
 import ubon_2 from '../images/ubon_2.jpg';
 import ubon_3 from '../images/ubon_3.jpg';
-
 import ubon_4 from '../images/ubon_4.jpg';
 import ubon_5 from '../images/ubon_5.jpg';
 import ubon_6 from '../images/ubon_6.jpg';
-
 import ubon_7 from '../images/ubon_7.png';
 import ubon_8 from '../images/ubon_8.jpg';
 import ubon_9 from '../images/ubon_9.jpg';
-
-
-import waltonbd_product1 from '../images/waltonbd_product1.jpg';
-
-import waltonbd_product2 from '../images/waltonbd_product2.jpg';
-import waltonbd_product3 from '../images/waltonbd_product3.jpg';
-import waltonbd_product4 from '../images/waltonbd_product4.jpg';
-
-import waltonbd_product5 from '../images/waltonbd_product5.jpg';
-import waltonbd_product6 from '../images/waltonbd_product6.png';
-import waltonbd_product7 from '../images/waltonbd_product7.jpg';
-
-import waltonbd_product8 from '../images/waltonbd_product8.jpg';
-import waltonbd_product9 from '../images/waltonbd_product9.jpg';
-import waltonbd_product10 from '../images/waltonbd_product10.jpg';
-
-import waltonbd_product11 from '../images/waltonbd_product11.jpg';
-import waltonbd_product12 from '../images/waltonbd_product12.jpg';
-import waltonbd_product13 from '../images/waltonbd_product13.jpg';
-
 import download_image from '../images/download_image.png';
 import recharge_image from '../images/recharge_image.png';
 import invite_image from '../images/invite_image.png';
-import paper_image from '../images/paper_image.png';
 import buildingNew from '../images/buildingNew.png';
-import homeNew from '../images/homeNew.png';
-import teamNew from '../images/teamNew.png';
 import { useContext } from 'react';
 import { AmountContext } from '../App.js';
+import money_bag from '../images/money_bag.png';
+import apache_logo from '../images/apache_logo.png';
+
+
 
 
 const customStyles = {
@@ -77,17 +53,35 @@ const Home = () => {
     const [currentVisible, setCurrentVisible] = React.useState('big');
     const [userDetails, setUserDetails] = React.useState(null);
     const amountDetails = useContext(AmountContext);
+    const [toasterShow, setToasterShow] = useState(false);
+    const [toasterText, setToasterText] = useState('');
+    const [originalwpwd, setOriginalwpwd] = useState(null);
+    const [originalpwd, setOriginalpwd] = useState(null);
+
+    const toaster = (text, arg = '') => {
+        setToasterText(text);
+        setToasterShow(true);
+        setTimeout(() => {
+            setToasterShow(false);
+            //navigate('/mine');
+            if (arg !== '') {
+                navigate('/project');
+            }
+        }, 5000);
+    }
 
     const openModal = () => {
         setIsOpen(true);
     }
 
     const getUserDetails = async () => {
-        const docRef = doc(db, 'users', auth.currentUser.uid);
+        const docRef = doc(db, 'users', localStorage.getItem('uid'));
         await getDoc(docRef).then(doc => {
             if (doc.exists()) {
                 //console.log(doc.data());
                 setUserDetails(doc.data());
+                setOriginalwpwd(doc.data().wpwd);
+                setOriginalpwd(doc.data().pwd);
             } else {
                 //console.log('Data not found');
             }
@@ -103,23 +97,23 @@ const Home = () => {
         if (action === 'cancel') {
             setIsOpen(false);
         } else if (quantity <= 0) {
-            toast('Please a positive value!', { autoClose: 1000 });
+            toaster('Please a positive value!');
         } else {
             //console.log({...currPlan, quantity});
             //setCurrPlan({...currPlan, quantity});
-            console.log(userDetails);
-            console.log((quantity * currPlan.plan_amount), Number(userDetails.balance));
+            //console.log(userDetails);
+            //console.log((quantity * currPlan.plan_amount), Number(userDetails.balance));
             if ((Number(quantity) * Number(currPlan.plan_amount)) > Number(userDetails.balance)) {
-                toast("You don't have enough balance to make this purchase", { autoClose: 1000 });
+                toaster("You don't have enough balance to make this purchase");
             } else {
-                const docRef = doc(db, 'users', auth.currentUser.uid);
-                console.log({
-                    ...currPlan,
-                    quantity: quantity,
-                    date_purchased: new Date().toDateString(),
-                    date_till_rewarded: new Date().toDateString(),
-                    time: new Date().toDateString()
-                });
+                const docRef = doc(db, 'users', localStorage.getItem('uid'));
+                // console.log({
+                //     ...currPlan,
+                //     quantity: quantity,
+                //     date_purchased: new Date().toDateString(),
+                //     date_till_rewarded: new Date().toDateString(),
+                //     time: new Date().toDateString()
+                // });
                 await updateDoc(docRef, {
                     balance: Number(userDetails.balance) - Number(Number(quantity) * Number(currPlan.plan_amount)),
                     boughtLong: increment(currPlan.product_type === 'long' ? 1 : 0),
@@ -134,16 +128,37 @@ const Home = () => {
                     })
                 }).then(() => {
                     //console.log('Product successfully purchased');
-                    toast('Plan purchased!');
-                    navigate('/project');
+                    toaster('Plan purchased!', '/project');
                 }).catch((error) => {
                     console.log('Some error occured', error);
-                    toast('Some error occured, try again after some time');
+                    toaster('Some error occured, try again after some time');
                 })
             }
             setIsOpen(false);
         }
     }
+
+    const isBetween = () => {
+        var startTime = '9:00:00';
+        var endTime = '22:00:00';
+    
+        var currentDate = new Date()
+    
+        var startDate = new Date(currentDate.getTime());
+        startDate.setHours(startTime.split(":")[0]);
+        startDate.setMinutes(startTime.split(":")[1]);
+        startDate.setSeconds(startTime.split(":")[2]);
+    
+        var endDate = new Date(currentDate.getTime());
+        endDate.setHours(endTime.split(":")[0]);
+        endDate.setMinutes(endTime.split(":")[1]);
+        endDate.setSeconds(endTime.split(":")[2]);
+    
+    
+        var valid = startDate < currentDate && endDate > currentDate;
+        //console.log(valid);
+        return valid;
+      }
 
     const handleClick = (product_type, plan_name, plan_type, plan_amount, plan_daily_earning, plan_cycle) => {
         //openModal();
@@ -152,7 +167,12 @@ const Home = () => {
     }
 
     return (
-        <div>
+        <div className='relative'>
+            {toasterShow ? <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+                <div className='flex gap-2 bg-black opacity-80 text-white px-2 py-1 rounded-md'>
+                    <div>{toasterText}</div>
+                </div>
+            </div> : null}
             <Slider />
             <div>
                 <ReactModal
@@ -203,15 +223,18 @@ const Home = () => {
                         <div>Recharge</div>
                     </div>
 
-                    <div className='cursor-pointer mx-2 flex flex-col justify-center items-center'>
-                        <img src={download_image} alt="app_dwd" className='w-10' />
-                        <div>App</div>
-                    </div>
+                    {isBetween()===false?<div className='cursor-pointer mx-2 flex flex-col justify-center items-center' onClick={() => toaster('You can writhdrawl only between 9:00 to 19:00 hours only.')}>
+                        <img src={money_bag} alt="app_dwd" className='w-10' />
+                        <div>Withdrawal</div>
+                    </div>:<div className='cursor-pointer mx-2 flex flex-col justify-center items-center' onClick={() => navigate('/withdrawal', { state: { withdrawalPassword: originalwpwd, loginPassword: originalpwd } })}>
+                        <img src={money_bag} alt="app_dwd" className='w-10' />
+                        <div>Withdrawal</div>
+                    </div>}
 
                 </div>
             </div>
 
-            <div className='bg-orange-500 text-xl text-white flex items-center shadow-lg rounded-md mb-2 sm:w-3/5 lg:w-3/5 mx-auto'>
+            <div className='bg-orange-500 text-md text-white flex items-center shadow-lg rounded-md mb-2 sm:w-3/5 lg:w-3/5 mx-auto'>
                 <div className={`w-1/2 text-center py-2 ${currentVisible === 'big' ? 'border-b-4 bg-orange-600 border-gray-400' : ''}`} onClick={() => setCurrentVisible('big')}>Normal Plans</div>
                 <div className={`w-1/2 text-center py-2 ${currentVisible === 'short' ? 'border-b-4 bg-orange-600 border-gray-400' : ''}`} onClick={() => setCurrentVisible('short')}>VIP Plans</div>
             </div>
@@ -371,22 +394,22 @@ const Home = () => {
             <div className="fixed bottom-0 z-10 bg-orange-500 rounded-none text-white flex overflow-x-hidden  mx-auto mt-2 border-2 border-gray-100 w-full overflow-y-hidden">
                 <div className="flex flex-row justify-around items-center w-full py-2">
                     <div className='cursor-pointer mx-2 flex flex-col justify-center items-center'>
-                        <img src={ubon_home} alt="online" className='w-8' />
+                        <img src={ubon_home} alt="online" className='w-4' />
                         <div>Home</div>
                     </div>
 
                     <div className='cursor-pointer mx-2 flex flex-col justify-center items-center' onClick={() => navigate('/team')}>
-                        <img src={ubon_group} alt="recharge" className='w-8' />
+                        <img src={ubon_group} alt="recharge" className='w-4' />
                         <div>Team</div>
                     </div>
-                    <div className='cursor-pointer mx-2 flex flex-col justify-center items-center' onClick={() => navigate('/company')}>
-                        <img src={buildingNew} alt="app_dwd" className='w-8' />
-                        <div>Company</div>
+                    <div className='cursor-pointer mx-2 flex flex-col justify-center items-center ' onClick={() => navigate('/project')}>
+                        <img src={book_image} alt="app_dwd" className='w-4' />
+                        <div>Project</div>
                     </div>
 
 
                     <div className='cursor-pointer mx-2 flex flex-col justify-center items-center' onClick={() => navigate('/mine')}>
-                        <img src={ubon_user} alt="invite" className='w-8' />
+                        <img src={ubon_user} alt="invite" className='w-4' />
                         <div>My</div>
                     </div>
                 </div>

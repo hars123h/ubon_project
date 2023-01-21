@@ -30,18 +30,35 @@ const Withdrawal = () => {
         bankName: '',
         ifsc: '',
     });
+    const [toasterShow, setToasterShow] = useState(false);
+    const [toasterText, setToasterText] = useState('');
+
+    const toaster = (text, arg='') => {
+        setToasterText(text);
+        setToasterShow(true);
+        setTimeout(()=>{
+            setToasterShow(false);
+            //navigate('/mine');
+            if(arg==='/record') {
+                navigate('/record');
+            }
+            if(arg==='/bank') {
+                navigate('/bank', { state: { withdrawalPassword: loc.state.withdrawalPassword, loginPassword: loc.state.loginPassword } });
+            }
+        },5000);
+    }
+
     useEffect(() => {
         const getDetails = async () => {
             const docRef = await getDoc(doc(db, 'users', auth.currentUser.uid));
             if (docRef.exists()) {
                 if (!docRef.data().bankDetails) {
-                    toast('Fill bank details first!');
-                    navigate('/bank', { state: { withdrawalPassword: loc.state.withdrawalPassword, loginPassword: loc.state.loginPassword } });
+                    toaster('Fill bank details first!', '/bank');
                 } else {
                     setDetails(docRef.data().bankDetails);
                     docRef.data().balance ? setBalance(docRef.data().earning) : setBalance(0);
                     setDiffDays(DateDifference(new Date(docRef.data().lastWithdrawal.seconds*1000), new Date()));
-                    console.log(DateDifference(new Date(docRef.data().lastWithdrawal.seconds*1000), new Date()));
+                    //console.log(DateDifference(new Date(docRef.data().lastWithdrawal.seconds*1000), new Date()));
                 }
             } else {
                 console.log('Something went wrong');
@@ -61,29 +78,29 @@ const Withdrawal = () => {
         
 
         if (Number(wamount) === false || Number(wamount) <= 0) {
-            toast('Enter a valid number');
+            toaster('Enter a valid number');
             return;
         }
 
         if ((Number(wamount)) < Number(amountDetails.mwamount)) {
             //console.log((Number(wamount)+Number(amountDetails.withdrawal_fee)), Number(amountDetails.mwamount));
-            toast(`Amount should be greater than ${amountDetails.mwamount}`);
+            toaster(`Amount should be greater than ${amountDetails.mwamount}`);
             //console.log(wamount, amountDetails.amount);
             return;
         }
 
         if ((Number(wamount) > 50000)) {
-            toast('Amount should be greatr than Rs 50,000');
+            toaster('Amount should be greatr than Rs 50,000');
             return;
         }
 
         if (((Number(wamount)) > Number(balance))) {
-            toast('You dont have enough balance');
+            toaster('You dont have enough balance');
             return;
         }
 
         if(diffDays<1) {
-            toast('You can only withdraw once in a day');
+            toaster('You can only withdraw once in a day');
             return;
         }
 
@@ -94,28 +111,29 @@ const Withdrawal = () => {
                 const docRef2 = await addDoc(collection(db, 'users', auth.currentUser.uid, 'withdrawals'), { withdrawals_id: docRef1.id, time: Timestamp.now() });
                 const docRef3 = await updateDoc(doc(db, 'users', auth.currentUser.uid), {earning: (balance-Number(wamount)), lastWithdrawal:new Date()});
                 //console.log("Document written with ID: ", docRef1.id, docRef2.id);
-                toast('Withdrawal request placed successfully!', { autoClose: 1000 });
-                navigate('/record');
+                toaster('Withdrawal request placed successfully!', '/record');
+                //navigate('/record');
             } catch (e) {
                 console.error("Error adding document: ", e);
             }
         } else {
-            toast('Withdrawal Password is incorrect');
+            toaster('Withdrawal Password is incorrect');
             //console.log(wpassword, loc.state.withdrawalPassword);
         }
 
     }
 
     const handleOTPSend = (otpGenerated) => {
-        //toast('I was clicked');
+
+
         setOTPfield(otpGenerated);
-        console.log(otpGenerated);
+        //console.log(otpGenerated);
         fetch(`https://www.fast2sms.com/dev/bulkV2?authorization=27b58V4YOqBDMgWvNjapz1k9IHlrJfynC6w0hceRAZGoLimK3PuJC7OoiV4N2B6DjfwWKzb0lhgEetPH&variables_values=${otpGenerated}&route=otp&numbers=${details.phoneNo}`)
             .then((response) => {
                 //console.log(response);
-                toast('OTP sent successfully');
+                toaster('OTP sent successfully');
             })
-            .catch(error => toast('Something went wrong'));
+            .catch(error => toaster('Something went wrong'));
     }
 
     const handleWithdrawalAll = () => {
@@ -124,7 +142,12 @@ const Withdrawal = () => {
     }
     //[#2e9afe]
     return (
-        <div className='bg-orange-500 flex flex-col p-4 sm:h-[1000px] md:h-[950px]'>
+        <div className='bg-orange-500 flex flex-col p-4 sm:h-[1000px] md:h-[950px] relative'>
+            {toasterShow?<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+                <div className='flex gap-2 bg-black opacity-80 text-white px-2 py-1 rounded-md'>
+                    <div>{toasterText}</div>
+                </div>
+            </div>:null}
             <div className="options text-center text-white text-lg pt-2 font-medium">
                 <svg xmlns="http://www.w3.org/2000/svg" onClick={() => navigate('/home')} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 absolute left-2  storke-white top-5 cursor-pointer">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />

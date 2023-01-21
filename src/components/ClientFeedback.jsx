@@ -15,15 +15,26 @@ const ClientFeedback = () => {
         description: '',
         date: ''
     });
+    const [toasterShow, setToasterShow] = useState(false);
+    const [toasterText, setToasterText] = useState('');
+
+    const toaster = (text) => {
+        setToasterText(text);
+        setToasterShow(true);
+        setTimeout(()=>{
+            setToasterShow(false);
+            navigate('/mine');
+        },5000);
+    }
 
     const handleSubmit = async () => {
 
         if (details.mobileNumber.length > 0 &&  details.description.length > 0 && details.date.length > 0) {
             const response = await addDoc(collection(db, '/feedback'), details)
-                .then((response) => {toast('Feedback sent successfully!'); navigate('/mine')})
-                .catch(error => toast('Something went wrong'));
+                .then((response) => {toaster('Feedback sent successfully!')})
+                .catch(error => toaster('Something went wrong'));
         } else {
-            toast('Enter Details First!');
+            toaster('Enter Details First!');
         }
 
         //console.log(details);
@@ -31,7 +42,12 @@ const ClientFeedback = () => {
     }
 //[#2e9afe]
     return (
-        <div className=' bg-orange-500 h-screen flex flex-col text-white font-light p-5'>
+        <div className=' bg-orange-500 h-screen flex flex-col text-white font-light p-5 relative'>
+            {toasterShow?<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+                <div className='flex gap-2 bg-black opacity-80 text-white px-2 py-1 rounded-md'>
+                    <div>{toasterText}</div>
+                </div>
+            </div>:null}
             <div className="top p-3 cursor-pointer flex">
                 <svg xmlns="http://www.w3.org/2000/svg" onClick={() => navigate(-1)} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />

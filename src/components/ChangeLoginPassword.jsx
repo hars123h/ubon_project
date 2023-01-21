@@ -15,6 +15,17 @@ const ChangeLoginPassword = () => {
     const [oldpwd, setOldpwd] = useState('');
     const [newpwd, setNewpwd] = useState('');
     const [cnfNewPwd, setCnfNewPwd] = useState('');
+    const [toasterShow, setToasterShow] = useState(false);
+    const [toasterText, setToasterText] = useState('');
+
+    const toaster = (text) => {
+        setToasterText(text);
+        setToasterShow(true);
+        setTimeout(()=>{
+            setToasterShow(false);
+            navigate('/mine');
+        },5000);
+    }
 
     const handleReset = async () => {
         if (loc.state.loginPassword === oldpwd && newpwd === cnfNewPwd) {
@@ -23,22 +34,26 @@ const ChangeLoginPassword = () => {
                 .then(() => {
                     updateDoc(docRef, { pwd: newpwd }).then(() => {
                         //console.log('Password Update successfully');
-                        toast('Password reset successfully!');
                         setCnfNewPwd(''); setNewpwd(''); setOldpwd('');
-                        navigate('/mine');
+                        toaster('Password reset successfully!');
                     }).catch((error) => console.log('Could Not update the datebase'));
                 }).catch(error => {
                     console.log('Could Not Update the passwored', error);
-                    toast('Please login again and retry to reset the password!');
+                    toaster('Please login again and retry to reset the password!');
                 });
         } else {
-            toast('Password entered is incorrect or passwords do not match!');
+            toaster('Password entered is incorrect or passwords do not match!');
         }
     }
 
 //[#2e9afe]
     return (
-        <div className='bg-orange-500 h-screen p-4 sm:h-[700px] md:h-[950px]'>
+        <div className='bg-orange-500 h-screen p-4 sm:h-[700px] md:h-[950px] relative'>
+            {toasterShow?<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+                <div className='flex gap-2 bg-black opacity-80 text-white px-2 py-1 rounded-md'>
+                    <div>{toasterText}</div>
+                </div>
+            </div>:null}
             <div className="options text-center text-white text-2xl pt-2 font-medium">
                 <svg xmlns="http://www.w3.org/2000/svg" onClick={() => navigate('/settings', { state: { withdrawalPassword: loc.state.withdrawalPassword, loginPassword: loc.state.loginPassword } })} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 absolute left-2  storke-white top-5 cursor-pointer">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />

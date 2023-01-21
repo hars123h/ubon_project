@@ -11,6 +11,8 @@ import db from '../firebase/config';
 import { toast } from 'react-toastify';
 import waltonbd_company from '../images/waltonbd_company.png';
 import { RotatingLines } from 'react-loader-spinner';
+import apache_logo from '../images/apache_logo.png';
+
 
 
 const Login = () => {
@@ -22,6 +24,18 @@ const Login = () => {
     const [bloackedUsers, setBlockedUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [text, setText] = useState('Loading');
+    const [toasterShow, setToasterShow] = useState(false);
+    const [toasterText, setToasterText] = useState('');
+
+    const toaster = (text) => {
+        setToasterText(text);
+        setToasterShow(true);
+        setTimeout(()=>{
+            setToasterShow(false);
+            //navigate('/mine');
+        },5000);
+    }
+
 
     useEffect(() => {
         getBlockedUsers();
@@ -39,7 +53,7 @@ const Login = () => {
 
     const handleSignIn = () => {
         if (bloackedUsers.includes(String(mobno))) {
-            toast('You are blocked by the administrator!');
+            toaster('You are blocked by the administrator!');
             return;
         }
         setLoading(true);
@@ -47,7 +61,7 @@ const Login = () => {
         const new_mobno = mobno + '@gmail.com';
         signInWithEmailAndPassword(auth, new_mobno, pwd)
             .then((userCredential) => {
-                //toast('Login Successful', { autoClose: 2000 });
+                
                 setText('Login Successful!');
                 setTimeout(() => {
                     navigate('/home');
@@ -65,6 +79,11 @@ const Login = () => {
 
     return (
         <div className='relative h-screen'>
+            {toasterShow?<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+                <div className='flex gap-2 bg-black opacity-80 text-white px-2 py-1 rounded-md'>
+                    <div>{toasterText}</div>
+                </div>
+            </div>:null}
             {loading ? <div className='flex gap-2 bg-black text-white py-2 px-2  rounded-md opacity-70 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
                 {text==='Loading' ? <div>
                     <RotatingLines strokeColor='white' width='20' />
@@ -72,7 +91,7 @@ const Login = () => {
                 <div className='text-sm'>{text}</div>
             </div> : null}
             <div className='text-center'>
-                <img src={waltonbd_company} alt="hp_logo" className='m-auto md:w-2/6 sm:w-1/6 my-5' width={200} />
+                <img src={apache_logo} alt="hp_logo" className='m-auto md:w-2/6 sm:w-1/6 my-0' width={300} />
             </div>
             <div className='flex flex-col m-auto w-3/5'>
                 <div className=" items-center mb-3 p-2 phoneno flex  bg-[#f1f1f1] rounded-md border-2 border-black">

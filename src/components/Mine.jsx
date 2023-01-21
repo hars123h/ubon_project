@@ -23,6 +23,7 @@ import waltonbd_company from '../images/waltonbd_company.png';
 import ubon_home from '../images/ubon_home.png';
 import ubon_user from '../images/ubon_user.png';
 import ubon_group from '../images/ubon_group.png';
+import apache_logo from '../images/apache_logo.png';
 
 
 const Mine = () => {
@@ -36,6 +37,18 @@ const Mine = () => {
   const [originalpwd, setOriginalpwd] = useState(null);
   const [earning, setEarning] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [toasterShow, setToasterShow] = useState(false);
+    const [toasterText, setToasterText] = useState('');
+
+    const toaster = (text) => {
+        setToasterText(text);
+        setToasterShow(true);
+        setTimeout(()=>{
+            setToasterShow(false);
+            //navigate('/mine');
+        },5000);
+    }
+
 
   useLayoutEffect(() => {
     const getUserInfo = async () => {
@@ -105,21 +118,26 @@ const Mine = () => {
   }
 
   return (
-    <div>
+    <div className='relative'>
+      {toasterShow?<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+                <div className='flex gap-2 bg-black opacity-80 text-white px-2 py-1 rounded-md'>
+                    <div>{toasterText}</div>
+                </div>
+            </div>:null}
 
       <div className='flex flex-col'>
         {/* [#2e9afe] */}
         <div className="top bg-orange-500 h-56">
 
           <div className="info pt-10 pl-10 flex items-center justify-start">
-            <div className='flex justify-center items-center'><img src={waltonbd_company} alt="logo" className='w-16' /></div>
+            <div className='flex justify-center items-center'><img src={apache_logo} alt="logo" className='w-16 rounded-full' /></div>
             <div className="user_no flex flex-col text-white ml-5">
-              <div className="no text-3xl font-medium">{mobileno}</div>
-              <div className='text-xs border-2 border-white py-1 px-2 w-2/5 text-center rounded-lg mt-1'>LV0</div>
+              <div className="no text-2xl font-medium">{mobileno}</div>
+              {/* <div className='text-xs border-2 border-white py-1 px-2 w-2/5 text-center rounded-lg mt-1'>LV0</div> */}
             </div>
           </div>
           {/* [#2b85d9] */}
-          <div className="h-28 overflow-y-visible rounded-xl  info_box bg-orange-400 text-white flex items-center justify-between w-4/5 mx-auto mt-5 p-4">
+          <div className="h-28 overflow-y-visible rounded-xl  info_box bg-orange-400 text-white flex items-center justify-between w-4/5 mx-auto mt-6 px-4 py-1">
             <div className='flex flex-col items-center'>
               <div className='text-xs mb-2'>&#8377; {new Intl.NumberFormat().format(balance)}</div>
               <div>Balance</div>
@@ -139,9 +157,9 @@ const Mine = () => {
 
 
         {/*#7dc1ff */}
-        <ul className=' list-none flex justify-around items-center mx-auto w-4/5 mt-2'>
+        <ul className=' list-none flex justify-around items-center mx-auto w-4/5 mt-6'>
 
-          {isBetween() === false ? <li className='bg-orange-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => toast('You can writhdrawl only between 9:00 to 19:00 hours only.', {autoClose:3000})}>
+          {isBetween() === false ? <li className='bg-orange-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => toaster('You can writhdrawl only between 9:00 to 19:00 hours only.')}>
             <img src={money_bag} alt="invite" className='w-10 h-10 mx-auto' />
             <div className='text-center text-white text-sm'>Withdrawl</div>
           </li> : <li className='bg-orange-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => navigate('/withdrawal', { state: { withdrawalPassword: originalwpwd, loginPassword: originalpwd } })}>
@@ -154,9 +172,9 @@ const Mine = () => {
             <div className='text-center text-white text-sm'>Recharge</div>
           </li>
 
-          <li className='bg-orange-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => navigate('/project')}>
-            <img src={book_image} alt="invite" className='w-10 h-10 mx-auto' />
-            <div className='text-center text-white text-sm'>Project</div>
+          <li className='bg-orange-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => navigate('/user_feedback')}>
+            <img src={paper_image} alt="invite" className='w-10 h-10 mx-auto' />
+            <div className='text-center text-white text-sm'>Feedback</div>
           </li>
         </ul>
 
@@ -177,12 +195,12 @@ const Mine = () => {
           </div>
         </div>
 
-        <div className="flex justify-around items-center mx-auto w-4/5">
+        {/* <div className="flex justify-around items-center mx-auto w-4/5">
           <div className='bg-orange-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => navigate('/user_feedback')}>
             <img src={paper_image} alt="invite" className='w-10 h-10 mx-auto' />
             <div className='text-center text-white text-sm'>Feedback</div>
           </div>
-        </div>
+        </div> */}
 
 
         <div className='flex  items-center mx-auto w-4/5 mt-10'>
@@ -213,22 +231,22 @@ const Mine = () => {
       <div className="fixed bottom-0 z-10 bg-orange-500 rounded-none text-white flex overflow-x-hidden  mx-auto mt-2 border-2 border-gray-100 w-full overflow-y-hidden">
         <div className="flex flex-row justify-around items-center w-full py-2">
           <div className='cursor-pointer mx-2 flex flex-col justify-center items-center' onClick={() => navigate('/home')}>
-            <img src={ubon_home} alt="online" className='w-8' />
+            <img src={ubon_home} alt="online" className='w-4' />
             <div>Home</div>
           </div>
 
           <div className='cursor-pointer mx-2 flex flex-col justify-center items-center' onClick={() => navigate('/team')}>
-            <img src={ubon_group} alt="recharge" className='w-8' />
+            <img src={ubon_group} alt="recharge" className='w-4' />
             <div>Team</div>
           </div>
 
-          <div className='cursor-pointer mx-2 flex flex-col justify-center items-center ' onClick={() => navigate('/company')}>
-            <img src={buildingNew} alt="app_dwd" className='w-8' />
-            <div>Company</div>
+          <div className='cursor-pointer mx-2 flex flex-col justify-center items-center ' onClick={() => navigate('/project')}>
+            <img src={book_image} alt="app_dwd" className='w-4' />
+            <div>Project</div>
           </div>
 
           <div className='cursor-pointer mx-2 flex flex-col justify-center items-center' onClick={() => navigate('/mine')}>
-            <img src={ubon_user} alt="invite" className='w-8' />
+            <img src={ubon_user} alt="invite" className='w-4' />
             <div>My</div>
           </div>
         </div>

@@ -21,6 +21,18 @@ const Project = () => {
     const [userDetails, setUserDetails] = useState(null);
     const [loading, setLoading] = useState(true);
     const [current_tab, setCurrent_tab] = useState('earning');
+    const [toasterShow, setToasterShow] = useState(false);
+    const [toasterText, setToasterText] = useState('');
+
+    const toaster = (text) => {
+        setToasterText(text);
+        setToasterShow(true);
+        setTimeout(()=>{
+            setToasterShow(false);
+            navigate('/mine');
+        },5000);
+    }
+
 
     const getUserDetails = async () => {
         const docRef = doc(db, 'users', auth.currentUser.uid);
@@ -28,8 +40,7 @@ const Project = () => {
             if (document.exists()) {
                 setUserDetails(document.data());
                 if (('plans_purchased' in document.data()) === false) {
-                    toast('Please buy a plan first!');
-                    navigate('/mine');
+                    toaster('Please buy a plan first!');
                 }
                 if (document.data().plans_purchased) {
                     var earn = 0;
@@ -110,7 +121,12 @@ const Project = () => {
 
 //[#2e9afe]
     return (
-        <div className='md:h-screen overflow-y-scroll xs:h-[700px] bg-orange-500 h-screen'>
+        <div className='md:h-screen overflow-y-scroll xs:h-[700px] bg-orange-500 h-screen relative'>
+            {toasterShow?<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+                <div className='flex gap-2 bg-black opacity-80 text-white px-2 py-1 rounded-md'>
+                    <div>{toasterText}</div>
+                </div>
+            </div>:null}
 
             <div className="options text-center bg-orange-500 text-white text-md pt-5 font-normal pb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" onClick={() => navigate(-1)} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 absolute left-2  storke-white top-5 cursor-pointer">

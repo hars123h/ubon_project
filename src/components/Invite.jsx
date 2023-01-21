@@ -22,6 +22,17 @@ const Invite = () => {
         value: '',
         copied: false
     });
+    const [toasterShow, setToasterShow] = useState(false);
+    const [toasterText, setToasterText] = useState('');
+
+    const toaster = (text) => {
+        setToasterText(text);
+        setToasterShow(true);
+        setTimeout(()=>{
+            setToasterShow(false);
+            //navigate('/mine');
+        },5000);
+    }
 
     const getUserDetails = async () => {
         const details = await getDoc(doc(db, 'users', localStorage.getItem('uid')));
@@ -42,7 +53,12 @@ const Invite = () => {
     }
 //[#2e9afe]
     return (
-        <div className=' bg-orange-500 h-[1000px] flex flex-col text-white font-light p-5'>
+        <div className=' bg-orange-500 h-[1000px] flex flex-col text-white font-light p-5 relative'>
+            {toasterShow?<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+                <div className='flex gap-2 bg-black opacity-80 text-white px-2 py-1 rounded-md'>
+                    <div>{toasterText}</div>
+                </div>
+            </div>:null}
             <div className="top p-3 cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" onClick={() => navigate(-1)} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
@@ -54,14 +70,14 @@ const Invite = () => {
             </p>
 
             <div className='p-3 font-bold cursor-pointer'>
-                <CopyToClipboard text={`https://www.rtr365.tech/register/invite_code/${userDetails.user_invite}`} onCopy={() => toast('Copied to clipboard')}>
+                <CopyToClipboard text={`https://www.rtr365.tech/register/invite_code/${userDetails.user_invite}`} onCopy={() => toaster('Copied to clipboard')}>
                     <span>Invite Link: click to copy</span>
                 </CopyToClipboard>
             </div>
 
             <div className="invitation flex p-3">
                 <div className='font-bold'>Invitation code: {userDetails.user_invite}</div>
-                <CopyToClipboard text={userDetails.user_invite} onCopy={() => toast('Copied to clipboard')}>
+                <CopyToClipboard text={userDetails.user_invite} onCopy={() => toaster('Copied to clipboard')}>
                     <span className='ml-2'>Copy code</span>
                 </CopyToClipboard>
             </div>

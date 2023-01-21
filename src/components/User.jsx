@@ -139,7 +139,7 @@ export default function User() {
     }
 
     const getPrevPage = async() => {
-        console.log(startItem);
+        //console.log(startItem);
         const filterQuery = query(collection(db, "users"),  orderBy('time'), endBefore(startItem), limitToLast(10));
         const querySnapshot = await getDocs(filterQuery);
         var temp = []; 

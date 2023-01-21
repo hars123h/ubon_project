@@ -15,27 +15,42 @@ const ChangeWithdrawalPassword = () => {
     const [oldpwd, setOldpwd] = useState('');
     const [cnf_new_pwd, setCnf_new_pwd] = useState('');
     const [new_pwd, setNew_pwd] = useState('');
+    const [toasterShow, setToasterShow] = useState(false);
+    const [toasterText, setToasterText] = useState('');
+
+    const toaster = (text) => {
+        setToasterText(text);
+        setToasterShow(true);
+        setTimeout(()=>{
+            setToasterShow(false);
+            navigate('/settings', {state:{withdrawalPassword:loc.state.withdrawalPassword, loginPassword:loc.state.loginPassword}})
+        },5000);
+    }
 
     const handleReset = async() => {
         if(new_pwd===cnf_new_pwd && oldpwd===loc.state.withdrawalPassword) {
             const docRef = doc(db, 'users', auth.currentUser.uid);
             await updateDoc(docRef, {wpwd:new_pwd}).then(()=>{
-            toast('Password successfully updated!');
-            setOldpwd('');
-            setCnf_new_pwd('');
-            setNew_pwd('');
-            navigate('/settings', {state:{withdrawalPassword:loc.state.withdrawalPassword, loginPassword:loc.state.loginPassword}})
+                setOldpwd('');
+                setCnf_new_pwd('');
+                setNew_pwd('');
+                toaster('Password successfully updated!');
             })
-            .catch(error=>toast('Some Error Occured'));
+            .catch(error=>toaster('Some Error Occured'));
         }else {
             //console.log({new_pwd, cnf_new_pwd, oldpwd});
-            toast('Either Old Login Password is incorrect or password do not match, Please Retry!');
+            toaster('Either Old Login Password is incorrect or password do not match, Please Retry!');
         }
     }
 
     //console.log(loc);
     return (
-        <div className='bg-orange-500 h-screen p-4 sm:h-[700px] md:h-[950px] '>
+        <div className='bg-orange-500 h-screen p-4 sm:h-[700px] md:h-[950px] relative'>
+            {toasterShow?<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+                <div className='flex gap-2 bg-black opacity-80 text-white px-2 py-1 rounded-md'>
+                    <div>{toasterText}</div>
+                </div>
+            </div>:null}
             <div className="options text-center text-white text-xl pt-2 font-medium">
                 <svg xmlns="http://www.w3.org/2000/svg" onClick={() => navigate('/settings', {state:{withdrawalPassword:loc.state.withdrawalPassword, loginPassword:loc.state.loginPassword}})} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 absolute left-2  storke-white top-5 cursor-pointer">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />

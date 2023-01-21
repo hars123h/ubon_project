@@ -13,27 +13,39 @@ const ForgotPassword = () => {
     const [otp, setOtp] = useState('');
     //const [otpVerified, setOtpVerified] = useState(false);
     const [clickable, setClickable] = useState((otpfield == otp && otp.length > 0 && otpfield.length > 0));
+    const [toasterShow, setToasterShow] = useState(false);
+    const [toasterText, setToasterText] = useState('');
+
+    const toaster = (text) => {
+        setToasterText(text);
+        setToasterShow(true);
+        setTimeout(()=>{
+            setToasterShow(false);
+            //navigate('/mine');
+        },5000);
+    }
 
     const handleMessage = () => {
         if (mobno.length !== 10) {
-            toast('Invalid Mobile No, please type a valid number');
+            toaster('Invalid Mobile No, please enter a valid number');
+            return;
         }
         fetch(`https://www.fast2sms.com/dev/bulkV2?authorization=27b58V4YOqBDMgWvNjapz1k9IHlrJfynC6w0hceRAZGoLimK3PuJC7OoiV4N2B6DjfwWKzb0lhgEetPH&variables_values=${otpfield}&route=otp&numbers=${mobno}`)
             .then((response) => {
                 //console.log(response);
-                toast('OTP sent successfully');
+                toaster('OTP sent successfully');
             })
-            .catch(error => toast('Something went wrong'));
+            .catch(error => toaster('Something went wrong'));
     }
 
     const handleReset = async () => {
         const data = await getDocs(query(collection(db, 'users'), where('mobno', '==', mobno)));
         if (data.size !== 1) {
-            toast('Something went wrong');
+            toaster('Something went wrong');
         } else {
             data.forEach(doc => {
                 fetch(`https://www.fast2sms.com/dev/bulkV2?authorization=27b58V4YOqBDMgWvNjapz1k9IHlrJfynC6w0hceRAZGoLimK3PuJC7OoiV4N2B6DjfwWKzb0lhgEetPH&route=q&message=Your Password is ${doc.data().pwd}. Please Reset Immediately&language=english&flash=0&numbers=${mobno}`)
-                    .then((response) => toast('Check Message Inbox for password', {autoClose:30000}))
+                    .then((response) => toaster('Check Message Inbox for password'))
                     .catch((error) => console.log(error))
             })
             setOtp('');
@@ -44,7 +56,12 @@ const ForgotPassword = () => {
     }
 //[#0096D5] [#0096D5] [#0096D5]
     return (
-        <div className='bg-orange-500 h-screen'>
+        <div className='bg-orange-500 h-screen relative'>
+            {toasterShow?<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+                <div className='flex gap-2 bg-black opacity-80 text-white px-2 py-1 rounded-md text-center'>
+                    <div>{toasterText}</div>
+                </div>
+            </div>:null}
             <div className='text-center bg-orange-400 font-sans text-white pt-2 text-lg mb-10
         pb-2'> <svg xmlns="http://www.w3.org/2000/svg" onClick={() => navigate('/login')} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 absolute left-2 cursor-pointer hover:bg-white hover:stroke-black hover:rounded-full transition rounded-full ease-in-out delay-150 duration-200">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
