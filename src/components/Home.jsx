@@ -28,7 +28,7 @@ import { useContext } from 'react';
 import { AmountContext } from '../App.js';
 import money_bag from '../images/money_bag.png';
 import apache_logo from '../images/apache_logo.png';
-
+import bike_rtr  from '../images/bike_rtr.jpg';
 
 
 
@@ -161,9 +161,9 @@ const Home = () => {
       }
 
     const handleClick = (product_type, plan_name, plan_type, plan_amount, plan_daily_earning, plan_cycle) => {
-        //openModal();
         setCurrPlan({ product_type, plan_name, plan_type, plan_amount, plan_daily_earning, plan_cycle });
         closeModal('ok');
+        //console.log('clicked');
     }
 
     return (
@@ -223,7 +223,7 @@ const Home = () => {
                         <div>Recharge</div>
                     </div>
 
-                    {isBetween()===false?<div className='cursor-pointer mx-2 flex flex-col justify-center items-center' onClick={() => toaster('You can writhdrawl only between 9:00 to 19:00 hours only.')}>
+                    {isBetween()===false?<div className='cursor-pointer mx-2 flex flex-col justify-center items-center' onClick={() => toaster('You can withdraw only between 9:00 to 19:00 hours only.')}>
                         <img src={money_bag} alt="app_dwd" className='w-10' />
                         <div>Withdrawal</div>
                     </div>:<div className='cursor-pointer mx-2 flex flex-col justify-center items-center' onClick={() => navigate('/withdrawal', { state: { withdrawalPassword: originalwpwd, loginPassword: originalpwd } })}>
@@ -296,44 +296,13 @@ const Home = () => {
 
                         {userDetails && (amountDetails.plan_state[5] === 0) ? (
                             <span className='pointer-events-none'>
-                                <Card product_type={"long"} product_image={ubon_2} handleClick={handleClick} plan_name={"RTR 6"} plan_cycle={10} plan_daily_earning={4000} plan_amount={20000} plan_type={'Big Plan'} />
+                                <Card  product_type={"long"} product_image={bike_rtr} handleClick={handleClick} plan_name={"RTR 6"} plan_cycle={10} plan_daily_earning={4000} plan_amount={20000} plan_type={'Big Plan'} />
                             </span>
                         ) : (
                             <span>
-                                <Card product_type={"long"} product_image={ubon_2} handleClick={handleClick} plan_name={"RTR 6"} plan_cycle={10} plan_daily_earning={4000} plan_amount={20000} plan_type={'Big Plan'} />
+                                <Card product_type={"long"} product_image={bike_rtr} handleClick={handleClick} plan_name={"RTR 6"} plan_cycle={10} plan_daily_earning={4000} plan_amount={20000} plan_type={'Big Plan'} />
                             </span>
                         )}
-
-                        {/* {userDetails && (amountDetails.plan_state[5] === 0) ? (
-                            <span className='pointer-events-none'>
-                                <Card product_type={"long"} product_image={waltonbd_product6} handleClick={handleClick} plan_name={"Walton Plan 6"} plan_cycle={90} plan_daily_earning={4000} plan_amount={18000} plan_type={'Big Plan'} />
-                            </span>
-                        ) : (
-                            <span>
-                                <Card product_type={"long"} product_image={waltonbd_product6} handleClick={handleClick} plan_name={"Walton Plan 6"} plan_cycle={90} plan_daily_earning={4000} plan_amount={18000} plan_type={'Big Plan'} />
-                            </span>
-                        )}
-
-                        {userDetails && (amountDetails.plan_state[6] === 0) ? (
-                            <span className='pointer-events-none'>
-                                <Card product_type={"long"} product_image={waltonbd_product7} handleClick={handleClick} plan_name={"Walton Plan 7"} plan_cycle={90} plan_daily_earning={12000} plan_amount={35000} plan_type={'Big Plan'} />
-                            </span>
-                        ) : (
-                            <span>
-                                <Card product_type={"long"} product_image={waltonbd_product7} handleClick={handleClick} plan_name={"Walton Plan 7"} plan_cycle={90} plan_daily_earning={12000} plan_amount={35000} plan_type={'Big Plan'} />
-                            </span>
-                        )}
-
-                        {userDetails && (amountDetails.plan_state[7] === 0) ? (
-                            <span className='pointer-events-none'>
-                                <Card product_type={"long"} product_image={waltonbd_product8} handleClick={handleClick} plan_name={"Walton Plan 8"} plan_cycle={90} plan_daily_earning={25000} plan_amount={55000} plan_type={'Big Plan'} />
-                            </span>
-                        ) : (
-                            <span>
-                                <Card product_type={"long"} product_image={waltonbd_product8} handleClick={handleClick} plan_name={"Walton Plan 8"} plan_cycle={90} plan_daily_earning={25000} plan_amount={55000} plan_type={'Big Plan'} />
-                            </span>
-                        )} */}
-
                     </div>)}
 
                 {currentVisible === 'short' && (

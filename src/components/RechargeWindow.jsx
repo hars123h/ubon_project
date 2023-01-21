@@ -27,7 +27,7 @@ const RechargeWindow = () => {
         setTimeout(()=>{
             setToasterShow(false);
             //navigate('/mine');
-            if(!arg==='') {
+            if(arg==='/record') {
                 navigate('/record');
             }
         },5000);
@@ -81,7 +81,7 @@ const RechargeWindow = () => {
                     <div>{toasterText}</div>
                 </div>
             </div>:null}
-            <div className="options text-center text-white flex gap-2 items-center p-2  bg-[#0F5AF2] text-lg pt-2 font-medium">
+            <div className="options text-center text-white flex gap-2 items-center p-2  bg-orange-500 text-lg pt-2 font-medium">
                 <svg xmlns="http://www.w3.org/2000/svg" onClick={() => navigate('/mine')} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6  storke-white  cursor-pointer">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
                 </svg>
@@ -89,19 +89,19 @@ const RechargeWindow = () => {
             </div>
             <div className='flex flex-col gap-4 p-8'>
 
-                <div className='font-bold text-xl text-black'>UPI Information</div>
-                <div className="box flex rounded-lg p-6 flex-col mt-3 bg-[#0F5AF2] text-white">
+                <div className='font-bold text-xl text-orange-500'>UPI Information</div>
+                <div className="box flex rounded-lg p-6 flex-col mt-3 bg-orange-500 text-white">
                     <div className='text-md'>Payment Amount</div>
                     <div className='text-4xl'>&#8377; {recharge_value}</div>
                 </div>
 
-                <div className='font-bold text-xl text-black'>Payment Via UPI</div>
+                <div className='font-bold text-xl text-orange-500'>Payment Via UPI</div>
                 <div className="step_one flex flex-col gap-1">
                     <div className='text-md'>1.Copy UPI information</div>
-                    <div className='flex rounded-md items-center justify-between gap-2  p-2 border-2 border-[#52A8F2]'>
-                        <div className='text-yellow-500 font-bold'>{amountDetails.upi_id}</div>
+                    <div className='flex rounded-md items-center justify-between gap-2  p-2 border-2 border-orange-300'>
+                        <div className='text-orange-500 font-bold'>{amountDetails.upi_id}</div>
                         <CopyToClipboard text={`${amountDetails.upi_id}`} onCopy={() => toaster('Copied to clipboard')}>
-                        <div className='text-lg font-bold text-[#52A8F2] cursor-pointer'>Copy</div>
+                        <div className='text-lg font-bold text-orange-500 cursor-pointer'>Copy</div>
                 </CopyToClipboard>
                         
                     </div>
@@ -110,15 +110,15 @@ const RechargeWindow = () => {
                 <div>2. Transfer the amount you want to recharge to us by UPI transfer.</div>
                 <div>3. Please enter Ref No. to complete the recharge.</div>
 
-                <div className='flex rounded-md justify-between gap-2  p-2 border-2 border-[#52A8F2]'>
+                <div className='flex rounded-md justify-between gap-2  p-2 border-2 border-orange-500'>
                     <input value={refno} onChange={e => setRefno(e.target.value)} type="text" placeholder='REF NO.' className=' bg-inherit outline-none flex-grow' />
                 </div>
 
-                <div className="small_info text-sm text-[#52A8F2] underline">
+                <div className="small_info text-sm  underline">
                     Please enter the REF NO./ Reference No./UTR 12-digit number of your transfer and we will finish your recharge as soon as possible.
                 </div>
 
-                <button onClick={handleRecharge} className='bg-[#0F5AF2] text-white p-4 rounded-lg text-lg shadow-lg shadow-gray-400'>Submit</button>
+                <button onClick={handleRecharge} className='bg-orange-500 text-white p-4 rounded-lg text-lg shadow-lg shadow-gray-400'>Submit</button>
 
             </div>
 

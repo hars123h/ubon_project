@@ -200,36 +200,36 @@ const Register = () => {
                 <img src={apache_logo} alt="hp_logo" className='m-auto md:w-1/5 sm:w-1/5 my-0' width={300} />
             </div>
             <div className="box mb-20 border-2 m-auto  rounded-xl border-solid lg:w-2/5 w-4/5 shadow-xl p-4 w-50% flex flex-col">
-                <div className='outline-none flex items-center justify-between mb-2 border-2 border-gray-300 rounded-full px-2'>
+                <div className='outline-none flex items-center justify-between mb-2 border-b-2 border-gray-300 rounded-full px-2'>
                     <div className='text-orange-500 border-r-2 border-gray-400 px-3 w-[18%]'>+91</div>
                     <div className='w-[85%]'>
                         <input value={mobno} onChange={e => setMobno(e.target.value)} type="text"
                             className='p-1 w-full  outline-none rounded-br-full rounded-tr-full' placeholder='Please enter a valid phone number' name="phoneno" id="phoneno" />
                     </div>
                 </div>
-                <div className='flex border-2 border-gray-300 rounded-full mb-2'>
+                <div className='flex border-b-2 border-gray-300 rounded-full mb-2'>
                     <input type="text" onChange={e => setOtp(e.target.value)} className='p-1 w-[90%] outline-none rounded-full' placeholder='Please enter the OTP' name="otp" id="otp" />
                     <button className='bg-orange-500 text-white text-xs mr-1 px-4 my-1  rounded-full' onClick={() => handleOTPSend(String(Math.floor(100000 + Math.random() * 900000)))}>OTP</button>
                 </div>
-                <div className='flex justify-between items-center mb-2 outline-none border-2 border-gray-300 rounded-full px-2'>
+                <div className='flex justify-between items-center mb-2 outline-none border-b-2 border-gray-300 rounded-full px-2'>
                     <input value={pwd} onChange={e => setpwd(e.target.value)} type="password"
                         className='p-1 outline-none  rounded-full w-[90%]' placeholder='Please enter login password' name="passowrd" id="pass" />
                     <img src={close_eye} alt="close_eye" width={30} className="p-1" />
                 </div>
 
-                <div className='flex justify-between items-center mb-2 outline-none border-2 border-gray-300 rounded-full px-2'>
+                <div className='flex justify-between items-center mb-2 outline-none border-b-2 border-gray-300 rounded-full px-2'>
                     <input value={cpwd} onChange={e => setCpwd(e.target.value)} type="password"
                         className='p-1 outline-none  rounded-full w-[90%]' placeholder='Please confirm the login password' name="cnfpass" id="cnfpass" />
                     <img src={close_eye} alt="close_eye" width={30} className="p-1" />
                 </div>
 
-                <div className='flex justify-between items-center mb-2 outline-none border-2 border-gray-300 rounded-full px-2'>
+                <div className='flex justify-between items-center mb-2 outline-none border-b-2 border-gray-300 rounded-full px-2'>
                     <input value={wpwd} onChange={e => setwpwd(e.target.value)} type="password"
                         className='p-1 outline-none  rounded-full w-[90%]' placeholder="Please enter the Withdrawal password" name="withpassword" id="wthpass" />
                     <img src={close_eye} alt="close_eye" width={30} className="p-1" />
                 </div>
 
-                <input value={invt} onChange={e => setInvt(e.target.value)} type="text" className='p-1 mb-2  outline-none border-2 border-gray-300 rounded-full' placeholder='Invitation code' name="invite_code" id="inv_code" />
+                <input value={invt} onChange={e => setInvt(e.target.value)} type="text" className='p-1 mb-2  outline-none border-b-2 border-gray-300 rounded-full' placeholder='Invitation code' name="invite_code" id="inv_code" />
 
                 <button onClick={handleRegister} className='bg-orange-500 text-white pt-1 pb-1 rounded-full text-lg'>Register</button>
                 <div onClick={() => navigate('/login')} className='cursor-pointer text-center text-gray-500 mt-2 p-2 mb-2 border-2  rounded-full'>

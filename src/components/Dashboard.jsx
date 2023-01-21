@@ -115,7 +115,7 @@ export default function Dashboard() {
             const data1 = await getDocs(collection(db, 'withdrawals'));
             data1.forEach((element) => {
                 if(element.data().status==='confirmed') {
-                    withdrawalSum += element.data().withdrawalAmount;
+                    withdrawalSum += Number(element.data().withdrawalAmount);
                 }
             });
             setWitSum(withdrawalSum);
@@ -124,7 +124,7 @@ export default function Dashboard() {
         const BSum = async () => {
             const data1 = await getDocs(collection(db, 'users'));
             data1.forEach((element) => {
-                balanceSum+=element.data().balance;
+                balanceSum+=Number(element.data().balance);
             });
             setBalSum(balanceSum);
         }
