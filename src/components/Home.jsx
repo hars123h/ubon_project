@@ -206,7 +206,7 @@ const Home = () => {
             {/*Navigation Bar 1*/}
             <div className="bg-orange-500 rounded-lg text-white relative flex overflow-x-hidden  mx-auto mt-2 border-2 border-gray-100 sm:w-3/5 lg:w-3/5 overflow-y-hidden">
                 <div className="flex flex-row justify-around items-center w-full py-2">
-                    <a href="https://telegram.me/WaltonOfficialGroup91" className=' no-underline text-white cursor-pointer'>
+                    <a href="https://telegram.me/RTR365" className=' no-underline text-white cursor-pointer'>
                         <div className='cursor-pointer mx-2 flex flex-col justify-center items-center'>
                             <img src={headset1} alt="online" className='w-10' />
                             <div>Telegram</div>
