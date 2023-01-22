@@ -148,7 +148,6 @@ export default function Transactions() {
             status: new_status
         }).then(() => {
             //console.log('Recharge Status Approved', new_status);
-
             //console.log(element);
             //console.log('in This section');
             if (new_status === 'confirmed') {

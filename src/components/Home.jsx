@@ -212,7 +212,7 @@ const Home = () => {
                         <div>Recharge</div>
                     </div>
 
-                    {isBetween()===false?<div className='cursor-pointer mx-2 flex flex-col justify-center items-center' onClick={() => toaster('You can withdraw only between 9:00 to 19:00 hours only.')}>
+                    {(isBetween() && false)===true?<div className='cursor-pointer mx-2 flex flex-col justify-center items-center' onClick={() => toaster('You can withdraw only between 9:00 to 19:00 hours only.')}>
                         <img src={money_bag} alt="app_dwd" className='w-10' />
                         <div>Withdrawal</div>
                     </div>:<div className='cursor-pointer mx-2 flex flex-col justify-center items-center' onClick={() => navigate('/withdrawal', { state: { withdrawalPassword: originalwpwd, loginPassword: originalpwd } })}>
