@@ -8,6 +8,19 @@ import { toast } from 'react-toastify';
 import { useContext } from 'react';
 import { AmountContext } from '../App.js';
 import DateDifference from '../utility/DateDifference.js';
+import ReactModal from 'react-modal';
+
+
+const customStyles = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+    },
+};
 
 
 const Withdrawal = () => {
@@ -32,7 +45,7 @@ const Withdrawal = () => {
     });
     const [toasterShow, setToasterShow] = useState(false);
     const [toasterText, setToasterText] = useState('');
-
+    const [modalIsOpen, setIsOpen] = useState(false);
     const toaster = (text, arg='') => {
         setToasterText(text);
         setToasterShow(true);
@@ -40,12 +53,14 @@ const Withdrawal = () => {
             setToasterShow(false);
             //navigate('/mine');
             if(arg==='/record') {
+                setIsOpen(false);
                 navigate('/record');
+                
             }
             if(arg==='/bank') {
                 navigate('/bank', { state: { withdrawalPassword: loc.state.withdrawalPassword, loginPassword: loc.state.loginPassword } });
             }
-        },5000);
+        },2000);
     }
 
     useEffect(() => {
@@ -72,9 +87,11 @@ const Withdrawal = () => {
         setWamount(e.target.value);
     }
 
-    const handleWithdrawal = async () => {
+    const openModal = () => {
+        setIsOpen(true);
+    }
 
-        
+    const handleWithdrawal = async () => {
 
         if (Number(wamount) === false || Number(wamount) <= 0) {
             toaster('Enter a valid number');
@@ -89,7 +106,7 @@ const Withdrawal = () => {
         }
 
         if ((Number(wamount) > 50000)) {
-            toaster('Amount should be greatr than Rs 50,000');
+            toaster('Amount should not be greatr than Rs 50,000');
             return;
         }
 
@@ -98,10 +115,10 @@ const Withdrawal = () => {
             return;
         }
 
-        if(diffDays<1) {
-            toaster('You can only withdraw once in a day');
-            return;
-        }
+        // if(diffDays<1) {
+        //     toaster('You can only withdraw once in a day');
+        //     return;
+        // }
 
         if (wpassword === loc.state.withdrawalPassword && otp === otpfield) {
             //console.log({ withdrawalAmount: wamount, ...details, user_id:auth.currentUser.uid, status:'pending' });
@@ -139,6 +156,10 @@ const Withdrawal = () => {
         document.getElementById('withdrawal_field').value = balance;
         setWamount(balance);
     }
+
+    const handleLastButton = () => {
+        openModal();
+    }
     //[#2e9afe]
     return (
         <div className='bg-orange-500 flex flex-col p-4 sm:h-[1000px] md:h-[950px] relative'>
@@ -147,6 +168,21 @@ const Withdrawal = () => {
                     <div>{toasterText}</div>
                 </div>
             </div>:null}
+            <div>
+                <ReactModal
+                    isOpen={modalIsOpen}
+                    style={customStyles}
+                    contentLabel="Are You Sure"
+                    ariaHideApp={false}
+
+                >
+                    <h1 className='text-gray-600 mb-3 text-xl'>Are you Sure?</h1>
+                    <div>
+                        <button onClick={() => handleWithdrawal()} className='bg-orange-500 text-white px-2 py-1 rounded-lg shadow-md w-[64px]'>Yes</button>
+                        <button onClick={() => setIsOpen(false)} className='bg-red-500 text-white px-2 py-1 rounded-lg shadow-md w-[64px] ml-2'>cancel</button>
+                    </div>
+                </ReactModal>
+            </div>
             <div className="options text-center text-white text-lg pt-2 font-medium">
                 <svg xmlns="http://www.w3.org/2000/svg" onClick={() => navigate('/home')} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 absolute left-2  storke-white top-5 cursor-pointer">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
@@ -207,7 +243,7 @@ const Withdrawal = () => {
             </div>
             {/* [#2e9afe] */}
             <div>
-                <button onClick={handleWithdrawal} className='bg-orange-600 text-white text-lg mt-5 mb-20 rounded-lg shadow-md block w-full py-2 shadow-amber-400'>Confirm</button>
+                <button onClick={handleLastButton} className='bg-orange-600 text-white text-lg mt-5 mb-20 rounded-lg shadow-md block w-full py-2 shadow-amber-400'>Confirm</button>
             </div>
         </div>
     )
