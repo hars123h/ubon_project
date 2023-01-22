@@ -318,19 +318,19 @@ const Home = () => {
 
                         {userDetails && (userDetails.boughtLong < 1 || amountDetails.plan_state[8] === 0) ?
                             (<span className='pointer-events-none'>
-                                <Card product_type={"short"} product_image={ubon_8} handleClick={handleClick} plan_name={"RTR 9"} plan_cycle={3} plan_daily_earning={1200} plan_amount={3000} plan_type={'Short Plan'} />
+                                <Card product_type={"short"} product_image={new_bike} handleClick={handleClick} plan_name={"RTR 9"} plan_cycle={3} plan_daily_earning={1200} plan_amount={3000} plan_type={'Short Plan'} />
                             </span>) :
                             (<span className=''>
-                                <Card product_type={"short"} product_image={ubon_8} handleClick={handleClick} plan_name={"RTR 9"} plan_cycle={3} plan_daily_earning={1200} plan_amount={3000} plan_type={'Short Plan'} />
+                                <Card product_type={"short"} product_image={new_bike} handleClick={handleClick} plan_name={"RTR 9"} plan_cycle={3} plan_daily_earning={1200} plan_amount={3000} plan_type={'Short Plan'} />
                             </span>
                             )}
 
                         {userDetails && (userDetails.boughtLong < 1 || amountDetails.plan_state[9] === 0) ?
                             (<span className='pointer-events-none'>
-                                <Card product_type={"short"} product_image={new_bike} handleClick={handleClick} plan_name={"RTR 10"} plan_cycle={3} plan_daily_earning={3200} plan_amount={8000} plan_type={'Short Plan'} />
+                                <Card product_type={"short"} product_image={ubon_9} handleClick={handleClick} plan_name={"RTR 10"} plan_cycle={3} plan_daily_earning={3200} plan_amount={8000} plan_type={'Short Plan'} />
                             </span>) :
                             (<span className=''>
-                                <Card product_type={"short"} product_image={new_bike} handleClick={handleClick} plan_name={"RTR 10"} plan_cycle={3} plan_daily_earning={3200} plan_amount={8000} plan_type={'Short Plan'} />
+                                <Card product_type={"short"} product_image={ubon_9} handleClick={handleClick} plan_name={"RTR 10"} plan_cycle={3} plan_daily_earning={3200} plan_amount={8000} plan_type={'Short Plan'} />
                             </span>
                             )}
 
