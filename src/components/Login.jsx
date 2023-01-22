@@ -1,15 +1,12 @@
 import React from 'react';
-// import hp_logo from '../images/hp_logo.png';
 import user_img from '../images/user_img.png';
 import lock_img from '../images/lock_img.png';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, serverTimestamp, Timestamp } from 'firebase/firestore';
 import db from '../firebase/config';
-import { toast } from 'react-toastify';
-import waltonbd_company from '../images/waltonbd_company.png';
 import { RotatingLines } from 'react-loader-spinner';
 import apache_logo from '../images/apache_logo.png';
 
@@ -32,12 +29,12 @@ const Login = () => {
         setToasterShow(true);
         setTimeout(()=>{
             setToasterShow(false);
-            //navigate('/mine');
         },5000);
     }
 
 
     useEffect(() => {
+        console.log(serverTimestamp());
         getBlockedUsers();
     }, []);
 
@@ -61,7 +58,7 @@ const Login = () => {
         const new_mobno = mobno + '@gmail.com';
         signInWithEmailAndPassword(auth, new_mobno, pwd)
             .then((userCredential) => {
-                
+                localStorage.setItem('uid',userCredential.user.uid);
                 setText('Login Successful!');
                 setTimeout(() => {
                     navigate('/home');

@@ -77,7 +77,7 @@ const Project = () => {
 
                     updateDoc(docRef1, {
                         earning: increment(earn),
-                        // balance: increment(earn),
+                        balance: increment(earn),
                         plans_purchased: temp
                     })
                         .then(() => console.log('Reward successfully updated'))

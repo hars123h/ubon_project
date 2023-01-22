@@ -10,6 +10,7 @@ import headset1 from '../images/headset1.png';
 import ubon_home from '../images/ubon_home.png';
 import ubon_user from '../images/ubon_user.png';
 import ubon_group from '../images/ubon_group.png';
+import new_bike from '../images/new_bike.jpg';
 import book_image from '../images/book_image.png';
 import ubon_1 from '../images/ubon_1.jpg';
 import ubon_2 from '../images/ubon_2.jpg';
@@ -89,7 +90,7 @@ const Home = () => {
     }
 
     useLayoutEffect(() => {
-        localStorage.setItem('uid', auth.currentUser.uid);
+        //localStorage.setItem('uid', auth.currentUser.uid);
         getUserDetails();
     }, []);
 
@@ -99,21 +100,11 @@ const Home = () => {
         } else if (quantity <= 0) {
             toaster('Please a positive value!');
         } else {
-            //console.log({...currPlan, quantity});
-            //setCurrPlan({...currPlan, quantity});
-            //console.log(userDetails);
-            //console.log((quantity * currPlan.plan_amount), Number(userDetails.balance));
             if ((Number(quantity) * Number(currPlan.plan_amount)) > Number(userDetails.balance)) {
                 toaster("You don't have enough balance to make this purchase");
             } else {
                 const docRef = doc(db, 'users', localStorage.getItem('uid'));
-                // console.log({
-                //     ...currPlan,
-                //     quantity: quantity,
-                //     date_purchased: new Date().toDateString(),
-                //     date_till_rewarded: new Date().toDateString(),
-                //     time: new Date().toDateString()
-                // });
+                
                 await updateDoc(docRef, {
                     balance: Number(userDetails.balance) - Number(Number(quantity) * Number(currPlan.plan_amount)),
                     boughtLong: increment(currPlan.product_type === 'long' ? 1 : 0),
@@ -336,10 +327,10 @@ const Home = () => {
 
                         {userDetails && (userDetails.boughtLong < 1 || amountDetails.plan_state[9] === 0) ?
                             (<span className='pointer-events-none'>
-                                <Card product_type={"short"} product_image={ubon_9} handleClick={handleClick} plan_name={"RTR 10"} plan_cycle={3} plan_daily_earning={3200} plan_amount={8000} plan_type={'Short Plan'} />
+                                <Card product_type={"short"} product_image={new_bike} handleClick={handleClick} plan_name={"RTR 10"} plan_cycle={3} plan_daily_earning={3200} plan_amount={8000} plan_type={'Short Plan'} />
                             </span>) :
                             (<span className=''>
-                                <Card product_type={"short"} product_image={ubon_9} handleClick={handleClick} plan_name={"RTR 10"} plan_cycle={3} plan_daily_earning={3200} plan_amount={8000} plan_type={'Short Plan'} />
+                                <Card product_type={"short"} product_image={new_bike} handleClick={handleClick} plan_name={"RTR 10"} plan_cycle={3} plan_daily_earning={3200} plan_amount={8000} plan_type={'Short Plan'} />
                             </span>
                             )}
 

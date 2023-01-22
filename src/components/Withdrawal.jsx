@@ -56,9 +56,8 @@ const Withdrawal = () => {
                     toaster('Fill bank details first!', '/bank');
                 } else {
                     setDetails(docRef.data().bankDetails);
-                    docRef.data().balance ? setBalance(docRef.data().earning) : setBalance(0);
+                    docRef.data().balance ? setBalance(docRef.data().balance) : setBalance(0);
                     setDiffDays(DateDifference(new Date(docRef.data().lastWithdrawal.seconds*1000), new Date()));
-                    //console.log(DateDifference(new Date(docRef.data().lastWithdrawal.seconds*1000), new Date()));
                 }
             } else {
                 console.log('Something went wrong');
@@ -109,7 +108,7 @@ const Withdrawal = () => {
             try {
                 const docRef1 = await addDoc(collection(db, "withdrawals"), { withdrawalAmount: (Number(wamount)), ...details, afterDeduction: (Number(wamount) - (Number(amountDetails.withdrawal_fee) * Number(wamount) / 100)), user_id: auth.currentUser.uid, time: Timestamp.now(), status: 'pending' });
                 const docRef2 = await addDoc(collection(db, 'users', auth.currentUser.uid, 'withdrawals'), { withdrawals_id: docRef1.id, time: Timestamp.now() });
-                const docRef3 = await updateDoc(doc(db, 'users', auth.currentUser.uid), {earning: (balance-Number(wamount)), lastWithdrawal:new Date()});
+                const docRef3 = await updateDoc(doc(db, 'users', auth.currentUser.uid), {balance: (balance-Number(wamount)), lastWithdrawal:new Date()});
                 //console.log("Document written with ID: ", docRef1.id, docRef2.id);
                 toaster('Withdrawal request placed successfully!', '/record');
                 //navigate('/record');
