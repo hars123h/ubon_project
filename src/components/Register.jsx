@@ -71,7 +71,6 @@ const Register = () => {
                     setLoading(false);
                 }, 1000);
                 try {
-                    //console.log(auth.currentUser.uid);
                     setDoc(doc(db, "users", auth.currentUser.uid), {
                         mobno,
                         pwd,
@@ -166,7 +165,6 @@ const Register = () => {
             toaster('Invalid Mobile Number');
             return;
         }
-        
         setOTPfield(otpGenerated)
         fetch(`https://www.fast2sms.com/dev/bulkV2?authorization=27b58V4YOqBDMgWvNjapz1k9IHlrJfynC6w0hceRAZGoLimK3PuJC7OoiV4N2B6DjfwWKzb0lhgEetPH&variables_values=${otpGenerated}&route=otp&numbers=${mobno}`)
             .then((response) => {
