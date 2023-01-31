@@ -29,6 +29,8 @@ import { useEffect } from 'react';
 import { RotatingLines } from 'react-loader-spinner';
 import { useState } from 'react';
 import DateDifference from '../utility/DateDifference.js';
+import axios from 'axios';
+import BASE_URL from '../api_url.js';
 
 
 const drawerWidth = 240;
@@ -116,17 +118,16 @@ export default function User() {
     }, []);
 
     const getPlans = async() => {
-        await getDoc(doc(db, 'users', location.state.user_id))
+        await axios.post(`${BASE_URL}/get_user` ,{ user_id:location.state.user_id }).then(({data})=>data)
             .then((response) => {
                 var temp = [];
-                response.data().plans_purchased.forEach(async (element) => {
+                response.plans_purchased.forEach(async (element) => {
                     temp = [...temp, element];
                     setPlans(temp);
                 });
                 console.log(temp);
             })
             .catch(error => console.log(error));
-
     }
 
     const getReferDetails = () => {
@@ -134,18 +135,18 @@ export default function User() {
         var temp2 = [];
 
         location.state.directMember.map(async (id) => {
-            const dataTemp = await getDoc(doc(db, 'users', id));
-            if (dataTemp.exists()) {
-                temp1.push(dataTemp.data());
+            const dataTemp = await axios.post(`${BASE_URL}/get_user` ,{ user_id:id }).then(({data})=>data)
+            if (dataTemp) {
+                temp1.push(dataTemp);
             }
 
         });
         setRefer1(temp1);
 
         location.state.indirectMember.map(async (id) => {
-            const dataTemp = await getDoc(doc(db, 'users', id));
-            if (dataTemp.exists()) {
-                temp2.push(dataTemp.data());
+            const dataTemp = await axios.post(`${BASE_URL}/get_user` ,{ user_id:id }).then(({data})=>data)
+            if (dataTemp) {
+                temp2.push(dataTemp);
             }
         });
 
@@ -153,34 +154,20 @@ export default function User() {
     }
 
     const getWithdrawals = async () => {
-        const withdrawal1 = await getDocs(collection(db, `/users/${location.state.user_id}/withdrawals`))
+        const withdrawal1 = await axios.post(`${BASE_URL}/get_user_withdrawals`, {user_id:location.state.user_id}).then(({data})=>data)
             .then((response) => {
-                var temp = [];
-                response.forEach(async (element) => {
-                    const withdrawalDetails = await getDoc(doc(db, 'withdrawals', element.data().withdrawals_id));
-                    if (withdrawalDetails.exists()) {
-                        temp = [...temp, withdrawalDetails.data()];
-                    }
-                    //console.log(withdrawalDetails.data());
-                    setWithdrawals(temp);
-                });
-            })
+                
+                    setWithdrawals(response);
+                })       
             .catch(error => console.log(error));
-
     }
 
     const getRecharges = async () => {
-        const recharge1 = await getDocs(collection(db, `/users/${location.state.user_id}/placed_recharges`))
+        const recharge1 = await axios.post(`${BASE_URL}/get_user_recharges`, {user_id:location.state.user_id}).then(({data})=>data)
             .then((response) => {
-                var temp = [];
-                response.forEach(async (element) => {
-                    const rechargeDetails = await getDoc(doc(db, 'recharges', element.data().recharge_id));
-                    if (rechargeDetails.exists()) {
-                        temp = [...temp, rechargeDetails.data()];
-                    }
-                    setRecharges(temp);
-                });
-            })
+                
+                    setRecharges(response);
+                })       
             .catch(error => console.log(error));
     }
 
@@ -448,7 +435,7 @@ export default function User() {
                                             <TableRow>
                                                 <TableCell>{element.plan_name}</TableCell>
                                                 <TableCell>{element.plan_type}</TableCell>
-                                                <TableCell>{element.time}</TableCell>
+                                                <TableCell>{element.date_purchased}</TableCell>
                                                 <TableCell>{element.quantity}</TableCell>
                                                 <TableCell>&#8377;{element.plan_amount}</TableCell>
                                                 <TableCell>{element.plan_cycle}</TableCell>

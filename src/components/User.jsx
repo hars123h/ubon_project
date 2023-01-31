@@ -29,6 +29,8 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useContext } from 'react';
 import { AmountContext } from '../App.js';
+import axios from 'axios';
+import BASE_URL from '../api_url.js';
 
 const drawerWidth = 240;
 
@@ -108,49 +110,65 @@ export default function User() {
     const amountDetails = useContext(AmountContext);
     const [lastItem, setLastItem] = useState(0);
     const [startItem, setStartItem] = useState(null);
+    const [pageData, setPageData] = useState(null);
 
     
     const getUsers = async () => {
-        const filterQuery = query(collection(db, "users"),  orderBy('time'), startAt(start), limit(10));
-        const querySnapshot = await getDocs(filterQuery);
+        const options =  {
+            page: 1,
+            limit: 2, 
+        };
+        const users_data = await axios.post(`${BASE_URL}/get_paginated_user`, {
+            options
+        }).then(({data})=>data);
+        //console.log(users_data);
         var temp = []; 
-        var idx = 0;
-        querySnapshot.forEach((doc) => {
-            temp = [...temp, { ...doc.data(), user_id: querySnapshot._snapshot.docChanges[idx].doc.key.path.segments[6] }];
-            idx += 1;
+        setPageData(users_data);
+        users_data.docs.forEach((doc) => {
+            temp = [...temp, { ...doc, user_id: doc._id }];
         });
         setRows(temp);
-        setStartItem(querySnapshot.docs[0]);
-        setLastItem(querySnapshot.docs[querySnapshot.docs.length-1]);
     }
 
     const getNextPage = async() => {
-        const filterQuery = query(collection(db, "users"),  orderBy('time'), startAfter(lastItem), limit(10));
-        const querySnapshot = await getDocs(filterQuery);
+
+        if(pageData.hasNextPage===false) {
+            return;
+        }
+        const options =  {
+            page: pageData.nextPage,
+            limit: 2, 
+        };
+        const users_data = await axios.post(`${BASE_URL}/get_paginated_user`, {
+            options
+        }).then(({data})=>data);
+        //console.log(users_data);
         var temp = []; 
-        var idx = 0;
-        querySnapshot.forEach((doc) => {
-            temp = [...temp, { ...doc.data(), user_id: querySnapshot._snapshot.docChanges[idx].doc.key.path.segments[6] }];
-            idx += 1;
+        setPageData(users_data);
+        users_data.docs.forEach((doc) => {
+            temp = [...temp, { ...doc, user_id: doc._id }];
         });
         setRows(temp);
-        setStartItem(querySnapshot.docs[0]);
-        setLastItem(querySnapshot.docs[querySnapshot.docs.length-1]);
     }
 
     const getPrevPage = async() => {
-        //console.log(startItem);
-        const filterQuery = query(collection(db, "users"),  orderBy('time'), endBefore(startItem), limitToLast(10));
-        const querySnapshot = await getDocs(filterQuery);
+        if(pageData.hasPrevPage===false) {
+            return;
+        }
+        const options =  {
+            page: pageData.prevPage,
+            limit: 2, 
+        };
+        const users_data = await axios.post(`${BASE_URL}/get_paginated_user`, {
+            options
+        }).then(({data})=>data);
+        //console.log(users_data);
         var temp = []; 
-        var idx = 0;
-        querySnapshot.forEach((doc) => {
-            temp = [...temp, { ...doc.data(), user_id: querySnapshot._snapshot.docChanges[idx].doc.key.path.segments[6] }];
-            idx += 1;
+        setPageData(users_data);
+        users_data.docs.forEach((doc) => {
+            temp = [...temp, { ...doc, user_id: doc._id }];
         });
         setRows(temp);
-        setStartItem(querySnapshot.docs[0]);
-        setLastItem(querySnapshot.docs[querySnapshot.docs.length-1]);
     }
 
     const getUsers_cstm = async () => {
@@ -192,11 +210,13 @@ export default function User() {
     };
 
     const updateBalance = async () => {
+        
         if (new_balance >= 0) {
-            const response = await updateDoc(doc(db, 'users', CurrBalanceId), {
-                balance: new_balance
+            await axios.post(`${BASE_URL}/update_balance`, {
+                new_balance: new_balance,
+                user_id: CurrBalanceId
             })
-                .then(() => {
+                .then((responses) => {
                     toast('Balance Updated Successfully!');
                     getUsers();
                     setNew_balance(0);
@@ -210,7 +230,7 @@ export default function User() {
     }
 
     const blockUser = async(UserId) => {
-        await addDoc(collection(db, 'blockedUsers'), {
+        await axios.post(`${BASE_URL}/add_blocked_users`, {
             mobileNumber:UserId
         })
         .then(()=>toast('User Blocked'))
@@ -332,12 +352,7 @@ export default function User() {
 
                                         <TableCell align="right">
                                             <Box sx={{ display: 'flex', justifyContent: "end" }}>
-                                                {/* <Button color="secondary" size='small' variant='contained' onClick={()=>{
-                                                    updateDoc(doc(db, 'users', row.user_id), {
-                                                        showShort:row.showShort===1?0:1
-                                                    });
-                                                    getUsers();
-                                                }}>Toggle Short Plans</Button> */}
+                                                
                                                 <IconButton onClick={() => {
                                                     navigate('/admin/user_details', { state: row })
                                                 }}><Visibility /></IconButton>
@@ -364,14 +379,12 @@ export default function User() {
                         <Paper>
                             <div className='p-2 flex justify-between items-center'>
                                 <Button variant='contained' color="primary" onClick={()=>{
-                                    if((start-10)<=0) {setStart(1);}
-                                    else {setStart(start-10); getPrevPage();}
+                                    getPrevPage();
                                 }} >back</Button>
-                                <div>{Math.ceil(start/10)} of {Math.ceil(amountDetails.userCount/10)} pages</div>
+                                <div>{pageData?.page} of {pageData?.totalPages} pages</div>
                                 <Button variant='contained' color="primary" onClick={()=>{
                                     getNextPage();
-                                    if((start+10)>=amountDetails.userCount) {setStart(start+(amountDetails.userCount-start))}
-                                    else {setStart(start+10);}
+                                    
                                 }}>next</Button>
                             </div>
                         </Paper>
