@@ -5,6 +5,8 @@ import {doc, updateDoc} from 'firebase/firestore';
 import { getAuth } from 'firebase/auth'; 
 import { toast } from 'react-toastify';
 import db from '../firebase/config';
+import axios from 'axios';
+import BASE_URL from '../api_url';
 
 
 const ChangeWithdrawalPassword = () => {
@@ -30,7 +32,8 @@ const ChangeWithdrawalPassword = () => {
     const handleReset = async() => {
         if(new_pwd===cnf_new_pwd && oldpwd===loc.state.withdrawalPassword) {
             const docRef = doc(db, 'users', auth.currentUser.uid);
-            await updateDoc(docRef, {wpwd:new_pwd}).then(()=>{
+            await axios.post(`${BASE_URL}/reset_withdrawal_password`, 
+            {new_wpwd:new_pwd, user_id:localStorage.getItem('uid')}).then(()=>{
                 setOldpwd('');
                 setCnf_new_pwd('');
                 setNew_pwd('');

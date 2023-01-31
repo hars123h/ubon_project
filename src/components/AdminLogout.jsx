@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const AdminLogout = () => {
     const navigate = useNavigate();

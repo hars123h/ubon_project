@@ -1,11 +1,9 @@
-import { getAuth } from 'firebase/auth';
-import { doc, getDoc, increment, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, } from 'react-router-dom';
-import db from '../firebase/config';
 import { RotatingLines } from 'react-loader-spinner';
 import DateDifference from '../utility/DateDifference.js';
-import { toast } from 'react-toastify';
+import axios from 'axios';
+import BASE_URL from '../api_url';
 
 const addDays = (date, days) => {
     var result = new Date(date);
@@ -17,7 +15,6 @@ const addDays = (date, days) => {
 
 const Project = () => {
     const navigate = useNavigate();
-    const auth = getAuth();
     const [userDetails, setUserDetails] = useState(null);
     const [loading, setLoading] = useState(true);
     const [current_tab, setCurrent_tab] = useState('earning');
@@ -35,19 +32,20 @@ const Project = () => {
 
 
     const getUserDetails = async () => {
-        const docRef = doc(db, 'users', auth.currentUser.uid);
-        await getDoc(docRef).then(document => {
-            if (document.exists()) {
-                setUserDetails(document.data());
-                if (('plans_purchased' in document.data()) === false) {
+        // const docRef = doc(db, 'users', auth.currentUser.uid);
+        await axios.post(`${BASE_URL}/get_user`, {user_id:localStorage.getItem('uid')}).then(async({data:document}) => {
+            if (document) {
+                setUserDetails(document);
+                console.log(document);
+                if (('plans_purchased' in document) === false) {
                     toaster('Please buy a plan first!');
                 }
-                if (document.data().plans_purchased) {
+                if (document.plans_purchased.length>0) {
                     var earn = 0;
-                    var temp = document.data().plans_purchased.map((element) => {
+                    var temp = document.plans_purchased.map((element) => {
                         var days = DateDifference(new Date(element.date_till_rewarded), new Date(Math.min(new Date(), addDays(new Date(element.date_purchased), element.plan_cycle))));
                         var days2 = DateDifference(new Date(element.date_till_rewarded), addDays(new Date(element.date_purchased), element.plan_cycle));
-
+                        console.log(days);
                         if(element.product_type==='short') {
                             if(days===element.plan_cycle) {
                                 earn = (days * element.quantity * element.plan_daily_earning);
@@ -73,12 +71,12 @@ const Project = () => {
                             date_till_rewarded: new Date(Math.min(new Date(), addDays(new Date(element.date_purchased), element.plan_cycle))).toDateString()
                         }
                     });
-                    const docRef1 = doc(db, 'users', auth.currentUser.uid);
 
-                    updateDoc(docRef1, {
-                        earning: increment(earn),
-                        balance: increment(earn),
-                        plans_purchased: temp
+
+                    await axios.post(`${BASE_URL}/update_earning`, {
+                        earn:earn,
+                        temp: temp,
+                        user_id:localStorage.getItem('uid')
                     })
                         .then(() => console.log('Reward successfully updated'))
                         .catch(error => console.log('Some error Occured'));

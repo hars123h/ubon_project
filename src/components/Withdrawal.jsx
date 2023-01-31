@@ -9,6 +9,8 @@ import { useContext } from 'react';
 import { AmountContext } from '../App.js';
 import DateDifference from '../utility/DateDifference.js';
 import ReactModal from 'react-modal';
+import axios from 'axios';
+import BASE_URL from '../api_url.js';
 
 
 const customStyles = {
@@ -46,16 +48,15 @@ const Withdrawal = () => {
     const [toasterShow, setToasterShow] = useState(false);
     const [toasterText, setToasterText] = useState('');
     const [modalIsOpen, setIsOpen] = useState(false);
+
     const toaster = (text, arg='') => {
         setToasterText(text);
         setToasterShow(true);
         setTimeout(()=>{
             setToasterShow(false);
-            //navigate('/mine');
             if(arg==='/record') {
                 setIsOpen(false);
                 navigate('/record');
-                
             }
             if(arg==='/bank') {
                 navigate('/bank', { state: { withdrawalPassword: loc.state.withdrawalPassword, loginPassword: loc.state.loginPassword } });
@@ -65,14 +66,14 @@ const Withdrawal = () => {
 
     useEffect(() => {
         const getDetails = async () => {
-            const docRef = await getDoc(doc(db, 'users', auth.currentUser.uid));
-            if (docRef.exists()) {
-                if (!docRef.data().bankDetails) {
+            const docRef = await axios.post(`${BASE_URL}/get_user`, {user_id: localStorage.getItem('uid')}).then(({data})=>data);
+            if (docRef) {
+                if (docRef.bank_details.bankAccount.length===0) {
                     toaster('Fill bank details first!', '/bank');
                 } else {
-                    setDetails(docRef.data().bankDetails);
-                    docRef.data().balance ? setBalance(docRef.data().balance) : setBalance(0);
-                    setDiffDays(DateDifference(new Date(docRef.data().lastWithdrawal.seconds*1000), new Date()));
+                    setDetails(docRef.bank_details);
+                    docRef.balance ? setBalance(docRef.balance) : setBalance(0);
+                    setDiffDays(DateDifference(new Date(docRef.lastWithdrawal), new Date()));
                 }
             } else {
                 console.log('Something went wrong');
@@ -115,18 +116,17 @@ const Withdrawal = () => {
             return;
         }
 
-        // if(diffDays<1) {
-        //     toaster('You can only withdraw once in a day');
-        //     return;
-        // }
-
         if (wpassword === loc.state.withdrawalPassword && otp === otpfield) {
-            //console.log({ withdrawalAmount: wamount, ...details, user_id:auth.currentUser.uid, status:'pending' });
             try {
-                const docRef1 = await addDoc(collection(db, "withdrawals"), { withdrawalAmount: (Number(wamount)), ...details, afterDeduction: (Number(wamount) - (Number(amountDetails.withdrawal_fee) * Number(wamount) / 100)), user_id: auth.currentUser.uid, time: Timestamp.now(), status: 'pending' });
-                const docRef2 = await addDoc(collection(db, 'users', auth.currentUser.uid, 'withdrawals'), { withdrawals_id: docRef1.id, time: Timestamp.now() });
-                const docRef3 = await updateDoc(doc(db, 'users', auth.currentUser.uid), {balance: (balance-Number(wamount)), lastWithdrawal:new Date()});
-                //console.log("Document written with ID: ", docRef1.id, docRef2.id);
+                const docRef1 = await axios.post(`${BASE_URL}/place_withdrawal`, { 
+                    withdrawalAmount: (Number(wamount)), 
+                    ...details, 
+                    afterDeduction: (Number(wamount) - (Number(amountDetails.withdrawal_fee) * Number(wamount) / 100)), 
+                    user_id: localStorage.getItem('uid'), 
+                    time:new Date(),
+                    balance: balance,
+                    status: 'pending' 
+                });
                 toaster('Withdrawal request placed successfully!', '/record');
                 //navigate('/record');
             } catch (e) {

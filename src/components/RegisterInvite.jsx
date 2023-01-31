@@ -9,7 +9,8 @@ import { AmountContext } from '../App';
 import { RotatingLines } from 'react-loader-spinner';
 import close_eye from '../images/close_eye.png';
 import apache_logo from '../images/apache_logo.png';
-
+import axios from 'axios';
+import BASE_URL from '../api_url.js';
 
 
 const Register = () => {
@@ -41,125 +42,44 @@ const Register = () => {
 
     const handleRegister = async () => {
 
-        if(mobno.length!=10) {
+        if (mobno.length != 10) {
             toaster('Invalid Mobile Number');
             return;
         }
 
-        
-
-        if(pwd!==cpwd) {
+        if (pwd !== cpwd) {
             toaster('Passwords do not match!');
             return;
         }
 
-        if(pwd.length<6) {
+        if (pwd.length < 6) {
             toaster('Password must contain at least 6 characters!');
             return;
         }
 
-        if(otp!==otpfield) {
+        if (otp !== otpfield) {
             toaster('Wrong OTP entered!');
             return;
         }
         console.log({ mobno, pwd, cpwd, wpwd, invt });
-        const new_mobno = mobno + '@gmail.com';
         setLoading(true);
-        createUserWithEmailAndPassword(auth, new_mobno, pwd)
-            .then((userCredential) => {
-                //console.log(userCredential);
+        await axios.post(`${BASE_URL}/register`,{mobno, pwd, wpwd, invt})
+            .then((response) => {
                 setText('Registration Successful!');
-                setTimeout(() => {
-                    navigate('/home');
-                    setLoading(false);
-                }, 1000);
-                try {
-                    //console.log(auth.currentUser.uid);
-                    setDoc(doc(db, "users", auth.currentUser.uid), {
-                        mobno,
-                        pwd,
-                        wpwd,
-                        time: new Date(),
-                        balance: amountDetails.invite_bonus,
-                        recharge_amount: 0,
-                        earning: 0,
-                        user_invite:referralCodeGenerator.alpha('lowercase', 6),
-                        parent_invt: invt,
-                        grand_parent_int: '',
-                        directRecharge:0,
-                        indirectRecharge:0,
-                        directMember:[],
-                        indirectMember:[],
-                        boughtLong:0,
-                        showShort:0,
-                        boughtShort:0,
-                        lastWithdrawal:new Date()
-                    }).then(() => {
-                        const usersRef = collection(db, "users");
-                        const q = getDocs(query(usersRef, where('user_invite', '==', invt)));
-                        return q;
-                    }).then((q) => {
-                        const newRef = doc(db, 'users', auth.currentUser.uid);
-                        //console.log(q);
-                        updateDoc(newRef, {
-                            parent_id: q._snapshot.docChanges[0].doc.key.path.segments[6],
-                            grand_parent_int: q._snapshot.docChanges[0].doc.data.value.mapValue.fields.parent_invt
-                        });
-                        return q._snapshot.docChanges[0].doc.data.value.mapValue.fields.parent_invt.stringValue;
-                    }).then((invite_code) => {
-                        const usersRef2 = collection(db, "users");
-                        const qw = getDocs(query(usersRef2, where('user_invite', '==', invite_code)));
-                        return qw;
-                    }).then((qw) => {
-                        //console.log(qw);
-                        updateDoc(doc(db, 'users', auth.currentUser.uid), {
-                            grand_parent_id: qw._snapshot.docChanges[0].doc.key.path.segments[6],
-                        });
-                        const new_qw = getDocs(query(collection(db, "users"), where("user_invite", "==", qw._snapshot.docChanges[0].doc.data.value.mapValue.fields.parent_invt.stringValue)));
-                        return new_qw;
-                    }).then((new_qw)=>{
-                        const newRef3 = doc(db, 'users', auth.currentUser.uid);
-                        //console.log(qw, 'this is the last then');
-                        //console.log(new_qw);
-                        updateDoc(newRef3, {
-                            great_grand_parent_id:new_qw._snapshot.docChanges[0].doc.key.path.segments[6],
-                        })
-                        const userData = getDoc(doc(db, 'users', auth.currentUser.uid));
-                        return userData;
-                    }).then((userData)=>{
-                        console.log(userData.data());
-                        updateDoc(doc(db, 'users', userData.data().parent_id), {
-                            directMember: arrayUnion(auth.currentUser.uid)
-                        });
-                        updateDoc(doc(db, 'users', userData.data().grand_parent_id), {
-                            indirectMember: arrayUnion(auth.currentUser.uid)
-                        });
-                        updateDoc(doc(db, 'users', userData.data().great_grand_parent_id), {
-                            indirectMember: arrayUnion(auth.currentUser.uid)
-                        });
-                        updateDoc(doc(db, 'amounts', 'wgx5GRblXXwhlmx4XYok'), {userCount:increment(1)});
-                    })
-                    //console.log("Document written successfully");
-                } catch (e) {
-                    console.error("Error adding document: ", e);
-                }
-
                 setMobno('');
                 setpwd('');
                 setCpwd('');
                 setwpwd('');
                 setInvt('');
-                setTimeout(()=>{
+                setTimeout(() => {
                     navigate('/home');
-                },2000);
+                    setLoading(false);
+                }, 2000);
             })
             .catch((error) => {
-                if(error.code=='auth/email-already-in-use') {
-                    toaster('The provided email is already in use by an existing user.');
-                }
-                console.error(error.code, error.message);
+                toaster('Something went wrong');
+                console.error(error);
             });
-
     }
 
     const handleOTPSend = (otpGenerated) => {

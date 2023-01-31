@@ -21,10 +21,10 @@ import MailIcon from '@material-ui/icons/Mail';
 import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import db from '../firebase/config.js';
-import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
 import { useContext } from 'react';
 import { AmountContext } from '../App.js';
+import axios from 'axios';
+import BASE_URL from '../api_url.js';
 
 const drawerWidth = 240;
 
@@ -101,46 +101,24 @@ export default function Dashboard() {
         if (localStorage.getItem('name') === null) {
             navigate('/admin/Login');
         }
-        var rechargeSum = 0, withdrawalSum = 0, balanceSum=0;
-        const Rsum = async () => {
-            const data1 = await getDocs(collection(db, 'recharges'));
-            data1.forEach((element) => {
-                if(element.data().status="confirmed") {
-                    rechargeSum += Number(element.data().recharge_value);
-                }
-            });
-            setRecSum(rechargeSum);
+        
+        const get_sum_data = async() => {
+            await axios.get(`${BASE_URL}/dashboard_data_sum`).then(response=>{
+                setRecSum(response.data.totalRecharge);
+                setWitSum(response.data.totalWithdrawal);
+                setBalSum(response.data.totalBalance);
+            })
         }
-        const Wsum = async () => {
-            const data1 = await getDocs(collection(db, 'withdrawals'));
-            data1.forEach((element) => {
-                if(element.data().status==='confirmed') {
-                    withdrawalSum += Number(element.data().withdrawalAmount);
-                }
-            });
-            setWitSum(withdrawalSum);
-        }
-
-        const BSum = async () => {
-            const data1 = await getDocs(collection(db, 'users'));
-            data1.forEach((element) => {
-                balanceSum+=Number(element.data().balance);
-            });
-            setBalSum(balanceSum);
-        }
-
         getData();
-        Rsum();
-        Wsum();
-        BSum();
+        get_sum_data();
+
     }, []);
 
     const getData = async () => {
-
-        const dataRes = await getDoc(doc(db, 'amounts', 'wgx5GRblXXwhlmx4XYok'));
-        if (dataRes.exists()) {
-            setAdminData(dataRes.data().plan_state);
-        }
+        const dataRes = await axios.get(`${BASE_URL}/amounts`).then(({data})=>{
+            // console.log(res);
+            setAdminData(data.data.plan_state);
+        });
     }
 
     const handleDrawerOpen = () => {
@@ -268,10 +246,9 @@ export default function Dashboard() {
                                                     onClick={async () => {
                                                         var temp = adminData;
                                                         temp[index] = 1 - element;
-                                                        await updateDoc(doc(db, 'amounts', 'wgx5GRblXXwhlmx4XYok'), {
-                                                            plan_state: temp
+                                                        await axios.post(`${BASE_URL}/update_plan_state`, {
+                                                            new_plan_state: temp
                                                         }).then(() => getData());
-
                                                     }}>Toggle Visibility</Button>
                                             </TableCell>
                                         </TableRow>

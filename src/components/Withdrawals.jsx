@@ -28,6 +28,8 @@ import { useEffect } from 'react';
 import { RotatingLines } from 'react-loader-spinner';
 import useInterval from '../hooks/useInterval.js';
 import {CheckCircle, Close} from '@material-ui/icons';
+import axios from 'axios';
+import BASE_URL from '../api_url';
 
 const drawerWidth = 240;
 
@@ -95,26 +97,24 @@ export default function Withdrawals() {
     const [status, setStatus] = useState('pending');
     const navigate = useNavigate();
     const [withdrawal_list, setwithdrawal_list] = useState(null);
+    const [is_loading, setIs_loading] = useState(false);
 
     const getWithdrawals_list = async () => {
-        const docRef = collection(db, 'withdrawals');
-        const docSnap = await getDocs(query(docRef, orderBy('time', 'desc')));
-        // console.log(docSnap);
+        
+        const docSnap = await axios.get(`${BASE_URL}/get_all_withdrawals`).then(res=>res.data);
+        //console.log(docSnap);
         var temp_Data = [];
-        var idx = 0;
-        docSnap.forEach((doc) => {
-            if (doc.data().status === status) {
-                temp_Data = [...temp_Data, { ...doc.data(), 'withdrawal_id': docSnap._snapshot.docChanges[idx].doc.key.path.segments[6] }];
+        docSnap.data.forEach((doc) => {
+            if (doc.status === status) {
+                temp_Data = [...temp_Data, { ...doc, 'withdrawal_id': doc._id }];
             }
-            //console.log(temp_Data);
-            idx += 1;
-        });
-        //_snapshot.docChanges[0].doc.key
+        }
+        );
+        //console.log(docSnap);
         setwithdrawal_list(temp_Data);
-
     }
     // This is the rate at which the polling is done to update and get the new Data
-    useInterval(getWithdrawals_list, 5000);
+    useInterval(getWithdrawals_list, 6000);
 
     useEffect(() => {
         if(localStorage.getItem('name')===null) {
@@ -124,21 +124,12 @@ export default function Withdrawals() {
     }, []);
 
     const updateStatus = async (withdrawal_id, new_status, withdrawal_value, user_id) => {
-        const docRef = doc(db, 'withdrawals', withdrawal_id);
-        const docRef2 = doc(db, 'users', user_id);
-        await updateDoc(docRef, {
-            status: new_status
-        }).then(() => {
-            //console.log('Withdrawal Status Approved', new_status);
-            if (new_status === 'declined') {
-                updateDoc(docRef2, {
-                    balance: increment(Number(withdrawal_value))
-                });
-            }
-            getWithdrawals_list();
-        }).catch((error) => {
-            console.log('Some Error Occured');
-        });
+        
+        await axios.post(`${BASE_URL}/update_withdrawal_status`, {
+            withdrawal_id, new_status, withdrawal_value, user_id
+        })
+        .then(()=>getWithdrawals_list())
+        .catch((error)=>console.log('Some error occured!'));
     }
 
     const handleDrawerOpen = () => {

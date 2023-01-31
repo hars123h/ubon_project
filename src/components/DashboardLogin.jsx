@@ -1,10 +1,10 @@
 import { Typography, Box, TextField, InputAdornment, Button } from '@material-ui/core'
 import { Mail, VpnKey } from '@material-ui/icons'
-import { collection, getDocs, query, where } from 'firebase/firestore';
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import db from '../firebase/config';
+import BASE_URL from '../api_url';
+import axios from 'axios';
 
 const DashboardLogin = () => {
 
@@ -13,15 +13,13 @@ const DashboardLogin = () => {
     const navigate = useNavigate();
 
     const handleSubmit = async() => {
-        const data = await getDocs(query(collection(db,'controllers'), where('email','==',email), where('password','==', password)));
-        if(data.size===1) {
-            data.forEach((doc)=>{
-                localStorage.setItem('name',doc.data().name);
-                localStorage.setItem('email',doc.data().email);
-                localStorage.setItem('password',doc.data().passoword);
-                localStorage.setItem('access',doc.data().access);
-            });
-            //console.log(localStorage);
+        const {data} = await axios.post(`${BASE_URL}/admin_login`, {'email':email, 'password':password});
+        console.log(data);
+        if(data!==null) {            
+            localStorage.setItem('name',data.name);
+            localStorage.setItem('email',data.email);
+            localStorage.setItem('password',data.passoword);
+            localStorage.setItem('access',data.access);
             navigate('/admin/Dashboard');
         }else {
             toast('Invalid Email/Password!');

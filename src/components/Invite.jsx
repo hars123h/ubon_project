@@ -10,6 +10,8 @@ import { toast } from 'react-toastify';
 import QRCode from "react-qr-code";
 import { useContext } from 'react';
 import { AmountContext } from '../App';
+import axios from 'axios';
+import BASE_URL from '../api_url';
 
 //#df1f26
 const Invite = () => {
@@ -35,8 +37,9 @@ const Invite = () => {
     }
 
     const getUserDetails = async () => {
-        const details = await getDoc(doc(db, 'users', localStorage.getItem('uid')));
-        setUserDetails(details.data());
+        const details = await axios.post(`${BASE_URL}/get_user`, {user_id:localStorage.getItem('uid')})
+        .then(({data})=>data);
+        setUserDetails(details);
     }
 
     useLayoutEffect(() => {
@@ -66,7 +69,7 @@ const Invite = () => {
             </div>
 
             <p className='p-3 text-xs break-words'>
-            https://www.rtr365.tech/register/invite_code/${userDetails.user_invite}
+            https://www.rtr365.tech/register/invite_code/{userDetails.user_invite}
             </p>
 
             <div className='p-3 font-bold cursor-pointer'>

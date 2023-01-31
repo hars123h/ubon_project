@@ -5,11 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { collection, getDocs, serverTimestamp, Timestamp } from 'firebase/firestore';
+import { collection, getDocs, serverTimestamp } from 'firebase/firestore';
 import db from '../firebase/config';
 import { RotatingLines } from 'react-loader-spinner';
 import apache_logo from '../images/apache_logo.png';
-
+import axios from 'axios';
+import BASE_URL from '../api_url';
 
 
 const Login = () => {
@@ -34,31 +35,31 @@ const Login = () => {
 
 
     useEffect(() => {
-        console.log(serverTimestamp());
         getBlockedUsers();
     }, []);
 
     const getBlockedUsers = async () => {
-        const dataRes = await getDocs(collection(db, 'blockedUsers'));
+        const dataRes = await axios.get(`${BASE_URL}/get_blocked_users`).then(res=>res.data);
         var temp = [];
         dataRes.forEach((doc) => {
             //console.log(doc.data());
-            temp.push(doc.data().mobileNumber);
+            temp.push(doc.user_id);
             setBlockedUsers(temp);
         });
     }
 
-    const handleSignIn = () => {
+    const handleSignIn = async() => {
         if (bloackedUsers.includes(String(mobno))) {
             toaster('You are blocked by the administrator!');
             return;
         }
         setLoading(true);
         setText('Loading')
-        const new_mobno = mobno + '@gmail.com';
-        signInWithEmailAndPassword(auth, new_mobno, pwd)
-            .then((userCredential) => {
-                localStorage.setItem('uid',userCredential.user.uid);
+        
+        await axios.post(`${BASE_URL}/login`, {mobno, pwd})
+            .then(({data}) => {
+                console.log(data);
+                localStorage.setItem('uid',data.user_details._id);
                 setText('Login Successful!');
                 setTimeout(() => {
                     navigate('/home');
@@ -66,7 +67,7 @@ const Login = () => {
                 }, 1000);
             })
             .catch(error => {
-                console.log(error.message, error.code);
+                console.log(error);
                 setText('Something went wrong!');
                 setTimeout(() => {
                     setLoading(false);

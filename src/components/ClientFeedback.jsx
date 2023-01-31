@@ -5,6 +5,8 @@ import { Button, Select, MenuItem } from '@material-ui/core'
 import db from '../firebase/config.js';
 import { addDoc, doc, collection } from 'firebase/firestore'
 import { toast } from 'react-toastify';
+import axios from 'axios';
+import BASE_URL from '../api_url.js';
 
 const ClientFeedback = () => {
 
@@ -30,7 +32,7 @@ const ClientFeedback = () => {
     const handleSubmit = async () => {
 
         if (details.mobileNumber.length > 0 &&  details.description.length > 0 && details.date.length > 0) {
-            const response = await addDoc(collection(db, '/feedback'), details)
+            await axios.post(`${BASE_URL}/feedback`, details)
                 .then((response) => {toaster('Feedback sent successfully!')})
                 .catch(error => toaster('Something went wrong'));
         } else {

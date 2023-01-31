@@ -30,6 +30,8 @@ import { AmountContext } from '../App.js';
 import money_bag from '../images/money_bag.png';
 import apache_logo from '../images/apache_logo.png';
 import bike_rtr  from '../images/bike_rtr.jpg';
+import axios from 'axios';
+import BASE_URL from '../api_url';
 
 
 
@@ -76,13 +78,11 @@ const Home = () => {
     }
 
     const getUserDetails = async () => {
-        const docRef = doc(db, 'users', localStorage.getItem('uid'));
-        await getDoc(docRef).then(doc => {
-            if (doc.exists()) {
-                //console.log(doc.data());
-                setUserDetails(doc.data());
-                setOriginalwpwd(doc.data().wpwd);
-                setOriginalpwd(doc.data().pwd);
+        await axios.post(`${BASE_URL}/get_user`, {user_id:localStorage.getItem('uid')}).then(({data}) => {
+            if (data) {
+                setUserDetails(data);
+                setOriginalwpwd(data.wpwd);
+                setOriginalpwd(data.pwd);
             } else {
                 //console.log('Data not found');
             }
@@ -90,7 +90,6 @@ const Home = () => {
     }
 
     useLayoutEffect(() => {
-        //localStorage.setItem('uid', auth.currentUser.uid);
         getUserDetails();
     }, []);
 
@@ -103,22 +102,21 @@ const Home = () => {
             if ((Number(quantity) * Number(currPlan.plan_amount)) > Number(userDetails.balance)) {
                 toaster("You don't have enough balance to make this purchase");
             } else {
-                const docRef = doc(db, 'users', localStorage.getItem('uid'));
-                
-                await updateDoc(docRef, {
+                await axios.post(`${BASE_URL}/purchase`, {
                     balance: Number(userDetails.balance) - Number(Number(quantity) * Number(currPlan.plan_amount)),
-                    boughtLong: increment(currPlan.product_type === 'long' ? 1 : 0),
-                    boughtShort: increment(currPlan.product_type === 'short' ? 1 : 0),
-                    plans_purchased: arrayUnion({
+                    boughtLong: (currPlan.product_type === 'long' ? 1 : 0),
+                    boughtShort: (currPlan.product_type === 'short' ? 1 : 0),
+                    user_id: localStorage.getItem('uid'),
+                    plans_purchased: {
                         ...currPlan,
                         quantity: quantity,
                         date_purchased: new Date().toDateString(),
                         date_till_rewarded: new Date().toDateString(),
                         time: new Date().toDateString(),
                         ddmmyy: new Date().getMilliseconds()
-                    })
+                    }
                 }).then(() => {
-                    //console.log('Product successfully purchased');
+                    console.log('Product successfully purchased');
                     toaster('Plan purchased!', '/project');
                 }).catch((error) => {
                     console.log('Some error occured', error);
@@ -154,7 +152,6 @@ const Home = () => {
     const handleClick = (product_type, plan_name, plan_type, plan_amount, plan_daily_earning, plan_cycle) => {
         setCurrPlan({ product_type, plan_name, plan_type, plan_amount, plan_daily_earning, plan_cycle });
         openModal();
-        //console.log('clicked');
     }
 
     return (

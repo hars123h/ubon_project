@@ -2,12 +2,11 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import db from '../firebase/config.js'
-import { getAuth } from 'firebase/auth';
 import { RotatingLines } from 'react-loader-spinner';
 import useInterval from '../hooks/useInterval.js';
 import '../styles/record.css';
+import axios from 'axios';
+import BASE_URL from '../api_url.js';
 
 
 const nameMapper = {
@@ -22,42 +21,31 @@ const Record = () => {
     const [withdrawal_list, setWithdrawal_list] = useState([]);
     const [currentRecord, setCurrentRecord] = useState('recharges');
 
-    const auth = getAuth();
 
     const getRecharges_list = async () => {
-        const q = query(collection(db, "recharges"), where("user_id", "==", localStorage.getItem('uid')));
-        var temp_Data = [];
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-            temp_Data = [...temp_Data, doc.data()];
-        });
-        setRecharge_list(temp_Data);
+
+        const querySnapshot = await axios.post(`${BASE_URL}/get_user_recharges`, {user_id:localStorage.getItem('uid')})
+        .then(res=>res.data);
+        setRecharge_list(querySnapshot);
     }
 
     const getWithdrawals_list = async () => {
-        const q = query(collection(db, "withdrawals"), where("user_id", "==", localStorage.getItem('uid')));
-        var temp_Data = [];
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-            temp_Data = [...temp_Data, doc.data()];
-        });
-        setWithdrawal_list(temp_Data);
+        const querySnapshot = await axios.post(`${BASE_URL}/get_user_withdrawals`, {user_id:localStorage.getItem('uid')})
+        .then(res=>res.data);
+        setWithdrawal_list(querySnapshot);
     }
 
     // This is the rate at which the polling is done to update and get the new Data
-    useInterval(getRecharges_list, 10000);
-    useInterval(getWithdrawals_list, 10000);
+    useInterval(getRecharges_list, 5000);
+    useInterval(getWithdrawals_list, 5000);
 
 
     useEffect(() => {
         const getRecharges_list = async () => {
-            const q = query(collection(db, "recharges"), where("user_id", "==", localStorage.getItem('uid')));
-            var temp_Data = [];
-            const querySnapshot = await getDocs(q);
-            querySnapshot.forEach((doc) => {
-                temp_Data = [...temp_Data, doc.data()];
-            });
-            setRecharge_list(temp_Data);
+
+            const querySnapshot = await axios.post(`${BASE_URL}/get_user_recharges`, {user_id:localStorage.getItem('uid')})
+            .then(res=>res.data);
+            setRecharge_list(querySnapshot);
         }
         getRecharges_list();
         getWithdrawals_list();
@@ -115,12 +103,7 @@ const Record = () => {
                                     <div className='text-white text-md overflow-clip'><span className='font-bold text-white'>Recharge Value:</span> &#8377;{new Intl.NumberFormat().format(element.recharge_value)}</div>
                                     <div className='text-white text-md overflow-clip'><span className='font-bold text-white'>Ref No:</span> {element.refno}</div>
                                     <div className='text-white text-md overflow-clip'><span className='font-bold text-white'>Status:</span> {nameMapper[String(element.status)]}</div>
-                                    <div className='text-white text-md overflow-clip'><span className='font-bold text-white'>Date:</span> {new Date(element.time.seconds * 1000).toLocaleString('en-US', {
-                                        
-                                        day: 'numeric',
-                                        month: "2-digit",
-                                        year: "numeric"
-                                    })}</div>
+                                    <div className='text-white text-md overflow-clip'><span className='font-bold text-white'>Date:</span> {new Date(element.time).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'})}</div>
 
                                 </div>
 
@@ -136,12 +119,7 @@ const Record = () => {
                                 <div className='flex flex-col gap-1'>
                                     <div className='text-white text-md overflow-clip'><span className='font-bold text-white'>Withdrawal Amount:</span> &#8377;{new Intl.NumberFormat().format(element.withdrawalAmount)}</div>
                                     <div className='text-white text-md overflow-clip'><span className='font-bold text-white'>Status:</span> {nameMapper[String(element.status)]}</div>
-                                    <div className='text-white text-md overflow-clip'><span className='font-bold text-white'>Date:</span> {new Date(element.time.seconds * 1000).toLocaleString('en-US', {
-                                        
-                                        day: 'numeric',
-                                        month: "2-digit",
-                                        year: "numeric"
-                                    })}</div>
+                                    <div className='text-white text-md overflow-clip'><span className='font-bold text-white'>Date:</span> {new Date(element.time).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'})}</div>
                                 </div>
                             </div>
                         </div>

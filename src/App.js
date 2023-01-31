@@ -37,6 +37,8 @@ import UserDetails from './components/UserDetails';
 import { createContext, useEffect, useState, useLayoutEffect } from 'react';
 import { getDoc, doc } from 'firebase/firestore';
 import db from './firebase/config';
+import axios from 'axios';
+import BASE_URL from './api_url';
 
 
 export const AmountContext = createContext();
@@ -52,10 +54,11 @@ function App() {
   const getData =async()=> {
     
       //console.log('hello');
-      const dataRes = await getDoc(doc(db, 'amounts', 'wgx5GRblXXwhlmx4XYok'));
-      if (dataRes.exists()) {
+      const dataRes = await axios.get(`${BASE_URL}/amounts`).then(({data})=>data);
+      console.log(dataRes);
+      if (dataRes) {
         //console.log(dataRes.data());
-        setAmounsts(dataRes.data());
+        setAmounsts(dataRes.data);
       }
     
   }

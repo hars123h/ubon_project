@@ -1,14 +1,13 @@
 import React from 'react';
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import db from '../firebase/config.js';
 import {getAuth} from 'firebase/auth';
-import { collection, addDoc, Timestamp, doc, getDoc } from "firebase/firestore";
-import {toast} from 'react-toastify';
-import { useEffect, useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import { useContext } from 'react';
 import { AmountContext } from '../App.js';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import axios from 'axios';
+import BASE_URL from '../api_url.js';
 
 const RechargeWindow = () => {
 
@@ -34,11 +33,12 @@ const RechargeWindow = () => {
     }
 
     const getUserDetails = async() => {
-        const  user_info = await getDoc(doc(db, 'users', auth.currentUser.uid));
-        setUserDetails(user_info.data());
+        const  user_info = await axios.post(`${BASE_URL}/get_user`, {user_id:localStorage.getItem('uid')}).then(({data})=>data);
+        setUserDetails(user_info);
     }
 
     useEffect(()=>{
+        console.log(amountDetails)
         getUserDetails();
     },[]);
 
@@ -46,25 +46,24 @@ const RechargeWindow = () => {
 
     const handleRecharge = async () => {
         //console.log({ refno, recharge_value, status: 'pending' });
-
         if(refno.length!==12) {
             toaster('Enter a valid Ref No. of 12 digits');
             return;
         }
-
         try {
-            const docRef1 = await addDoc(collection(db, "recharges"), { 
+            await axios.post(`${BASE_URL}/place_recharge`, { 
                 refno, 
                 recharge_value, 
                 status: 'pending', 
-                user_id: auth.currentUser.uid, 
-                mobno:auth.currentUser.email.substring(0,10), 
-                time:Timestamp.now(),
+                user_id: localStorage.getItem('uid'), 
+                mobno:userDetails.mobno, 
+                time:new Date(),
                 parent_id: userDetails.parent_id,
                 grand_parent_id: userDetails.grand_parent_id?userDetails.grand_parent_id:'',
                 great_grand_parent_id: userDetails.great_grand_parent_id?userDetails.great_grand_parent_id:''
-             });
-            const docRef2 = await addDoc(collection(db, 'users', auth.currentUser.uid, 'placed_recharges'), {recharge_id:docRef1.id, time:Timestamp.now()});
+             }).then((response)=>{
+                console.log('Recharge placed successfully!');
+             })
             
             //console.log("Document written with ID: ", docRef1.id, docRef2.id);
             toaster('Request Placed Successfully!', '/record');

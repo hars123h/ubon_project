@@ -1,9 +1,8 @@
 import React from 'react';
-import db from '../firebase/config.js';
-import { getDocs, query, where, collection, doc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { toast } from 'react-toastify';
+import axios from 'axios';
+import BASE_URL from '../api_url';
 
 const ForgotPassword = () => {
 
@@ -39,20 +38,13 @@ const ForgotPassword = () => {
     }
 
     const handleReset = async () => {
-        const data = await getDocs(query(collection(db, 'users'), where('mobno', '==', mobno)));
-        if (data.size !== 1) {
-            toaster('Something went wrong');
-        } else {
-            data.forEach(doc => {
-                fetch(`https://www.fast2sms.com/dev/bulkV2?authorization=27b58V4YOqBDMgWvNjapz1k9IHlrJfynC6w0hceRAZGoLimK3PuJC7OoiV4N2B6DjfwWKzb0lhgEetPH&route=q&message=Your Password is ${doc.data().pwd}. Please Reset Immediately&language=english&flash=0&numbers=${mobno}`)
-                    .then((response) => toaster('Check Message Inbox for password'))
-                    .catch((error) => console.log(error))
-            })
+        await axios.post(`${BASE_URL}/forgot_password`, {mobno: mobno}).then(({data})=>
+         {
+            toaster('Check Message Inbox for password');
             setOtp('');
             setOTPfield('');
             navigate('/login');
-            //console.log(data);
-        }
+        })
     }
 //[#0096D5] [#0096D5] [#0096D5]
     return (

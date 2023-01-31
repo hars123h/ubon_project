@@ -28,7 +28,8 @@ import { addDoc, collection, deleteDoc, getDoc, getDocs, doc } from 'firebase/fi
 import db from '../firebase/config';
 import { toast } from 'react-toastify'
 import { Delete } from '@material-ui/icons';
-
+import axios from 'axios';
+import BASE_URL from '../api_url';
 
 const drawerWidth = 240;
 
@@ -104,18 +105,20 @@ export default function Access() {
     const [open, setOpen] = React.useState(true);
 
     const getControllers = async () => {
-        const data = await getDocs(collection(db, 'controllers'));
+        const data = await axios.get(`${BASE_URL}/get_all_controllers`).then(res=>res.data);
         var temp = [];
         var idx = 0;
         data.forEach((element) => {
-            temp = [...temp, { ...element.data(), 'controller_id': data._snapshot.docChanges[idx].doc.key.path.segments[6] }]
-            idx+=1;
+            temp = [...temp, { ...element, 'controller_id': element._id }]
         });
         setControllers(temp);
     }
 
     const handleDelete = async(id) => {
-        const response  = await deleteDoc(doc(db, 'controllers', id))
+        console.log(id);
+         await axios.post(`${BASE_URL}/delete_controller`, {
+            user_id: id
+        })
         .then(()=>toast('User deleted successfully!'))
         .catch(()=>toast('Something went wrong!'));
         getControllers();
@@ -130,7 +133,7 @@ export default function Access() {
     }, []);
 
     const handleSubmit = async () => {
-        const dataAdded = await addDoc(collection(db, 'controllers'), details)
+        await axios.post(`${BASE_URL}/add_controller`, details)
             .then(() => toast('User Added Successfully'))
             .catch(() => toast('Something went wrong'));
         setDetails({

@@ -24,6 +24,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import {collection, doc, getDocs, orderBy, query} from 'firebase/firestore';
 import { useState } from 'react';
 import db from '../firebase/config.js';
+import axios from 'axios';
+import BASE_URL from '../api_url';
 
 const drawerWidth = 240;
 
@@ -92,10 +94,10 @@ export default function Feedback() {
     const navigate = useNavigate();
 
     const getData = async() => {
-        const data = await getDocs(query(collection(db, 'feedback'), orderBy('date', 'desc')));
+        const data = await axios.get(`${BASE_URL}/get_all_feedbacks`).then(res=>res.data);
         var temp = [];
         data.forEach((doc)=>{
-            temp = [...temp, doc.data()];
+            temp = [...temp, doc];
         });
         setFeedbacks(temp);
     }

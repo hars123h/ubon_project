@@ -24,6 +24,8 @@ import { useEffect } from 'react';
 import db from '../firebase/config.js';
 import {updateDoc, getDoc,doc, collection} from 'firebase/firestore';
 import {toast} from 'react-toastify';
+import axios from 'axios';
+import BASE_URL from '../api_url';
 
 const drawerWidth = 240;
 
@@ -102,10 +104,9 @@ export default function AmountSetup() {
     });
 
     const getAmountValues = async() => {
-        const details = await getDoc(doc(db, 'amounts', 'wgx5GRblXXwhlmx4XYok'))
-        if(details.exists()) {
-            setAmounts(details.data());
-            //console.log(details.data());
+        const details = await axios.get(`${BASE_URL}/amounts`)
+        if(details) {
+            setAmounts(details.data.data);
         }else {
             toast('Not able to fetch Amounts!');
         }
@@ -128,7 +129,7 @@ export default function AmountSetup() {
 
     const handleSetValues = async() => {
         //wgx5GRblXXwhlmx4XYok
-        const response = await updateDoc(doc(db, 'amounts', 'wgx5GRblXXwhlmx4XYok'), amounts)
+        const response = await axios.post(`${BASE_URL}/update_amounts`, amounts)
         .then((response)=>toast('Amounts updated successfully!'))
         .catch(error=>toast('Something went wrong!'));
     }

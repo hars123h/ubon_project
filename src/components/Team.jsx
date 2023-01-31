@@ -1,19 +1,18 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import db from '../firebase/config';
-import {doc, getDoc} from 'firebase/firestore';
 import { useState, useLayoutEffect } from 'react';
 import { getAuth } from 'firebase/auth';
+import axios from 'axios';
+import BASE_URL from '../api_url';
 
 const Team = () => {
   const navigate = useNavigate();
-  const auth = getAuth();
   const [userDetails, setUserDetails] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const getUserDetails = async() => {
-    const details = await getDoc(doc(db, 'users', localStorage.getItem('uid')));
-    setUserDetails(details.data());
+    const details = await axios.post(`${BASE_URL}/get_user`, {user_id:localStorage.getItem('uid')}).then(({data})=>data);
+    setUserDetails(details);
   }
 
   useLayoutEffect(()=>{

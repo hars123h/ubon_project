@@ -1,10 +1,10 @@
 import React from 'react';
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { doc, updateDoc } from 'firebase/firestore';
-import db from '../firebase/config';
-import { getAuth, updatePassword } from 'firebase/auth';
-import { toast } from 'react-toastify';
+import { getAuth } from 'firebase/auth';
+import axios from 'axios';
+import BASE_URL from '../api_url';
+
 
 
 const ChangeLoginPassword = () => {
@@ -29,14 +29,10 @@ const ChangeLoginPassword = () => {
 
     const handleReset = async () => {
         if (loc.state.loginPassword === oldpwd && newpwd === cnfNewPwd) {
-            const docRef = doc(db, 'users', auth.currentUser.uid);
-            await updatePassword(auth.currentUser, newpwd)
+            await axios.post(`${BASE_URL}/reset_login_password`, {user_id:localStorage.getItem('uid'), new_pwd:newpwd})
                 .then(() => {
-                    updateDoc(docRef, { pwd: newpwd }).then(() => {
-                        //console.log('Password Update successfully');
-                        setCnfNewPwd(''); setNewpwd(''); setOldpwd('');
-                        toaster('Password reset successfully!');
-                    }).catch((error) => console.log('Could Not update the datebase'));
+                    setCnfNewPwd(''); setNewpwd(''); setOldpwd('');
+                    toaster('Password reset successfully!');
                 }).catch(error => {
                     console.log('Could Not Update the passwored', error);
                     toaster('Please login again and retry to reset the password!');

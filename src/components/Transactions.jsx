@@ -33,6 +33,9 @@ import { AmountContext } from '../App.js';
 import moment from 'moment';
 import { RotatingLines } from 'react-loader-spinner';
 import Status from './Status';
+import axios from 'axios';
+import BASE_URL from '../api_url.js';
+import { toast } from 'react-toastify';
 
 
 
@@ -107,20 +110,14 @@ export default function Transactions() {
     const navigate = useNavigate();
 
     const getRecharges_list = async () => {
-        const docRef = collection(db, 'recharges');
-        const docSnap = await getDocs(query(docRef, orderBy('time', 'desc')));
-        // console.log(docSnap);
+        const docSnap = await axios.get(`${BASE_URL}/get_all_recharges`).then((res)=>res.data);
         var temp_Data = [];
-        var idx = 0;
-        docSnap.forEach((doc) => {
-            //console.log(doc.data(), 'this is the doc data');
-            if (doc.data().status === value) {
-            temp_Data = [...temp_Data, { ...doc.data(), 'recharge_id': docSnap._snapshot.docChanges[idx].doc.key.path.segments[6] }];
+        docSnap.data.forEach((doc) => {
+            if (doc.status === value) {
+            temp_Data = [...temp_Data, { ...doc, 'recharge_id': doc._id }];
             }
-            //console.log(temp_Data);
-            idx += 1;
         });
-        //_snapshot.docChanges[0].doc.key
+        
         setRecharge_list(temp_Data);
     }
 
@@ -138,45 +135,18 @@ export default function Transactions() {
         getRecharges_list();
     },[value]);
 
-    const updateStatus = async (recharge_id, new_status, recharge_value, user_id, element) => {
-        const docRef = doc(db, 'recharges', recharge_id);
-        const docRef2 = doc(db, 'users', user_id);
-        //console.log(element);
-        //console.log(user_id, parent_id, grand_parent_id);
+    const updateStatus = async(recharge_id, new_status, recharge_value, user_id, element) => {
+        
         setLoading(true);
-        await updateDoc(docRef, {
-            status: new_status
+        await axios.post(`${BASE_URL}/update_recharge_status`, {
+            recharge_id, new_status, recharge_value, user_id, 
+            "parent_id":element.parent_id, 
+            "grand_parent_id":element.grand_parent_id, 
+            "great_grand_parent_id":element.great_grand_parent_id
         }).then(() => {
-            //console.log('Recharge Status Approved', new_status);
-            //console.log(element);
-            //console.log('in This section');
-            if (new_status === 'confirmed') {
-                updateDoc(docRef2, {
-                    recharge_amount: increment(recharge_value),
-                    balance: increment(Number(recharge_value) + Number(amountDetails.recharge_bonus))
-                });
-                //(Number(amountDetails.level1_percent) / 100)
-                updateDoc(doc(db, 'users', element.parent_id), {
-                    balance: increment((Number(amountDetails.level1_percent) / 100) * Number(recharge_value)),
-                    directRecharge: increment(Number(recharge_value)),
-                    directMember: arrayUnion(user_id)
-                });
-                //(Number(amountDetails.level2_percent) / 100)
-                updateDoc(doc(db, 'users', element.grand_parent_id), {
-                    balance: increment((Number(amountDetails.level2_percent) / 100) * Number(recharge_value)),
-                    indirectRecharge: increment(Number(recharge_value)),
-                    indirectMember: arrayUnion(user_id)
-                });
-                //(Number(amountDetails.level3_percent) / 100)
-                updateDoc(doc(db, 'users', element.great_grand_parent_id), {
-                    balance: increment((Number(amountDetails.level3_percent) / 100) * Number(recharge_value)),
-                    indirectRecharge: increment(Number(recharge_value)),
-                    indirectMember: arrayUnion(user_id)
-                });
-                setLoading(false);
-            }
+            setLoading(false);
+            toast('Status updated successfully!'); 
             getRecharges_list();
-
         })
         .catch((error) => {
             console.log('Some Error Occured', error);

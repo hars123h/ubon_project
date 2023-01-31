@@ -2,12 +2,8 @@ import React from 'react';
 import recharge1_img from '../images/recharge1_img.png';
 import pot_img from '../images/pot_img.png';
 import { useNavigate } from 'react-router-dom';
-import { signOut, getAuth } from 'firebase/auth';
 import { useLayoutEffect } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
-import db from '../firebase/config';
 import { useState } from 'react';
-import ss_logo from '../images/ss_logo.jpg';
 import { RotatingLines } from 'react-loader-spinner';
 import book_image from '../images/book_image.png';
 import paper_image from '../images/paper_image.png';
@@ -15,21 +11,17 @@ import adminSetting from '../images/adminSetting.png';
 import money_bag from '../images/money_bag.png';
 import invite_image from '../images/invite_image.png';
 import recharge_image from '../images/recharge_image.png';
-import buildingNew from '../images/buildingNew.png';
-import homeNew from '../images/homeNew.png';
-import teamNew from '../images/teamNew.png';
-import {toast} from 'react-toastify';
-import waltonbd_company from '../images/waltonbd_company.png';
 import ubon_home from '../images/ubon_home.png';
 import ubon_user from '../images/ubon_user.png';
 import ubon_group from '../images/ubon_group.png';
 import apache_logo from '../images/apache_logo.png';
+import axios from 'axios';
+import BASE_URL from '../api_url';
 
 
 const Mine = () => {
 
   const navigate = useNavigate();
-  const auth = getAuth();
   const [mobileno, setMobileno] = useState('');
   const [recharge_amount, setRecharge_amount] = useState(0);
   const [balance, setBalance] = useState(0);
@@ -52,15 +44,15 @@ const Mine = () => {
 
   useLayoutEffect(() => {
     const getUserInfo = async () => {
-      const docRef = await getDoc(doc(db, 'users', localStorage.getItem('uid')));
-      if (docRef.exists()) {
+      const docRef = await axios.post(`${BASE_URL}/get_user`, {user_id:localStorage.getItem('uid')}).then(({data})=>data);
+      if (docRef) {
         //console.log(docRef.data());
-        setMobileno(docRef.data().mobno);
-        setRecharge_amount(docRef.data().recharge_amount);
-        setBalance(docRef.data().balance);
-        setEarning(docRef.data().earning);
-        setOriginalwpwd(docRef.data().wpwd);
-        setOriginalpwd(docRef.data().pwd);
+        setMobileno(docRef.mobno);
+        setRecharge_amount(docRef.recharge_amount);
+        setBalance(docRef.balance);
+        setEarning(docRef.earning);
+        setOriginalwpwd(docRef.wpwd);
+        setOriginalpwd(docRef.pwd);
         //console.log(new Date(((docRef.data().time.toDate()))));
       } else {
         console.log('Document does not exits');
@@ -72,12 +64,8 @@ const Mine = () => {
   }, []);
 
   const handleSignOut = () => {
-    signOut(auth).then(() => {
-      localStorage.removeItem('uid');
+      localStorage.clear();
       navigate('/login');
-    }).catch((error) => {
-      console.log(error.message, error.code);
-    });
   }
 
   const isBetween = () => {

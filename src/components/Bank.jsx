@@ -2,9 +2,8 @@ import React from 'react';
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
-import { doc, updateDoc } from 'firebase/firestore';
-import db from '../firebase/config.js';
-import { toast } from 'react-toastify';
+import axios from 'axios';
+import BASE_URL from '../api_url';
 
 const Bank = () => {
     const navigate = useNavigate();
@@ -43,11 +42,9 @@ const Bank = () => {
 
     const handleSubmit = async () => {
         if (loc.state.withdrawalPassword === wpwd) {
-            const docRef = doc(db, 'users', auth.currentUser.uid);
-            await updateDoc(docRef, { bankDetails: details })
+            await axios.post(`${BASE_URL}/bank_details`, {user_id:localStorage.getItem('uid'), bank_details:details})
                 .then(() => {
-                    toaster('Bank details added successfully!');
-                    
+                    toaster('Bank details added successfully!');    
                 })
                 .catch(() => console.log('Some error Occured')
                 );
