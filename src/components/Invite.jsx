@@ -1,12 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import sample_qr from '../images/sample_qr.png';
-import db from '../firebase/config.js';
 import { getAuth } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
 import { useState, useLayoutEffect } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { toast } from 'react-toastify';
 import QRCode from "react-qr-code";
 import { useContext } from 'react';
 import { AmountContext } from '../App';
@@ -69,11 +65,11 @@ const Invite = () => {
             </div>
 
             <p className='p-3 text-xs break-words'>
-            https://www.rtr365.tech/register/invite_code/{userDetails.user_invite}
+            https://www.amazfit44.tech/register/invite_code/{userDetails.user_invite}
             </p>
 
             <div className='p-3 font-bold cursor-pointer'>
-                <CopyToClipboard text={`https://www.rtr365.tech/register/invite_code/${userDetails.user_invite}`} onCopy={() => toaster('Copied to clipboard')}>
+                <CopyToClipboard text={`https://www.amazfit44.tech/register/invite_code/${userDetails.user_invite}`} onCopy={() => toaster('Copied to clipboard')}>
                     <span>Invite Link: click to copy</span>
                 </CopyToClipboard>
             </div>
@@ -89,7 +85,7 @@ const Invite = () => {
                 <QRCode
                     size={120}
                     style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                    value={`https://www.rtr365.tech/register/invite_code/${userDetails.user_invite}`}
+                    value={`https://www.amazfit44.tech/register/invite_code/${userDetails.user_invite}`}
                     viewBox={`0 0 120 120`}
                 />
             </div>

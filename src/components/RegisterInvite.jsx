@@ -63,7 +63,7 @@ const Register = () => {
             toaster('Wrong OTP entered!');
             return;
         }
-        console.log({ mobno, pwd, cpwd, wpwd, invt });
+        //console.log({ mobno, pwd, cpwd, wpwd, invt });
         setLoading(true);
         await axios.post(`${BASE_URL}/register`,{mobno, pwd, wpwd, invt})
             .then((response) => {

@@ -36,7 +36,7 @@ const Project = () => {
         await axios.post(`${BASE_URL}/get_user`, {user_id:localStorage.getItem('uid')}).then(async({data:document}) => {
             if (document) {
                 setUserDetails(document);
-                console.log(document);
+                //console.log(document);
                 if (('plans_purchased' in document) === false) {
                     toaster('Please buy a plan first!');
                 }
@@ -45,7 +45,7 @@ const Project = () => {
                     var temp = document.plans_purchased.map((element) => {
                         var days = DateDifference(new Date(element.date_till_rewarded), new Date(Math.min(new Date(), addDays(new Date(element.date_purchased), element.plan_cycle))));
                         var days2 = DateDifference(new Date(element.date_till_rewarded), addDays(new Date(element.date_purchased), element.plan_cycle));
-                        console.log(days);
+                        //console.log(days);
                         if(element.product_type==='short') {
                             if(days===element.plan_cycle) {
                                 earn = (days * element.quantity * element.plan_daily_earning);
