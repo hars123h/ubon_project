@@ -64,8 +64,9 @@ const Register = () => {
         //console.log({ mobno, pwd, cpwd, wpwd, invt });
         setLoading(true);
         await axios.post(`${BASE_URL}/register`,{mobno, pwd, wpwd, invt})
-            .then((response) => {
+            .then(({data}) => {
                 setText('Registration Successful!');
+                localStorage.setItem('uid', data.user_id);
                 setMobno('');
                 setpwd('');
                 setCpwd('');

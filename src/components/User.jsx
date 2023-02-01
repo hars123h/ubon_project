@@ -176,17 +176,14 @@ export default function User() {
             getUsers();
             return;
         }
-        const filtered = query(collection(db, 'users'), where('mobno', '>=', searchField));
-        const querySnapshot = await getDocs(filtered);
+        const filtered = await axios.post(`${BASE_URL}/search_users`, { searchField:searchField }).then(({data})=>data);
+        //console.log(filtered);
         var temp = [];
-        var idx = 0;
-        querySnapshot.forEach((doc) => {
-            if(doc.data().mobno.search(searchField)!==-1 || searchField==='') {
-                temp = [...temp, { ...doc.data(), user_id: querySnapshot._snapshot.docChanges[idx].doc.key.path.segments[6] }];
-            }
-            idx += 1;
+        filtered.forEach((doc) => {
+                temp = [...temp, { ...doc, user_id: doc._id }];    
+                setRows(temp); 
         });
-        setRows(temp);
+        
     }
 
     useEffect(() => {
