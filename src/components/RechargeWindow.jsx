@@ -38,7 +38,7 @@ const RechargeWindow = () => {
     }
 
     useEffect(()=>{
-        console.log(amountDetails)
+        //console.log(amountDetails)
         getUserDetails();
     },[]);
 

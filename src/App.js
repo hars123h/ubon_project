@@ -55,7 +55,7 @@ function App() {
     
       //console.log('hello');
       const dataRes = await axios.get(`${BASE_URL}/amounts`).then(({data})=>data);
-      console.log(dataRes);
+      //console.log(dataRes);
       if (dataRes) {
         //console.log(dataRes.data());
         setAmounsts(dataRes.data);
