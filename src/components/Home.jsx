@@ -3,36 +3,29 @@ import Slider from './Slider';
 import Card from './Card';
 import { useNavigate } from 'react-router-dom';
 import ReactModal from 'react-modal';
-import { arrayUnion, doc, getDoc, increment, updateDoc } from 'firebase/firestore';
-import db from '../firebase/config.js';
-import { getAuth } from 'firebase/auth';
 import headset1 from '../images/headset1.png';
 import ubon_home from '../images/ubon_home.png';
 import ubon_user from '../images/ubon_user.png';
 import ubon_group from '../images/ubon_group.png';
-import new_bike from '../images/new_bike.jpg';
 import book_image from '../images/book_image.png';
-import ubon_1 from '../images/ubon_1.jpg';
-import ubon_2 from '../images/ubon_2.jpg';
-import ubon_3 from '../images/ubon_3.jpg';
-import ubon_4 from '../images/ubon_4.jpg';
-import ubon_5 from '../images/ubon_5.jpg';
-import ubon_6 from '../images/ubon_6.jpg';
-import ubon_7 from '../images/ubon_7.png';
-import ubon_8 from '../images/ubon_8.jpg';
-import ubon_9 from '../images/ubon_9.jpg';
-import download_image from '../images/download_image.png';
 import recharge_image from '../images/recharge_image.png';
 import invite_image from '../images/invite_image.png';
-import buildingNew from '../images/buildingNew.png';
 import { useContext } from 'react';
 import { AmountContext } from '../App.js';
 import money_bag from '../images/money_bag.png';
-import apache_logo from '../images/apache_logo.png';
-import bike_rtr  from '../images/bike_rtr.jpg';
 import axios from 'axios';
 import BASE_URL from '../api_url';
 
+import amaz_big1 from '../images/amaz_big1.jpg';
+import amaz_big2 from '../images/amaz_big2.png';
+import amaz_big3 from '../images/amaz_big3.jpg';
+import amaz_big4 from '../images/amaz_big4.jpg';
+import amaz_big5 from '../images/amaz_big5.jpg';
+
+import amaz_short1 from '../images/amaz_short1.jpg';
+import amaz_short2 from '../images/amaz_short2.jpg';
+import amaz_short3 from '../images/amaz_short3.jpg';
+import amaz_short4 from '../images/amaz_short4.jpg';
 
 
 const customStyles = {
@@ -49,7 +42,6 @@ const customStyles = {
 const Home = () => {
 
     const navigate = useNavigate();
-    const auth = getAuth();
     const [modalIsOpen, setIsOpen] = React.useState(false);
     const [quantity, setQuantity] = React.useState(1);
     const [currPlan, setCurrPlan] = React.useState(null);
@@ -232,61 +224,61 @@ const Home = () => {
                     <div className='grid grid-cols-2'>
                         {userDetails && (amountDetails.plan_state[0] === 0) ? (
                             <span className='pointer-events-none'>
-                                <Card product_type={"long"} product_image={ubon_1} handleClick={handleClick} plan_name={"RTR 1"} plan_cycle={50} plan_daily_earning={40} plan_amount={300} plan_type={'Big Plan'} />
+                                <Card product_type={"long"} product_image={amaz_big1} handleClick={handleClick} plan_name={"amazfit 1"} plan_cycle={50} plan_daily_earning={40} plan_amount={300} plan_type={'Big Plan'} />
                             </span>
                         ) : (
                             <span>
-                                <Card product_type={"long"} product_image={ubon_1} handleClick={handleClick} plan_name={"RTR 1"} plan_cycle={50} plan_daily_earning={40} plan_amount={300} plan_type={'Big Plan'} />
+                                <Card product_type={"long"} product_image={amaz_big1} handleClick={handleClick} plan_name={"amazfit 1"} plan_cycle={50} plan_daily_earning={40} plan_amount={300} plan_type={'Big Plan'} />
                             </span>
                         )}
 
                         {userDetails && (amountDetails.plan_state[1] === 0) ? (
                             <span className='pointer-events-none'>
-                                <Card product_type={"long"} product_image={ubon_2} handleClick={handleClick} plan_name={"RTR 2"} plan_cycle={30} plan_daily_earning={90} plan_amount={600} plan_type={'Big Plan'} />
+                                <Card product_type={"long"} product_image={amaz_big2} handleClick={handleClick} plan_name={"amazfit 2"} plan_cycle={30} plan_daily_earning={90} plan_amount={600} plan_type={'Big Plan'} />
                             </span>
                         ) : (
                             <span>
-                                <Card product_type={"long"} product_image={ubon_2} handleClick={handleClick} plan_name={"RTR 2"} plan_cycle={30} plan_daily_earning={90} plan_amount={600} plan_type={'Big Plan'} />
+                                <Card product_type={"long"} product_image={amaz_big2} handleClick={handleClick} plan_name={"amazfit 2"} plan_cycle={30} plan_daily_earning={90} plan_amount={600} plan_type={'Big Plan'} />
                             </span>
                         )}
 
                         {userDetails && (amountDetails.plan_state[2] === 0) ? (
                             <span className='pointer-events-none'>
-                                <Card product_type={"long"} product_image={ubon_3} handleClick={handleClick} plan_name={"RTR 3"} plan_cycle={35} plan_daily_earning={200} plan_amount={1500} plan_type={'Big Plan'} />
+                                <Card product_type={"long"} product_image={amaz_big3} handleClick={handleClick} plan_name={"amazfit 3"} plan_cycle={35} plan_daily_earning={200} plan_amount={1500} plan_type={'Big Plan'} />
                             </span>
                         ) : (
                             <span>
-                                <Card product_type={"long"} product_image={ubon_3} handleClick={handleClick} plan_name={"RTR 3"} plan_cycle={35} plan_daily_earning={200} plan_amount={1500} plan_type={'Big Plan'} />
+                                <Card product_type={"long"} product_image={amaz_big3} handleClick={handleClick} plan_name={"amazfit 3"} plan_cycle={35} plan_daily_earning={200} plan_amount={1500} plan_type={'Big Plan'} />
                             </span>
                         )}
 
                         {userDetails && (amountDetails.plan_state[3] === 0) ? (
                             <span className='pointer-events-none'>
-                                <Card product_type={"long"} product_image={ubon_4} handleClick={handleClick} plan_name={"RTR 4"} plan_cycle={20} plan_daily_earning={1000} plan_amount={5000} plan_type={'Big Plan'} />
+                                <Card product_type={"long"} product_image={amaz_big4} handleClick={handleClick} plan_name={"amazfit 4"} plan_cycle={20} plan_daily_earning={1000} plan_amount={5000} plan_type={'Big Plan'} />
                             </span>
                         ) : (
                             <span>
-                                <Card product_type={"long"} product_image={ubon_4} handleClick={handleClick} plan_name={"RTR 4"} plan_cycle={20} plan_daily_earning={1000} plan_amount={5000} plan_type={'Big Plan'} />
+                                <Card product_type={"long"} product_image={amaz_big4} handleClick={handleClick} plan_name={"amazfit 4"} plan_cycle={20} plan_daily_earning={1000} plan_amount={5000} plan_type={'Big Plan'} />
                             </span>
                         )}
 
                         {userDetails && (amountDetails.plan_state[4] === 0) ? (
                             <span className='pointer-events-none'>
-                                <Card product_type={"long"} product_image={ubon_5} handleClick={handleClick} plan_name={"RTR 5"} plan_cycle={18} plan_daily_earning={2500} plan_amount={12000} plan_type={'Big Plan'} />
+                                <Card product_type={"long"} product_image={amaz_big5} handleClick={handleClick} plan_name={"amazfit 5"} plan_cycle={18} plan_daily_earning={2500} plan_amount={12000} plan_type={'Big Plan'} />
                             </span>
                         ) : (
                             <span>
-                                <Card product_type={"long"} product_image={ubon_5} handleClick={handleClick} plan_name={"RTR 5"} plan_cycle={18} plan_daily_earning={2500} plan_amount={12000} plan_type={'Big Plan'} />
+                                <Card product_type={"long"} product_image={amaz_big5} handleClick={handleClick} plan_name={"amazfit 5"} plan_cycle={18} plan_daily_earning={2500} plan_amount={12000} plan_type={'Big Plan'} />
                             </span>
                         )}
 
                         {userDetails && (amountDetails.plan_state[5] === 0) ? (
                             <span className='pointer-events-none'>
-                                <Card  product_type={"long"} product_image={bike_rtr} handleClick={handleClick} plan_name={"RTR 6"} plan_cycle={10} plan_daily_earning={4000} plan_amount={20000} plan_type={'Big Plan'} />
+                                <Card  product_type={"long"} product_image={amaz_big1} handleClick={handleClick} plan_name={"amazfit 6"} plan_cycle={10} plan_daily_earning={4000} plan_amount={20000} plan_type={'Big Plan'} />
                             </span>
                         ) : (
                             <span>
-                                <Card product_type={"long"} product_image={bike_rtr} handleClick={handleClick} plan_name={"RTR 6"} plan_cycle={10} plan_daily_earning={4000} plan_amount={20000} plan_type={'Big Plan'} />
+                                <Card product_type={"long"} product_image={amaz_big1} handleClick={handleClick} plan_name={"amazfit 6"} plan_cycle={10} plan_daily_earning={4000} plan_amount={20000} plan_type={'Big Plan'} />
                             </span>
                         )}
                     </div>)}
@@ -296,38 +288,38 @@ const Home = () => {
                         {userDetails && (userDetails.boughtLong < 1 || amountDetails.plan_state[6] === 0) ?
                             (
                                 <span className='pointer-events-none'>
-                                    <Card product_type={"short"} product_image={ubon_6} handleClick={handleClick} plan_name={"RTR 7"} plan_cycle={3} plan_daily_earning={230} plan_amount={410} plan_type={'Short Plan'} />
+                                    <Card product_type={"short"} product_image={amaz_short1} handleClick={handleClick} plan_name={"amazfit 7"} plan_cycle={3} plan_daily_earning={230} plan_amount={410} plan_type={'Short Plan'} />
                                 </span>
                             ) :
                             <span>
-                                <Card product_type={"short"} product_image={ubon_6} handleClick={handleClick} plan_name={"RTR 7"} plan_cycle={3} plan_daily_earning={230} plan_amount={410} plan_type={'Short Plan'} />
+                                <Card product_type={"short"} product_image={amaz_short1} handleClick={handleClick} plan_name={"amazfit 7"} plan_cycle={3} plan_daily_earning={230} plan_amount={410} plan_type={'Short Plan'} />
                             </span>
                         }
 
                         {userDetails && (userDetails.boughtLong < 1 || amountDetails.plan_state[7] === 0) ?
                             (<span className='pointer-events-none'>
-                                <Card product_type={"short"} product_image={ubon_7} handleClick={handleClick} plan_name={"RTR 8"} plan_cycle={4} plan_daily_earning={400} plan_amount={1100} plan_type={'Short Plan'} />
+                                <Card product_type={"short"} product_image={amaz_short2} handleClick={handleClick} plan_name={"amazfit 8"} plan_cycle={4} plan_daily_earning={400} plan_amount={1100} plan_type={'Short Plan'} />
                             </span>) :
                             (<span className=''>
-                                <Card product_type={"short"} product_image={ubon_7} handleClick={handleClick} plan_name={"RTR 8"} plan_cycle={4} plan_daily_earning={400} plan_amount={1100} plan_type={'Short Plan'} />
+                                <Card product_type={"short"} product_image={amaz_short2} handleClick={handleClick} plan_name={"amazfit 8"} plan_cycle={4} plan_daily_earning={400} plan_amount={1100} plan_type={'Short Plan'} />
                             </span>
                             )}
 
                         {userDetails && (userDetails.boughtLong < 1 || amountDetails.plan_state[8] === 0) ?
                             (<span className='pointer-events-none'>
-                                <Card product_type={"short"} product_image={new_bike} handleClick={handleClick} plan_name={"RTR 9"} plan_cycle={3} plan_daily_earning={1200} plan_amount={3000} plan_type={'Short Plan'} />
+                                <Card product_type={"short"} product_image={amaz_short3} handleClick={handleClick} plan_name={"amazfit 9"} plan_cycle={3} plan_daily_earning={1200} plan_amount={3000} plan_type={'Short Plan'} />
                             </span>) :
                             (<span className=''>
-                                <Card product_type={"short"} product_image={new_bike} handleClick={handleClick} plan_name={"RTR 9"} plan_cycle={3} plan_daily_earning={1200} plan_amount={3000} plan_type={'Short Plan'} />
+                                <Card product_type={"short"} product_image={amaz_short3} handleClick={handleClick} plan_name={"amazfit 9"} plan_cycle={3} plan_daily_earning={1200} plan_amount={3000} plan_type={'Short Plan'} />
                             </span>
                             )}
 
                         {userDetails && (userDetails.boughtLong < 1 || amountDetails.plan_state[9] === 0) ?
                             (<span className='pointer-events-none'>
-                                <Card product_type={"short"} product_image={ubon_9} handleClick={handleClick} plan_name={"RTR 10"} plan_cycle={3} plan_daily_earning={3200} plan_amount={8000} plan_type={'Short Plan'} />
+                                <Card product_type={"short"} product_image={amaz_short4} handleClick={handleClick} plan_name={"amazfit 10"} plan_cycle={3} plan_daily_earning={3200} plan_amount={8000} plan_type={'Short Plan'} />
                             </span>) :
                             (<span className=''>
-                                <Card product_type={"short"} product_image={ubon_9} handleClick={handleClick} plan_name={"RTR 10"} plan_cycle={3} plan_daily_earning={3200} plan_amount={8000} plan_type={'Short Plan'} />
+                                <Card product_type={"short"} product_image={amaz_short4} handleClick={handleClick} plan_name={"amazfit 10"} plan_cycle={3} plan_daily_earning={3200} plan_amount={8000} plan_type={'Short Plan'} />
                             </span>
                             )}
 
