@@ -106,7 +106,7 @@ export default function Withdrawals() {
         var temp_Data = [];
         docSnap.data.forEach((doc) => {
             if (doc.status === status) {
-                temp_Data = [...temp_Data, { ...doc, 'withdrawal_id': doc._id }];
+                temp_Data = [ { ...doc, 'withdrawal_id': doc._id }, ...temp_Data];
             }
         }
         );

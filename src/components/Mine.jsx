@@ -16,6 +16,7 @@ import ubon_user from '../images/ubon_user.png';
 import ubon_group from '../images/ubon_group.png';
 import apache_logo from '../images/apache_logo.png';
 import axios from 'axios';
+import amaz_logi from '../images/amaz_logi.png';
 import BASE_URL from '../api_url';
 
 
@@ -118,7 +119,7 @@ const Mine = () => {
         <div className="top bg-red-500 h-56">
 
           <div className="info pt-10 pl-10 flex items-center justify-start">
-            <div className='flex justify-center items-center'><img src={apache_logo} alt="logo" className='w-16 rounded-full' /></div>
+            <div className='flex justify-center items-center bg-white p-2 rounded-xl'><img src={amaz_logi} alt="logo" className='w-16 rounded' /></div>
             <div className="user_no flex flex-col text-white ml-5">
               <div className="no text-2xl font-medium">{mobileno}</div>
               {/* <div className='text-xs border-2 border-white py-1 px-2 w-2/5 text-center rounded-lg mt-1'>LV0</div> */}

@@ -114,7 +114,7 @@ export default function Transactions() {
         var temp_Data = [];
         docSnap.data.forEach((doc) => {
             if (doc.status === value) {
-            temp_Data = [...temp_Data, { ...doc, 'recharge_id': doc._id }];
+            temp_Data = [ { ...doc, 'recharge_id': doc._id } , ...temp_Data];
             }
         });
         
@@ -257,7 +257,7 @@ export default function Transactions() {
                                         <TableCell align="right">{row.refno}</TableCell>
                                         <TableCell align="right">Rs.{row.recharge_value}</TableCell>
                                         <TableCell align="right">{row.status}</TableCell>
-                                        <TableCell align="right">{moment(new Date(row.time.seconds*1000)).format('DD/MM/YY, h:mm:ss A')}</TableCell>
+                                        <TableCell align="right">{moment(new Date(row.time)).format('DD/MM/YY, h:mm:ss A')}</TableCell>
                                         {loading === true ? <TableCell align='center'>
                                             <RotatingLines 
                                             strokeColor="grey"

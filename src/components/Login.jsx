@@ -59,7 +59,10 @@ const Login = () => {
         
         await axios.post(`${BASE_URL}/login`, {mobno, pwd})
             .then(({data}) => {
-                //console.log(data);
+                if(data.user_details===null) {
+                    throw "Could not login/something went wrong";
+                }
+                console.log(data);
                 localStorage.setItem('uid',data.user_details._id);
                 setText('Login Successful!');
                 setTimeout(() => {
@@ -68,7 +71,7 @@ const Login = () => {
                 }, 1000);
             })
             .catch(error => {
-                //console.log(error);
+                console.log(error);
                 setText('Something went wrong!');
                 setTimeout(() => {
                     setLoading(false);

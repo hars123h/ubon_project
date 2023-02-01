@@ -116,7 +116,7 @@ export default function User() {
     const getUsers = async () => {
         const options =  {
             page: 1,
-            limit: 2, 
+            limit: 10, 
         };
         const users_data = await axios.post(`${BASE_URL}/get_paginated_user`, {
             options
@@ -137,7 +137,7 @@ export default function User() {
         }
         const options =  {
             page: pageData.nextPage,
-            limit: 2, 
+            limit: 10, 
         };
         const users_data = await axios.post(`${BASE_URL}/get_paginated_user`, {
             options
@@ -157,7 +157,7 @@ export default function User() {
         }
         const options =  {
             page: pageData.prevPage,
-            limit: 2, 
+            limit: 10, 
         };
         const users_data = await axios.post(`${BASE_URL}/get_paginated_user`, {
             options
