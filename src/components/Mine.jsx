@@ -115,7 +115,7 @@ const Mine = () => {
 
       <div className='flex flex-col'>
         {/* [#2e9afe] */}
-        <div className="top bg-orange-500 h-56">
+        <div className="top bg-red-500 h-56">
 
           <div className="info pt-10 pl-10 flex items-center justify-start">
             <div className='flex justify-center items-center'><img src={apache_logo} alt="logo" className='w-16 rounded-full' /></div>
@@ -125,7 +125,7 @@ const Mine = () => {
             </div>
           </div>
           {/* [#2b85d9] */}
-          <div className="h-28 overflow-y-visible rounded-xl  info_box bg-orange-400 text-white flex items-center justify-between w-4/5 mx-auto mt-6 px-4 py-1">
+          <div className="h-28 overflow-y-visible rounded-xl  info_box bg-red-400 text-white flex items-center justify-between w-4/5 mx-auto mt-6 px-4 py-1">
             <div className='flex flex-col items-center'>
               <div className='text-xs mb-2'>&#8377; {new Intl.NumberFormat().format(balance)}</div>
               <div>Balance</div>
@@ -147,44 +147,44 @@ const Mine = () => {
         {/*#7dc1ff */}
         <ul className=' list-none flex justify-around items-center mx-auto w-4/5 mt-6'>
 
-          {isBetween()===false ? <li className='bg-orange-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => toaster('You can withdraw only between 9:00 to 19:00 hours only.')}>
+          {isBetween()===false ? <li className='bg-red-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => toaster('You can withdraw only between 9:00 to 19:00 hours only.')}>
             <img src={money_bag} alt="invite" className='w-10 h-10 mx-auto' />
             <div className='text-center text-white text-sm'>Withdrawl</div>
-          </li> : <li className='bg-orange-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => navigate('/withdrawal', { state: { withdrawalPassword: originalwpwd, loginPassword: originalpwd } })}>
+          </li> : <li className='bg-red-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => navigate('/withdrawal', { state: { withdrawalPassword: originalwpwd, loginPassword: originalpwd } })}>
             <img src={money_bag} alt="invite" className='w-10 h-10 mx-auto' />
             <div className='text-center text-white text-sm'>Withdrawl</div>
           </li>}
 
-          <li className='bg-orange-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => navigate('/recharge')}>
+          <li className='bg-red-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => navigate('/recharge')}>
             <img src={recharge_image} alt="invite" className='w-10 h-10 mx-auto' />
             <div className='text-center text-white text-sm'>Recharge</div>
           </li>
 
-          <li className='bg-orange-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => navigate('/user_feedback')}>
+          <li className='bg-red-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => navigate('/user_feedback')}>
             <img src={paper_image} alt="invite" className='w-10 h-10 mx-auto' />
             <div className='text-center text-white text-sm'>Feedback</div>
           </li>
         </ul>
 
         <div className='flex justify-around items-center mx-auto w-4/5'>
-          <div className='bg-orange-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => navigate('/invite')}>
+          <div className='bg-red-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => navigate('/invite')}>
             <img src={invite_image} alt="invite" className='w-10 h-10 mx-auto' />
             <div className='text-center text-white text-sm'>Invite</div>
           </div>
 
-          <div className='bg-orange-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => navigate('/record')}>
+          <div className='bg-red-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => navigate('/record')}>
             <img src={paper_image} alt="invite" className='w-10 h-10 mx-auto' />
             <div className='text-center text-white text-sm'>Record</div>
           </div>
 
-          <div className='bg-orange-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => navigate('/settings', { state: { withdrawalPassword: originalwpwd, loginPassword: originalpwd } })}>
+          <div className='bg-red-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => navigate('/settings', { state: { withdrawalPassword: originalwpwd, loginPassword: originalpwd } })}>
             <img src={adminSetting} alt="invite" className='w-10 h-10 mx-auto' />
             <div className='text-center text-white text-sm'>Settings</div>
           </div>
         </div>
 
         {/* <div className="flex justify-around items-center mx-auto w-4/5">
-          <div className='bg-orange-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => navigate('/user_feedback')}>
+          <div className='bg-red-400 flex-col flex items-center justify-around p-3 rounded-2xl m-4 w-[80px] cursor-pointer' onClick={() => navigate('/user_feedback')}>
             <img src={paper_image} alt="invite" className='w-10 h-10 mx-auto' />
             <div className='text-center text-white text-sm'>Feedback</div>
           </div>
@@ -211,12 +211,12 @@ const Mine = () => {
 
 
         <div className="button w-4/5 mx-auto text-white text-lg  mb-20">
-          <button className='w-full bg-orange-500 rounded-lg py-1 ' onClick={handleSignOut}>Sign Out</button>
+          <button className='w-full bg-red-500 rounded-lg py-1 ' onClick={handleSignOut}>Sign Out</button>
         </div>
       </div>
 
       {/*Navigation Bar 2*/}
-      <div className="fixed bottom-0 z-10 bg-orange-500 rounded-none text-white flex overflow-x-hidden  mx-auto mt-2 border-2 border-gray-100 w-full overflow-y-hidden">
+      <div className="fixed bottom-0 z-10 bg-red-500 rounded-none text-white flex overflow-x-hidden  mx-auto mt-2 border-2 border-gray-100 w-full overflow-y-hidden">
         <div className="flex flex-row justify-around items-center w-full py-2">
           <div className='cursor-pointer mx-2 flex flex-col justify-center items-center' onClick={() => navigate('/home')}>
             <img src={ubon_home} alt="online" className='w-4' />

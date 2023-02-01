@@ -164,14 +164,14 @@ const Home = () => {
                 >
                     <h1 className='text-gray-600 mb-3 text-xl'>Are you Sure?</h1>
                     <div>
-                        <button onClick={() => closeModal('ok')} className='bg-orange-500 text-white px-2 py-1 rounded-lg shadow-md w-[64px]'>Yes</button>
+                        <button onClick={() => closeModal('ok')} className='bg-red-500 text-white px-2 py-1 rounded-lg shadow-md w-[64px]'>Yes</button>
                         <button onClick={() => closeModal('cancel')} className='bg-red-500 text-white px-2 py-1 rounded-lg shadow-md w-[64px] ml-2'>cancel</button>
                     </div>
                 </ReactModal>
             </div>
 
             {/*Marquee Implementation*/}
-            <div className="bg-orange-500 rounded-lg text-white relative flex overflow-x-hidden h-10 mx-auto mt-2 border-2 border-gray-100 sm:w-3/5 lg:w-3/5 overflow-y-hidden">
+            <div className="bg-red-500 rounded-lg text-white relative flex overflow-x-hidden h-10 mx-auto mt-2 border-2 border-gray-100 sm:w-3/5 lg:w-3/5 overflow-y-hidden">
                 <div className="py-12 animate-marquee flex flex-col whitespace-nowrap">
                     <span className="mx-4 text-sm">91915*****05 Member withdrawl 100000 Rs</span>
                     <span className="mx-4 text-sm">91702*****84 Member withdrawl 30000 Rs</span>
@@ -182,7 +182,7 @@ const Home = () => {
             </div>
 
             {/*Navigation Bar 1*/}
-            <div className="bg-orange-500 rounded-lg text-white relative flex overflow-x-hidden  mx-auto mt-2 border-2 border-gray-100 sm:w-3/5 lg:w-3/5 overflow-y-hidden">
+            <div className="bg-red-500 rounded-lg text-white relative flex overflow-x-hidden  mx-auto mt-2 border-2 border-gray-100 sm:w-3/5 lg:w-3/5 overflow-y-hidden">
                 <div className="flex flex-row justify-around items-center w-full py-2">
                     <a href="https://telegram.me/RTR365" className=' no-underline text-white cursor-pointer'>
                         <div className='cursor-pointer mx-2 flex flex-col justify-center items-center'>
@@ -212,9 +212,9 @@ const Home = () => {
                 </div>
             </div>
 
-            <div className='bg-orange-500 text-md text-white flex items-center shadow-lg rounded-md mb-2 sm:w-3/5 lg:w-3/5 mx-auto'>
-                <div className={`w-1/2 text-center py-2 ${currentVisible === 'big' ? 'border-b-4 bg-orange-600 border-gray-400' : ''}`} onClick={() => setCurrentVisible('big')}>Normal Plans</div>
-                <div className={`w-1/2 text-center py-2 ${currentVisible === 'short' ? 'border-b-4 bg-orange-600 border-gray-400' : ''}`} onClick={() => setCurrentVisible('short')}>VIP Plans</div>
+            <div className='bg-red-500 text-md text-white flex items-center shadow-lg rounded-md mb-2 sm:w-3/5 lg:w-3/5 mx-auto'>
+                <div className={`w-1/2 text-center py-2 ${currentVisible === 'big' ? 'border-b-4 bg-red-600 border-gray-400' : ''}`} onClick={() => setCurrentVisible('big')}>Normal Plans</div>
+                <div className={`w-1/2 text-center py-2 ${currentVisible === 'short' ? 'border-b-4 bg-red-600 border-gray-400' : ''}`} onClick={() => setCurrentVisible('short')}>VIP Plans</div>
             </div>
 
             {/*Plans Cards*/}
@@ -338,7 +338,7 @@ const Home = () => {
 
 
             {/*Navigation Bar 2*/}
-            <div className="fixed bottom-0 z-10 bg-orange-500 rounded-none text-white flex overflow-x-hidden  mx-auto mt-2 border-2 border-gray-100 w-full overflow-y-hidden">
+            <div className="fixed bottom-0 z-10 bg-red-500 rounded-none text-white flex overflow-x-hidden  mx-auto mt-2 border-2 border-gray-100 w-full overflow-y-hidden">
                 <div className="flex flex-row justify-around items-center w-full py-2">
                     <div className='cursor-pointer mx-2 flex flex-col justify-center items-center'>
                         <img src={ubon_home} alt="online" className='w-4' />

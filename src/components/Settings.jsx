@@ -12,7 +12,7 @@ const Settings = () => {
 
 //[#2e9afe]
     return (
-        <div className='bg-orange-500 h-screen p-4'>
+        <div className='bg-red-500 h-screen p-4'>
             <div className="options text-center text-white text-2xl pt-2 font-medium">
                 <svg xmlns="http://www.w3.org/2000/svg" onClick={() => navigate('/mine')} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 absolute left-2  storke-white top-5 cursor-pointer">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
@@ -21,7 +21,7 @@ const Settings = () => {
             </div>
 
 {/* [#4daaff] */}
-            <div className="box mx-2 bg-orange-400 p-2 rounded-md mt-4">
+            <div className="box mx-2 bg-red-400 p-2 rounded-md mt-4">
                 <div onClick={() => navigate('/bank', {state:{withdrawalPassword:loc.state.withdrawalPassword, loginPassword:loc.state.loginPassword}})} className='flex gap-2 items-center text-white text-lg p-3 m-1 border-b border-white cursor-pointer'>
                     <div><img src={setting_bank} alt="bnk_img" width={30}/></div>
                     <div>My Bank</div>

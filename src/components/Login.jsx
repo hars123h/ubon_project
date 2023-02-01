@@ -11,6 +11,7 @@ import { RotatingLines } from 'react-loader-spinner';
 import apache_logo from '../images/apache_logo.png';
 import axios from 'axios';
 import BASE_URL from '../api_url';
+import amaz_logi from '../images/amaz_logi.png';
 
 
 const Login = () => {
@@ -89,7 +90,7 @@ const Login = () => {
                 <div className='text-sm'>{text}</div>
             </div> : null}
             <div className='text-center'>
-                <img src={apache_logo} alt="hp_logo" className='m-auto md:w-2/6 sm:w-1/6 my-0' width={300} />
+                <img src={amaz_logi} alt="hp_logo" className='m-auto md:w-2/6 sm:w-1/6 mt-8 mb-8' width={240} />
             </div>
             <div className='flex flex-col m-auto w-3/5'>
                 <div className=" items-center mb-3 p-2 phoneno flex  bg-[#f1f1f1] rounded-md border-2 border-gray-200">
@@ -103,13 +104,13 @@ const Login = () => {
                 </div>
                 {/*[#0096D5] */}
                 <div className='mt-16'>
-                    <button onClick={handleSignIn} className='bg-orange-500 w-full pt-2 pb-2 text-lg text-white rounded-md shadow-md shadow-orange-400
+                    <button onClick={handleSignIn} className='bg-red-500 w-full pt-2 pb-2 text-lg text-white rounded-md shadow-md shadow-red-400
                     '>Login</button>
                 </div>
                 {/*[#379EFE] */}
                 <div className="options flex justify-between mt-2">
-                    <div className='text-orange-500 cursor-pointer' onClick={() => navigate('/register')}>Register</div>
-                    <div className='cursor-pointer text-orange-500 ' onClick={() => navigate('/forgot')}>Forget password?</div>
+                    <div className='text-red-500 cursor-pointer' onClick={() => navigate('/register')}>Register</div>
+                    <div className='cursor-pointer text-red-500 ' onClick={() => navigate('/forgot')}>Forget password?</div>
                 </div>
 
             </div>

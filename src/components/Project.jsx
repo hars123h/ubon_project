@@ -119,14 +119,14 @@ const Project = () => {
 
 //[#2e9afe]
     return (
-        <div className='md:h-screen overflow-y-scroll xs:h-[700px] bg-orange-500 h-screen relative'>
+        <div className='md:h-screen overflow-y-scroll xs:h-[700px] bg-red-500 h-screen relative'>
             {toasterShow?<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
                 <div className='flex gap-2 bg-black opacity-80 text-white px-2 py-1 rounded-md'>
                     <div>{toasterText}</div>
                 </div>
             </div>:null}
 
-            <div className="options text-center bg-orange-500 text-white text-md pt-5 font-normal pb-4">
+            <div className="options text-center bg-red-500 text-white text-md pt-5 font-normal pb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" onClick={() => navigate(-1)} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 absolute left-2  storke-white top-5 cursor-pointer">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
                 </svg>
@@ -135,8 +135,8 @@ const Project = () => {
 
 
             <div className='records w-full flex bg-[#d3d6fe] items-center'>
-                <div onClick={() => setCurrent_tab('earning')} className={`cursor-pointer h-[40px] flex items-center justify-center w-1/2 text-center border-b-4 font-semibold ${current_tab === 'earning' ? 'border-orange-600 text-orange-500' : 'text-white'}`}>Earning</div>
-                <div onClick={() => setCurrent_tab('completed')} className={`cursor-pointer h-[40px] flex items-center justify-center w-1/2 text-center border-b-4 ${current_tab === 'completed' ? 'border-orange-600 text-orange-500' : 'text-white'}`}>Completed</div>
+                <div onClick={() => setCurrent_tab('earning')} className={`cursor-pointer h-[40px] flex items-center justify-center w-1/2 text-center border-b-4 font-semibold ${current_tab === 'earning' ? 'border-red-600 text-red-500' : 'text-white'}`}>Earning</div>
+                <div onClick={() => setCurrent_tab('completed')} className={`cursor-pointer h-[40px] flex items-center justify-center w-1/2 text-center border-b-4 ${current_tab === 'completed' ? 'border-red-600 text-red-500' : 'text-white'}`}>Completed</div>
             </div>
 
             <div className=' mx-auto w-[95%] mt-2 p-2 pb-10'>
@@ -145,8 +145,8 @@ const Project = () => {
                         userDetails.plans_purchased.map((element, index) => {
                             if (element.plan_daily_earning * element.plan_cycle !== DateDifference(new Date(element.date_purchased), new Date(element.date_till_rewarded)) * element.quantity * element.plan_daily_earning) {
                                 return (
-                                    <div key={index} className='mx-auto w-[90%] mt-2 border-x-2 border-white border-b-2  rounded-lg shadow-lg shadow-orange-700 text-white'>
-                                        <div className="text-lg p-3 text-orange-600 font-semibold bg-white rounded-t-lg">Plan Details</div>
+                                    <div key={index} className='mx-auto w-[90%] mt-2 border-x-2 border-white border-b-2  rounded-lg shadow-lg shadow-red-700 text-white'>
+                                        <div className="text-lg p-3 text-red-600 font-semibold bg-white rounded-t-lg">Plan Details</div>
                                         <div className='p-3'>
                                             <div className='mb-1'>Plan Name: {element.plan_name}</div>
                                             <div className='mb-1'>Start Date: {element.date_purchased}</div>

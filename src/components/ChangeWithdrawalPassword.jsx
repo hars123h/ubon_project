@@ -48,7 +48,7 @@ const ChangeWithdrawalPassword = () => {
 
     //console.log(loc);
     return (
-        <div className='bg-orange-500 h-screen p-4 sm:h-[700px] md:h-[950px] relative'>
+        <div className='bg-red-500 h-screen p-4 sm:h-[700px] md:h-[950px] relative'>
             {toasterShow?<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
                 <div className='flex gap-2 bg-black opacity-80 text-white px-2 py-1 rounded-md'>
                     <div>{toasterText}</div>
@@ -62,7 +62,7 @@ const ChangeWithdrawalPassword = () => {
             </div>
 
 {/* [#61b2ff] */}
-            <div className="box mx-2 bg-orange-400 p-2 rounded-md mt-4">
+            <div className="box mx-2 bg-red-400 p-2 rounded-md mt-4">
 
                 <div className='flex gap-2 items-center text-white  text-lg p-3 m-1  '>
                     Please enter the New Password
@@ -83,7 +83,7 @@ const ChangeWithdrawalPassword = () => {
 
             <div>
                 {/* [#7899de] */}
-                <button onClick={handleReset} className='bg-orange-400 text-white text-lg mt-5 mb-20 rounded-lg shadow-xl block w-full py-2 shadow-orange-600'>Confirm</button>
+                <button onClick={handleReset} className='bg-red-400 text-white text-lg mt-5 mb-20 rounded-lg shadow-xl block w-full py-2 shadow-red-600'>Confirm</button>
             </div>
         </div>
     )

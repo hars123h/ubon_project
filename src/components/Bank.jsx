@@ -54,7 +54,7 @@ const Bank = () => {
     }
     //[#2e9afe]
     return (
-        <div className='bg-orange-500 h-full p-4 sm:h-[700px] md:h-[950px] relative'>
+        <div className='bg-red-500 h-full p-4 sm:h-[700px] md:h-[950px] relative'>
            {toasterShow?<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
                 <div className='flex gap-2 bg-black opacity-80 text-white px-2 py-1 rounded-md'>
                     <div>{toasterText}</div>
@@ -68,7 +68,7 @@ const Bank = () => {
             </div>
 
             {/* #757575 */}
-            <div className="box mx-2 bg-orange-400 text-white p-2 rounded-md mt-4">
+            <div className="box mx-2 bg-red-400 text-white p-2 rounded-md mt-4">
                 <div className='flex gap-2 items-center  text-md p-3 m-1  cursor-pointer'>
                     <input type="text" onChange={handleChange} name='fullName' value={details.fullName} className='outline-none w-full bg-inherit placeholder-white' placeholder='Full Name' />
                 </div>
@@ -95,7 +95,7 @@ const Bank = () => {
             </div>
 
             <div className='mb-[1000px]'>
-                <button onClick={handleSubmit} className='bg-orange-400 text-white text-lg mt-5 mb-20 rounded-lg shadow-xl block w-full py-2 shadow-orange-200'>Confirm</button>
+                <button onClick={handleSubmit} className='bg-red-400 text-white text-lg mt-5 mb-20 rounded-lg shadow-xl block w-full py-2 shadow-red-200'>Confirm</button>
             </div>
         </div>
     )

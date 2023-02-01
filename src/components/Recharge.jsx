@@ -34,7 +34,7 @@ const Recharge = () => {
     }
     //[#2e9afe] #4daaff #298ae4 [#2e9afe]
     return (
-        <div className='bg-orange-400 h-screen relative'>
+        <div className='bg-red-400 h-screen relative'>
             {toasterShow ? <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
                 <div className='flex gap-2 bg-black opacity-80 text-white px-2 py-1 rounded-md'>
                     <div>{toasterText}</div>
@@ -47,7 +47,7 @@ const Recharge = () => {
                 Recharge
             </div>
 
-            <div className="box bg-orange-600 px-4 py-4 shadow-md shadow-orange-200">
+            <div className="box bg-red-600 px-4 py-4 shadow-md shadow-red-200">
 
                 <div className='m-1 text-md text-white mb-4'>Enter Amount:</div>
                 <div className='m-1 w-full flex items-center'>
@@ -64,7 +64,7 @@ const Recharge = () => {
             </div>
 
             <div className="cnf_recharge w-4/5 mx-auto mt-10">
-                <button onClick={handleRecharge} className='w-full bg-orange-600 py-2 rounded-md text-white text-lg shadow-customShadow shadow-[#beadcc]'>Confirm Recharge</button>
+                <button onClick={handleRecharge} className='w-full bg-red-600 py-2 rounded-md text-white text-lg shadow-customShadow shadow-[#beadcc]'>Confirm Recharge</button>
             </div>
         </div>
     )

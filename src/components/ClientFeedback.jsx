@@ -44,7 +44,7 @@ const ClientFeedback = () => {
     }
 //[#2e9afe]
     return (
-        <div className=' bg-orange-500 h-screen flex flex-col text-white font-light p-5 relative'>
+        <div className=' bg-red-500 h-screen flex flex-col text-white font-light p-5 relative'>
             {toasterShow?<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
                 <div className='flex gap-2 bg-black opacity-80 text-white px-2 py-1 rounded-md'>
                     <div>{toasterText}</div>
