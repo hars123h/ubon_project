@@ -95,6 +95,7 @@ export default function Dashboard() {
     const [recSum, setRecSum] = useState(0);
     const [witSum, setWitSum] = useState(0);
     const [balSum, setBalSum] = useState(0);
+    const [userCount, setUsersCount] = useState(0);
 
 
     useEffect(() => {
@@ -109,8 +110,15 @@ export default function Dashboard() {
                 setBalSum(response.data.totalBalance);
             })
         }
+
+        const get_users_count = async() => {
+            await axios.get(`${BASE_URL}/get_user_count`).then(response=>{
+                setUsersCount(response.data.user_count);
+            });
+        }
         getData();
         get_sum_data();
+        get_users_count();
 
     }, []);
 
@@ -201,7 +209,7 @@ export default function Dashboard() {
                             </svg>
                         </Box>
                         <Typography >Total Users Count</Typography>
-                        <Typography>{amountDetails.userCount}</Typography>
+                        <Typography>{userCount}</Typography>
                     </Box>
 
                     <Box sx={{ backgroundColor: '#e5e7eb', padding: "20px", borderRadius: '5px', display: 'inline', width: '24%' }} className="shadow-lg">
