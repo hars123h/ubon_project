@@ -1,19 +1,19 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "AmazFit Web Game",
+  "name": "Web based Application",
   "icons": [
     {
-      "src": "apache_logo_new.ico",
+      "src": "amaz_logi_new.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "apache_logo.png",
+      "src": "amaz_logi.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "apache_logo.png",
+      "src": "amaz_logi.png",
       "type": "image/png",
       "sizes": "512x512"
     }
